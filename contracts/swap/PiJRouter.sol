@@ -445,7 +445,7 @@ library PiJLibrary {
                         hex"ff",
                         factory,
                         keccak256(abi.encodePacked(token0, token1)),
-                        hex"cdf12d6269b056f27c39d8ea9f7a150a1208bbdbeb55a6faa735b4c7886961e4" // init code hash
+                        hex"89dc782a3f801fd0c814922b0ec0dc0b498f20aab0577dc3d7cf242e96d1b28c" // init code hash
                     )
                 )
             )
