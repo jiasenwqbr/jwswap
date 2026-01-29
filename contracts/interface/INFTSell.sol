@@ -13,3 +13,8 @@ interface IRecommendation {
         address[] memory referralChain
     );
 }
+
+
+interface IJWErc20 {
+    function mint(address to, uint256 amount) external ;
+}

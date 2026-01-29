@@ -33,9 +33,9 @@ contract NFTSellManage is  Initializable,
             address _swapRouterAddress,
             address _jwToken,
             address[3] memory nftaddresses,
-            uint256[3] memory jwUSDTPrices,
-            uint256[3] memory pijsUSDTPrices,
-            uint8[3] memory limits
+            uint256[3] memory usdtPrice,
+            uint8[3] memory limits,
+            uint256 _wearRate
         ) public initializer {
             __AccessControlEnumerable_init();
             __ReentrancyGuard_init();
@@ -53,24 +53,21 @@ contract NFTSellManage is  Initializable,
             NFTProduct memory platinunNft = NFTProduct(
                 {
                     nftAddr : nftaddresses[0],
-                    jwUSDTPrice : jwUSDTPrices[0],
-                    pijsUSDTPrice : pijsUSDTPrices[0],
+                    usdtPrice : usdtPrice[0],
                     limit : limits[0]
                 }
             ); 
             NFTProduct memory epicNft = NFTProduct(
                 {
                     nftAddr : nftaddresses[1],
-                    jwUSDTPrice : jwUSDTPrices[1],
-                    pijsUSDTPrice : pijsUSDTPrices[1],
+                    usdtPrice : usdtPrice[1],
                     limit : limits[1]
                 }
             ); 
             NFTProduct memory legendNft = NFTProduct(
                 {
                     nftAddr : nftaddresses[2],
-                    jwUSDTPrice : jwUSDTPrices[2],
-                    pijsUSDTPrice : pijsUSDTPrices[2],
+                    usdtPrice : usdtPrice[2],
                     limit : limits[2]
                 }
             ); 
@@ -78,6 +75,8 @@ contract NFTSellManage is  Initializable,
             products[nftaddresses[0]] = platinunNft;
             products[nftaddresses[1]] = epicNft;
             products[nftaddresses[2]] = legendNft;
+
+            wearRate = _wearRate;
 
 
 
@@ -97,8 +96,7 @@ contract NFTSellManage is  Initializable,
     // Product
     struct NFTProduct {
        address nftAddr;
-       uint256 jwUSDTPrice;
-       uint256 pijsUSDTPrice;
+       uint256 usdtPrice;
        uint8 limit;
     }
     mapping(address => NFTProduct) products;
@@ -108,59 +106,53 @@ contract NFTSellManage is  Initializable,
         uint256 orderId;
         address product;
         uint256 nftId;
-        uint256 buyJwUsdtAmount;
-        uint256 buyPijsUsdtAmount;
         uint256 purchasedJwAmount;
         uint256 purchasedPIJSAmount;
+        uint256 usdtValue;
         uint256 timestamp;
     }
     mapping(uint256 => Order) orders;
     mapping(address => uint256[]) userOrderIds;
     mapping(uint256 => uint256[]) ordersPerDay;
 
-    // 交易量
-    // 个人日交易额
-    mapping(address => mapping(uint256 => uint256)) userTradePerDay;
-    // 个人总交易额
-    mapping(address => uint256) userTradeTotal;
-    // 平台日交易量
-    mapping(uint256 => uint256) platformTradePerDay;
-    // 平台总交易量
-    uint256 platformTradeTotal;
+    
     
     uint256 public constant SECONDS_PER_DAY = 86400;
     uint256 orderId;
+    uint256 public wearRate;
+    uint256 public constant DENOMINATOR = 1000; 
+
 
     
     /*//////////////////////////////////////////////////////////////
                             EVENTS
     //////////////////////////////////////////////////////////////*/
     event  BuyNFT(address user,uint256 buyJwAmount,uint256 buyPIJSAmount,address nftAddress,uint256 nftId,
-        uint256 dayIndex,uint256 currentOrderId,uint256 purchasedJwAmount,uint256 purchasedPIJSAmount,uint256 userTradeTotalAmount,
-        uint256 userTradePerDayAmount,uint256 platformTradeTotalAmount,uint256 platformTradePerDayAmount,uint256 createTime);
+        uint256 dayIndex,uint256 currentOrderId,uint256 createTime);
 
     /*//////////////////////////////////////////////////////////////
                             FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function buyNFT(uint256 buyJwAmount,uint256 buyPIJSAmount,address nftAddress) public payable nonReentrant {
+    function buyNFT(uint256 buyJwAmount,uint256 buyPIJSAmount,address jwTokenAddress,uint256 usdtValue,address nftAddress) public payable nonReentrant {
         require(buyJwAmount > 0,"buyJwAmount is 0");
         require(products[nftAddress].nftAddr != address(0),"nft product is not exist");
         require(buyPIJSAmount > 0,"buyPIJSAmount is 0");
-        require(buyJwAmount >= products[nftAddress].jwUSDTPrice,"jw's usdt value is less than the price");
-        require(buyPIJSAmount >= products[nftAddress].pijsUSDTPrice,"pijs's usdt value is less than the price");
+        require(usdtValue >= products[nftAddress].usdtPrice,"usdt value is less than the price");
+        require(jwTokenAddress == jwToken,"invaild jwTokenAddress");
+        require(IERC721(nftAddress).balanceOf(msg.sender) < products[nftAddress].limit,"exceeded the nft limit");
         uint256 createTime = block.timestamp;
+        // 判断jw和pijs价值的usdt价值是否
+        uint256 buyJwAmount2usd = getJW2USDT(buyJwAmount) ;
+        uint256 buyPIJSAmount2usd = getPIJS2USDT(buyPIJSAmount);
+        require(buyJwAmount2usd + buyPIJSAmount2usd >= usdtValue * (DENOMINATOR - wearRate)/DENOMINATOR ,"the value of jw and pijs can not reached usdtValue");
+        
         // validate recommand
         (address referrer,,,) = IRecommendation(recommandContractAddress).getUserInfo(msg.sender);
         require(referrer != address(0),"user is not recommanded");
-        // buy JW
-        uint256 purchasedJwAmount = usdtBuyJW(buyJwAmount);
-        // buy PIJS
-        uint256 purchasedPIJSAmount = usdtBuyPIJS(buyPIJSAmount);
-
         // transfer 
-        SafeERC20.safeTransferFrom(IERC20(jwToken), address(this),msg.sender, purchasedJwAmount);
-        (bool ok, ) = msg.sender.call{value: purchasedPIJSAmount}("");
+        SafeERC20.safeTransferFrom(IERC20(jwToken), msg.sender ,receiver, buyJwAmount);
+        (bool ok, ) = receiver.call{value: buyPIJSAmount}("");
         require(ok, "msg sender received pijs transfer failed");
         // mint nft
         uint256 nftId = INFT(nftAddress).mint(msg.sender);
@@ -170,10 +162,9 @@ contract NFTSellManage is  Initializable,
             orderId:orderId,
             product:nftAddress,
             nftId :nftId,
-            buyJwUsdtAmount:buyJwAmount,
-            buyPijsUsdtAmount:buyPIJSAmount,
-            purchasedJwAmount:purchasedJwAmount,
-            purchasedPIJSAmount:purchasedPIJSAmount,
+            purchasedJwAmount:buyJwAmount,
+            purchasedPIJSAmount:buyPIJSAmount,
+            usdtValue:usdtValue,
             timestamp:createTime
         });
         uint256 dayIndex = getDayIndex(createTime);
@@ -182,79 +173,12 @@ contract NFTSellManage is  Initializable,
         ordersPerDay[dayIndex].push(orderId);
         uint256 currentOrderId = orderId;
         orderId = orderId + 1;
-        userTradeTotal[msg.sender] = userTradeTotal[msg.sender] + buyJwAmount + buyPIJSAmount;
-        userTradePerDay[msg.sender] [dayIndex]=  userTradePerDay[msg.sender][dayIndex] + buyJwAmount + buyPIJSAmount;
-        platformTradeTotal = platformTradeTotal + buyJwAmount + buyPIJSAmount;
-        platformTradePerDay[dayIndex] = platformTradePerDay[dayIndex] + buyJwAmount + buyPIJSAmount;
+        
         
         emit BuyNFT(msg.sender,buyJwAmount,buyPIJSAmount,nftAddress,nftId,
-        dayIndex,currentOrderId,purchasedJwAmount,purchasedPIJSAmount,userTradeTotal[msg.sender],
-        userTradePerDay[msg.sender] [dayIndex],platformTradeTotal,platformTradePerDay[dayIndex],createTime);
+        dayIndex,currentOrderId,createTime);
     }
-    function usdtBuyPIJS(uint256 buyPIJSAmount) internal returns(uint256){
-        // 1. 先从用户拉 USDT
-        SafeERC20.safeTransferFrom(IERC20(usdtAddress), msg.sender, address(this), buyPIJSAmount);
-        // 2. 再授权 Router
-        SafeERC20.safeApprove(IERC20(usdtAddress), swapRouterAddress, 0);
-        SafeERC20.safeApprove(IERC20(usdtAddress),swapRouterAddress, buyPIJSAmount);
-        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
-        // 2. USDT -> WETH
-        address[] memory path1 = new address[](2);
-        path1[0] = usdtAddress;
-        path1[1] = swapRouter.WETH();
-        
-        uint256 beforeETHBalance = address(this).balance;
-        swapRouter.swapExactTokensForETHSupportingFeeOnTransferTokens(
-            buyPIJSAmount,
-            0,
-            path1,
-            address(this),
-            block.timestamp + 300
-        );
-        uint256 afterETHBalance = address(this).balance;
-        return afterETHBalance - beforeETHBalance;
-    }
-
-    function usdtBuyJW(uint256 buyJwAmount) internal returns(uint256){
-         // 1. 先从用户拉 USDT
-        SafeERC20.safeTransferFrom(IERC20(usdtAddress), msg.sender, address(this), buyJwAmount);
-        // 2. 再授权 Router
-        SafeERC20.safeApprove(IERC20(usdtAddress), swapRouterAddress, 0);
-        SafeERC20.safeApprove(IERC20(usdtAddress),swapRouterAddress, buyJwAmount);
-        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
-        // 3. USDT -> WETH
-        address[] memory path1 = new address[](2);
-        path1[0] = usdtAddress;
-        path1[1] = swapRouter.WETH();
-        
-        uint256 beforeETHBalance = address(this).balance;
-        swapRouter.swapExactTokensForETHSupportingFeeOnTransferTokens(
-            buyJwAmount,
-            0,
-            path1,
-            address(this),
-            block.timestamp + 300
-        );
-        uint256 afterETHBalance = address(this).balance;
-        uint256 ethReceived = afterETHBalance - beforeETHBalance;
-        // WETH -> JW
-        uint256 beforeJWAmount = IERC20(jwToken).balanceOf(address(this));
-        address[] memory path2 = new address[](2);
-        path2[0] = swapRouter.WETH();
-        path2[1] = jwToken;
-        swapRouter.swapExactETHForTokensSupportingFeeOnTransferTokens{value: ethReceived}(
-            0,
-            path2,
-            address(this),
-            block.timestamp + 300
-        );
-        uint256 afterJWAmount = IERC20(jwToken).balanceOf(address(this));
-
-        uint256 jwReceived = afterJWAmount - beforeJWAmount;
-
-        return jwReceived;
-    }
-
+    
     function getDayIndex(uint256 timePerSecond) public pure returns (uint256) {
         return timePerSecond / SECONDS_PER_DAY;
     }
@@ -262,38 +186,35 @@ contract NFTSellManage is  Initializable,
     /*//////////////////////////////////////////////////////////////
                             FUNCTIONS   setter  getter
     //////////////////////////////////////////////////////////////*/
-    function setProduct(address[3] memory nftaddress,
-            uint256[3] memory jwUSDTPrices,
-            uint256[3] memory pijsUSDTPrices,
+    function setProduct(address[3] memory nftaddresses,
+            uint256[3] memory usdtPrice,
             uint8[3] memory limits) external onlyRole(MANAGE_ROLE) {
+            // init product
             NFTProduct memory platinunNft = NFTProduct(
                 {
-                    nftAddr : nftaddress[0],
-                    jwUSDTPrice : jwUSDTPrices[0],
-                    pijsUSDTPrice : pijsUSDTPrices[0],
+                    nftAddr : nftaddresses[0],
+                    usdtPrice : usdtPrice[0],
                     limit : limits[0]
                 }
             ); 
             NFTProduct memory epicNft = NFTProduct(
                 {
-                    nftAddr : nftaddress[1],
-                    jwUSDTPrice : jwUSDTPrices[1],
-                    pijsUSDTPrice : pijsUSDTPrices[1],
+                    nftAddr : nftaddresses[1],
+                    usdtPrice : usdtPrice[1],
                     limit : limits[1]
                 }
             ); 
             NFTProduct memory legendNft = NFTProduct(
                 {
-                    nftAddr : nftaddress[2],
-                    jwUSDTPrice : jwUSDTPrices[2],
-                    pijsUSDTPrice : pijsUSDTPrices[2],
+                    nftAddr : nftaddresses[2],
+                    usdtPrice : usdtPrice[2],
                     limit : limits[2]
                 }
             ); 
 
-            products[nftaddress[0]] = platinunNft;
-            products[nftaddress[1]] = epicNft;
-            products[nftaddress[2]] = legendNft;
+            products[nftaddresses[0]] = platinunNft;
+            products[nftaddresses[1]] = epicNft;
+            products[nftaddresses[2]] = legendNft;
     }
     function getProduct(address productAddress) public view  returns(NFTProduct memory){
         return products[productAddress];
@@ -366,23 +287,15 @@ contract NFTSellManage is  Initializable,
         return infoAmount;
     }
 
-    function getOrder(uint256 _orderId) public view returns(Order memory) {
+    function getOrder(uint256 _orderId) external view returns(Order memory) {
         return orders[_orderId];
     }
-    function getUserOrderIds(address user) public view returns (uint256[] memory){
+    function getUserOrderIds(address user) external view returns (uint256[] memory){
         return userOrderIds[user];
     }
-    function getUserTradeTotal(address user) public view returns(uint256) {
-        return userTradeTotal[user];
-    }
-    function getUserTradePerDay(address user,uint256 dayIndex) public view returns(uint256) {
-        return userTradePerDay[user][dayIndex];
-    }
-    function getPlatformTradeTotal() public view returns(uint256){
-        return platformTradeTotal;
-    }
-    function getPlatformTradePerDay(uint256 dayIndex) public view returns(uint256) {
-        return platformTradePerDay[dayIndex];
+    
+    function setWearRate(uint256 _wearRate) public onlyRole(MANAGE_ROLE) {
+        wearRate = _wearRate;
     }
 
 
