@@ -151,7 +151,7 @@ contract InteractionAirDrop is  Initializable,
             orders[currentOrderId] = order;
             userOrders[msg.sender][productId].push(currentOrderId);
             products[productId].currentInteractionTimes = products[productId].currentInteractionTimes +1;
-
+            orderId = orderId + 1;
             emit JoinAirDrop(msg.sender,productId,msg.value,currentOrderId,block.timestamp);
         }
 
@@ -326,7 +326,7 @@ contract InteractionAirDrop is  Initializable,
             uint256 _limit,
             uint256 _realsePerioid,
             bool _enabled) external onlyRole(MANAGE_ROLE) {
-                
+
                 products[_productId].productId = _productId;
                 products[_productId].usdtValue = _usdtValue;
                 products[_productId].buyLimit = _buyLimit;
