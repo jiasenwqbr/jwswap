@@ -189,14 +189,16 @@ contract FlashSalse is  Initializable,
             uint _buyLimit,
             uint256 _limit,
             uint256 _reconmmandRewardPercent,
-            bool _enabled) external onlyRole(MANAGE_ROLE) {
+            bool _enabled,
+            bool _canCheck) external onlyRole(MANAGE_ROLE) {
                 
                 products[_productId].productId = _productId;
                 products[_productId].usdtValue = _usdtValue;
                 products[_productId].buyLimit = _buyLimit;
                 products[_productId].limit = _limit;
-                 products[_productId].reconmmandRewardPercent = _reconmmandRewardPercent;
+                products[_productId].reconmmandRewardPercent = _reconmmandRewardPercent;
                 products[_productId].enabled = _enabled;
+                products[_productId].canCheck = _canCheck;
         }
         function getPIJS2USDT(uint256 amount) public view returns(uint256) {
             IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
@@ -297,6 +299,8 @@ contract FlashSalse is  Initializable,
             }
              return (rorders,amount);
         }
+
+        
 
 
 

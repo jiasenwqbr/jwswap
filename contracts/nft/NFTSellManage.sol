@@ -183,38 +183,40 @@ contract NFTSellManage is  Initializable,
         return timePerSecond / SECONDS_PER_DAY;
     }
 
+
+
     /*//////////////////////////////////////////////////////////////
                             FUNCTIONS   setter  getter
     //////////////////////////////////////////////////////////////*/
     function setProduct(address[3] memory nftaddresses,
-            uint256[3] memory usdtPrice,
-            uint8[3] memory limits) external onlyRole(MANAGE_ROLE) {
-            // init product
-            NFTProduct memory platinunNft = NFTProduct(
-                {
-                    nftAddr : nftaddresses[0],
-                    usdtPrice : usdtPrice[0],
-                    limit : limits[0]
-                }
-            ); 
-            NFTProduct memory epicNft = NFTProduct(
-                {
-                    nftAddr : nftaddresses[1],
-                    usdtPrice : usdtPrice[1],
-                    limit : limits[1]
-                }
-            ); 
-            NFTProduct memory legendNft = NFTProduct(
-                {
-                    nftAddr : nftaddresses[2],
-                    usdtPrice : usdtPrice[2],
-                    limit : limits[2]
-                }
-            ); 
+        uint256[3] memory usdtPrice,
+        uint8[3] memory limits) external onlyRole(MANAGE_ROLE) {
+        // init product
+        NFTProduct memory platinunNft = NFTProduct(
+        {
+            nftAddr : nftaddresses[0],
+            usdtPrice : usdtPrice[0],
+            limit : limits[0]
+        }
+        ); 
+        NFTProduct memory epicNft = NFTProduct(
+        {
+            nftAddr : nftaddresses[1],
+            usdtPrice : usdtPrice[1],
+            limit : limits[1]
+        }
+        ); 
+        NFTProduct memory legendNft = NFTProduct(
+        {
+            nftAddr : nftaddresses[2],
+            usdtPrice : usdtPrice[2],
+            limit : limits[2]
+        }
+        ); 
 
-            products[nftaddresses[0]] = platinunNft;
-            products[nftaddresses[1]] = epicNft;
-            products[nftaddresses[2]] = legendNft;
+        products[nftaddresses[0]] = platinunNft;
+        products[nftaddresses[1]] = epicNft;
+        products[nftaddresses[2]] = legendNft;
     }
     function getProduct(address productAddress) public view  returns(NFTProduct memory){
         return products[productAddress];

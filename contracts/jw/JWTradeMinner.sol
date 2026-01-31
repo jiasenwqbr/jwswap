@@ -51,6 +51,9 @@ contract JWTradeMinner is  Initializable,
             recommandContractAddress = _recommandContractAddress;
             tradeVolumePerDay = _tradeVolumePerDay;
             produceTokenVolumePerDay = _produceTokenVolumePerDay;
+            recommandLevel = 8;
+            staticPercent = 350;
+            dynamaticPercent = 650;
         }
 
 
@@ -67,16 +70,22 @@ contract JWTradeMinner is  Initializable,
     uint256[] produceTokenVolumePerDay;
     mapping(uint256 => uint256) produceTokenPerDay;
     uint256 public constant SECONDS_PER_DAY = 86400;
+    uint256 public constant SECONDS_PER_YEAR = 365 days;
+    
 
     // 交易量
     // 个人日交易额
     mapping(address => mapping(uint256 => uint256)) userTradePerDay;
     // 个人总交易额
     mapping(address => uint256) userTradeTotal;
+    // 个人日推荐交易量
+    mapping(address => mapping(uint256 => uint256)) userReferalChainTradePerDay;
     // 平台日交易量
     mapping(uint256 => uint256) platformTradePerDay;
     // 平台总交易量
     uint256 platformTradeTotal;
+    // 平台日推荐交易量
+    mapping(uint256 => uint256) platformReferalChainTradePerDay;
 
     // 用户交易记录
     struct Swap {
@@ -91,6 +100,42 @@ contract JWTradeMinner is  Initializable,
     mapping(address => mapping(uint256 => uint256[])) userOrderIdsPerDay;
     uint256 orderId;
 
+    struct UserInfo {
+        uint256 staticRewardBalance;      // 奖励
+        uint256 dynRewardBalance;      // 奖励
+        uint256 lastCalRewardTime;  // 上次计算奖励时间
+        uint256 fristOrderTime;  // 首次下单时间
+        uint256 staticRewardReceived;  // 已领取奖励
+        uint256 dynRewardReceived;  // 已领取奖励
+    }
+    mapping(address => UserInfo) public users;
+    uint256 recommandLevel;
+    uint256 staticPercent;
+    uint256 dynamaticPercent;
+    uint256 public constant DENOMINATOR = 1000;
+    uint256 rewardReceivedOrderId;
+    uint256 rewardGenerateId;
+    struct RewardReceivedRecord{
+        uint256 rewardReceivedOrderId;
+        uint8 productionType;
+        uint256 amount;
+        uint256 timestamp;
+    }
+    mapping(uint256 => RewardReceivedRecord) public rewardReceivedRecords;
+    mapping(address => mapping(uint256 => uint256[])) public userRewardReceivedRecords;
+
+    struct RewardGenerateRecord{
+        uint256 rewardGenerateId;
+        uint256 tradeAmount;
+        uint256 recommandAmount;
+        uint256 staticProductionAmount;
+        uint256 dynProductionAmount;
+        uint256 timestamp;
+    }
+    mapping(uint256 => RewardGenerateRecord) public rewardGenerateRecords;
+    mapping(address => mapping(uint256 => uint256[])) public userRewardGenerateRecords;
+    
+
     /*//////////////////////////////////////////////////////////////
                             EVENTS
     //////////////////////////////////////////////////////////////*/
@@ -98,7 +143,8 @@ contract JWTradeMinner is  Initializable,
     uint256 userTradeTotalVol,uint256 userTradePerDayVol,uint256 platformTradeTotalVol,uint256 platformTradePerDayVol,uint256 createTime);
     event SellJW(address user,uint256 amountIn,uint256 amountOut,uint256 dayIndex,uint256 currentOrderId,
     uint256 userTradeTotalVol,uint256 userTradePerDayVol,uint256 platformTradeTotalVol,uint256 platformTradePerDayVol,uint256 createTime);
-
+    event  CalcaulateReward(address user,uint256 staticRewardBalance,uint256 dynRewardBalance,uint256 lastCalRewardTime,uint256 fristOrderTime,uint256 staticRewardReceived,uint256 dynRewardReceived,uint256 timestamp);
+    event ReceiveProduction(address user,address token,uint8 productionType,uint256 amount,uint256 timestamp);
     
     /*//////////////////////////////////////////////////////////////
                             FUNCTIONS
@@ -154,6 +200,20 @@ contract JWTradeMinner is  Initializable,
         userTradeTotal[msg.sender] = userTradeTotal[msg.sender] + usdtValue;
         uint256 vollume = getJWTradeVollumePerDay(msg.sender,dayIndex);
         userTradePerDay[msg.sender][dayIndex] = getJW2USDT(vollume);
+        
+        updateRecommandTradePerday(dayIndex,msg.value,msg.sender);
+
+        if (users[msg.sender].fristOrderTime == 0){
+            UserInfo memory user = UserInfo({
+                staticRewardBalance : 0,
+                dynRewardBalance : 0,
+                lastCalRewardTime : 0,
+                fristOrderTime : createTime,
+                staticRewardReceived : 0,
+                dynRewardReceived:0
+            });
+            users[msg.sender] = user;
+        }
 
         emit BuyJW(msg.sender,msg.value,jwReceived,dayIndex,currentOrderId,userTradeTotal[msg.sender],userTradePerDay[msg.sender][dayIndex],platformTradeTotal,platformTradePerDay[dayIndex],createTime);
     }
@@ -181,6 +241,28 @@ contract JWTradeMinner is  Initializable,
         }
         return vollume;
     }
+
+    function updateRecommandTradePerday(uint256 dayIndex,uint256 amount,address user) internal {
+        // 推荐日交易量
+        (,,,address[] memory referralChain) = IRecommendation(recommandContractAddress).getUserInfo(user);
+        uint256 level;
+        if (referralChain.length > recommandLevel){
+            level = recommandLevel;
+        } else {
+            level = referralChain.length;
+        }
+        for (uint256 i = 0;i < level ;i++){
+            userReferalChainTradePerDay[referralChain[i]][dayIndex] = userReferalChainTradePerDay[referralChain[i]][dayIndex]+ (
+                amount / (2 ** i)
+            );
+            platformReferalChainTradePerDay[dayIndex] =  platformReferalChainTradePerDay[dayIndex] + (
+                amount / (2 ** i)
+            );
+        }
+        
+    }
+
+    
 
 
 
@@ -219,6 +301,19 @@ contract JWTradeMinner is  Initializable,
         userTradeTotal[msg.sender] = userTradeTotal[msg.sender] + usdtValue;
         uint256 vollume = getJWTradeVollumePerDay(msg.sender,dayIndex);
         userTradePerDay[msg.sender][dayIndex] = getPIJS2USDT(vollume);
+
+        updateRecommandTradePerday(dayIndex,amount,msg.sender);
+        if (users[msg.sender].fristOrderTime == 0){
+            UserInfo memory user = UserInfo({
+                staticRewardBalance : 0,
+                dynRewardBalance: 0,
+                lastCalRewardTime : 0,
+                fristOrderTime : createTime,
+                staticRewardReceived : 0,
+                dynRewardReceived: 0
+            });
+            users[msg.sender] = user;
+        }
 
         emit SellJW(msg.sender,amount,ethReceived,dayIndex,currentOrderId,userTradeTotal[msg.sender],userTradePerDay[msg.sender][dayIndex],platformTradeTotal,platformTradePerDay[dayIndex],createTime);
     }
@@ -329,6 +424,108 @@ contract JWTradeMinner is  Initializable,
         return jwReceived;
     }
 
+    // 计算个人奖励
+    function calcaulateReward() public payable nonReentrant {
+        // validate recommand
+        (address referrer,,,) = IRecommendation(recommandContractAddress).getUserInfo(msg.sender);
+        require(referrer != address(0),"user is not recommanded");
+        uint256 currentTime = block.timestamp;
+        // 判断用户有多少天未计算奖励
+        UserInfo memory user = users[msg.sender];
+        require(user.fristOrderTime != 0,"user have not swaped");
+        uint256 todayIndex = getDayIndex(currentTime);
+        uint256 calculateTime;
+        if (user.lastCalRewardTime == 0){
+            calculateTime = user.fristOrderTime;
+        } else {
+            calculateTime = user.lastCalRewardTime;
+        }
+        uint256 calculateTimeDayIndex = getDayIndex(calculateTime);
+        require(calculateTimeDayIndex < todayIndex,"No reward generated");
+        uint256 calculateDays = todayIndex - calculateTimeDayIndex;
+
+        for (uint256 i = 0;i < calculateDays;i++){
+            // 计算日的总量
+            uint256 currentDayTotal = platformTradePerDay[calculateTimeDayIndex + i];
+            if (currentDayTotal != 0){
+                // 计算日用户的质押总量
+                uint256 currentDayUserTotal = userTradePerDay[msg.sender][calculateTimeDayIndex + i];
+                if (currentDayUserTotal != 0){
+                    uint256 currentDayProduce = getDayProduction(calculateTimeDayIndex + i);
+                    if (currentDayProduce != 0) {
+                        uint256 staticReward =  currentDayUserTotal * (currentDayProduce * staticPercent / DENOMINATOR)/currentDayTotal;
+                        uint256 dynamaticReward = (currentDayUserTotal + userReferalChainTradePerDay[msg.sender][calculateTimeDayIndex + i])
+                        * (currentDayProduce * dynamaticPercent / DENOMINATOR)
+                        / (currentDayTotal + platformReferalChainTradePerDay[calculateTimeDayIndex + i]);
+                        RewardGenerateRecord memory rgr = RewardGenerateRecord({
+                            rewardGenerateId:rewardGenerateId,
+                            tradeAmount:currentDayUserTotal,
+                            recommandAmount:userReferalChainTradePerDay[msg.sender][calculateTimeDayIndex + i],
+                            staticProductionAmount:staticReward,
+                            dynProductionAmount:dynamaticReward,
+                            timestamp: currentTime
+                        });
+                        rewardGenerateRecords[rewardGenerateId] = rgr;
+                        userRewardGenerateRecords[msg.sender][getYearIndex(currentTime)].push(rewardGenerateId);
+                        users[msg.sender].staticRewardBalance = users[msg.sender].staticRewardBalance  + staticReward;
+                        users[msg.sender].dynRewardBalance = users[msg.sender].dynRewardBalance  + dynamaticReward;
+                        users[msg.sender].lastCalRewardTime = block.timestamp;
+
+                        rewardGenerateId = rewardGenerateId + 1;
+                    }
+                }
+            }
+        }
+        emit CalcaulateReward(msg.sender,users[msg.sender].staticRewardBalance,users[msg.sender].dynRewardBalance,users[msg.sender].lastCalRewardTime,users[msg.sender].fristOrderTime,users[msg.sender].staticRewardReceived,users[msg.sender].dynRewardReceived,block.timestamp);
+    }
+    function getDayProduction(uint256 dayIndex) internal view returns(uint256){
+        uint256 currentDayTotal = platformTradePerDay[dayIndex];
+        uint256 dayProduction;
+        for (uint256 i = 0;i < tradeVolumePerDay.length;i++){
+            if (currentDayTotal >= tradeVolumePerDay[i]){
+                dayProduction = produceTokenVolumePerDay[i];
+                break;
+            }
+        }
+        return dayProduction;
+    }
+
+    // 领取查出
+    function receiveProduction(address token,uint256 amount,uint8 productionType) public nonReentrant{
+        // validate recommand
+        (address referrer,,,) = IRecommendation(recommandContractAddress).getUserInfo(msg.sender);
+        require(token == jwToken,"Invalid token address");
+        require(amount > 0,"amount should > 0");
+        require(referrer != address(0),"user is not recommanded");
+        require(productionType == 0 || productionType == 1,"productionType should be 0 or 1");
+
+        if (productionType == 0){
+            require(users[msg.sender].staticRewardBalance > 0,"no static production");
+            require(users[msg.sender].staticRewardBalance >= amount,"not enough static production");
+            SafeERC20.safeTransferFrom(IERC20(token), address(this),msg.sender, amount);
+            users[msg.sender].staticRewardBalance = users[msg.sender].staticRewardBalance - amount;
+            users[msg.sender].staticRewardReceived = users[msg.sender].staticRewardReceived + amount;
+
+        } else {
+            require(users[msg.sender].dynRewardBalance > 0,"no dyn production");
+            require(users[msg.sender].dynRewardBalance >= amount,"not enough dyn production");
+            SafeERC20.safeTransferFrom(IERC20(token), address(this),msg.sender, amount);
+            users[msg.sender].dynRewardBalance = users[msg.sender].dynRewardBalance - amount;
+            users[msg.sender].dynRewardReceived = users[msg.sender].dynRewardReceived + amount;
+
+        }
+        rewardReceivedRecords[rewardReceivedOrderId].rewardReceivedOrderId = rewardReceivedOrderId;
+        rewardReceivedRecords[rewardReceivedOrderId].productionType = productionType;
+        rewardReceivedRecords[rewardReceivedOrderId].amount = amount;
+        rewardReceivedRecords[rewardReceivedOrderId].timestamp = block.timestamp;
+        userRewardReceivedRecords[msg.sender][getYearIndex(block.timestamp)].push(rewardReceivedOrderId);
+
+        rewardReceivedOrderId = rewardReceivedOrderId + 1;
+        emit ReceiveProduction(msg.sender,token,productionType,amount,block.timestamp);
+    }
+
+
+
 
 
     /*//////////////////////////////////////////////////////////////
@@ -336,6 +533,9 @@ contract JWTradeMinner is  Initializable,
     //////////////////////////////////////////////////////////////*/
     function getDayIndex(uint256 timePerSecond) public pure returns (uint256) {
         return timePerSecond / SECONDS_PER_DAY;
+    }
+    function getYearIndex(uint256 timePerSecond) public pure returns (uint256) {
+        return 1970 + timePerSecond / SECONDS_PER_YEAR;
     }
 
     function getTradeVolumePerDayIndex(uint256 platformTrade) internal view returns(bool,uint256) {
@@ -426,6 +626,54 @@ contract JWTradeMinner is  Initializable,
     function getUserOrderIdsPerday(address user,uint256 dayIndex) external view returns (uint256[] memory){
         return userOrderIdsPerDay[user][dayIndex];
     }
+
+    // 查询奖励记录
+    function queryRewardGenerateRecords(uint256 year,address user) public view returns(RewardGenerateRecord[] memory){
+        uint256[] memory recordIds = userRewardReceivedRecords[user][year];
+        RewardGenerateRecord[] memory records = new RewardGenerateRecord[](recordIds.length);
+        for (uint256 i = 0;i < recordIds.length;i++){
+            records[i] = rewardGenerateRecords[recordIds[i]];
+        }
+        return records;
+    }
+
+    // 查询奖励领取记录
+    function queryRewardReceivedRecord(uint256 year,address user) public view returns(RewardReceivedRecord[] memory){
+        uint256[] memory recordIds = userRewardGenerateRecords[user][year];
+        RewardReceivedRecord[] memory records = new RewardReceivedRecord[](recordIds.length);
+        for (uint256 i = 0;i < recordIds.length;i++){
+            records[i] = rewardReceivedRecords[recordIds[i]];
+        }
+        return records;
+    }
+
+    function setParams(
+        address _jwToken,
+        address _usdtAddress,
+        address _swapRouterAddress,
+        address _manageContractAddress,
+        address _recommandContractAddress,
+        uint256[] memory _tradeVolumePerDay,
+        uint256[] memory _produceTokenVolumePerDay,
+        uint256 _recommandLevel,
+        uint256 _staticPercent,
+        uint256 _dynamaticPercent) external onlyRole(MANAGE_ROLE){
+           require(_jwToken != address(0),"0 address"); 
+           require(_usdtAddress != address(0),"0 address"); 
+           require(_swapRouterAddress != address(0),"0 address"); 
+           require(_manageContractAddress != address(0),"0 address"); 
+           jwToken = _jwToken;
+           usdtAddress = _usdtAddress;
+           swapRouterAddress = _swapRouterAddress;
+           manageContractAddress = _manageContractAddress;
+           recommandContractAddress = _recommandContractAddress;
+           tradeVolumePerDay = _tradeVolumePerDay;
+           produceTokenVolumePerDay = _produceTokenVolumePerDay;
+           recommandLevel = _recommandLevel;
+           staticPercent = _staticPercent;
+           dynamaticPercent = _dynamaticPercent;
+    }
+
 
 
     receive() external payable {}
