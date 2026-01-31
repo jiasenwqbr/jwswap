@@ -9,7 +9,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "../interface/INFTSell.sol";
 contract NFTSellManage is  Initializable,
     AccessControlEnumerableUpgradeable,
@@ -27,6 +26,7 @@ contract NFTSellManage is  Initializable,
         ) internal override onlyRole(MANAGE_ROLE) {}
 
         function initialize(
+            address operator,
             address _usdtAddress,
             address _receiver,
             address _recommandContractAddress,
@@ -42,6 +42,7 @@ contract NFTSellManage is  Initializable,
             __UUPSUpgradeable_init();
             _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
             _grantRole(MANAGE_ROLE, msg.sender);
+            _grantRole(OPERATE_ROLE, operator);
 
             usdtAddress = _usdtAddress;
             receiver = _receiver;
@@ -118,9 +119,26 @@ contract NFTSellManage is  Initializable,
     
     
     uint256 public constant SECONDS_PER_DAY = 86400;
+    uint256 public constant SECONDS_PER_WEEK = 7 days;
+    uint256 public constant SECONDS_PER_YEAR = 7 days;
     uint256 orderId;
     uint256 public wearRate;
     uint256 public constant DENOMINATOR = 1000; 
+    struct RewardOrder {
+        uint256 weekIndex;
+        address user;
+        address tokenAddress;
+        address nftAddress;
+        uint256 nftId;
+        uint256 profitSharingAmount;
+        uint256 feeSharingAmount;
+        uint256 timestamp;
+        bool isReceived;
+        uint256 receivedTimestamp;
+    }
+    mapping(address => mapping(uint256 => RewardOrder)) userRewardByWeekOrders;
+    mapping(address => mapping(uint256 => uint256[])) userRewardByYearOrders;
+    
 
 
     
@@ -129,7 +147,8 @@ contract NFTSellManage is  Initializable,
     //////////////////////////////////////////////////////////////*/
     event  BuyNFT(address user,uint256 buyJwAmount,uint256 buyPIJSAmount,address nftAddress,uint256 nftId,
         uint256 dayIndex,uint256 currentOrderId,uint256 createTime);
-
+    event GenerateRewardOrder(address tokenAddress,uint256 tokenAmount,address nftAddress,uint256 nftId,address nftOwner,uint256 weekIndex,uint256 profitSharingAmount,uint256 feeSharingAmount,uint256 timestamp);
+    event ReceiveReward(address user,uint256 nftId,uint256 weekIndex,address nftAddress,uint256 rewardAmount,uint256 timestamp);
     /*//////////////////////////////////////////////////////////////
                             FUNCTIONS
     //////////////////////////////////////////////////////////////*/
@@ -179,15 +198,17 @@ contract NFTSellManage is  Initializable,
         dayIndex,currentOrderId,createTime);
     }
     
-    function getDayIndex(uint256 timePerSecond) public pure returns (uint256) {
-        return timePerSecond / SECONDS_PER_DAY;
-    }
-
-
+    
 
     /*//////////////////////////////////////////////////////////////
                             FUNCTIONS   setter  getter
     //////////////////////////////////////////////////////////////*/
+    function getDayIndex(uint256 timePerSecond) public pure returns (uint256) {
+        return timePerSecond / SECONDS_PER_DAY;
+    }
+    function getYearIndex(uint256 timePerSecond) public pure returns (uint256) {
+        return 1970 + timePerSecond / SECONDS_PER_YEAR;
+    }
     function setProduct(address[3] memory nftaddresses,
         uint256[3] memory usdtPrice,
         uint8[3] memory limits) external onlyRole(MANAGE_ROLE) {
@@ -300,10 +321,55 @@ contract NFTSellManage is  Initializable,
         wearRate = _wearRate;
     }
 
+    // 生成奖励记录
+    function generateRewardOrder(address tokenAddress,uint256 tokenAmount,address nftAddress,uint256 nftId,address nftOwner,uint256 weekIndex,uint256 profitSharingAmount,uint256 feeSharingAmount) external onlyRole(OPERATE_ROLE) {
+        require(tokenAddress == jwToken,"jw address is invalid");
+        require(tokenAmount > 0,"tokenAmount should >0");
+        require(products[nftAddress].nftAddr != address(0),"nft address is invalid");
+        require(IERC721(nftAddress).ownerOf(nftId) == nftOwner,"the nftid is not owner");
+        require(userRewardByWeekOrders[nftOwner][weekIndex].user == address(0),"reward order is not exist");
+        RewardOrder memory rOrder = RewardOrder({
+            weekIndex : weekIndex,
+            user:nftOwner,
+            tokenAddress:tokenAddress,
+            nftAddress:nftAddress,
+            nftId:nftId,
+            profitSharingAmount:profitSharingAmount,
+            feeSharingAmount:feeSharingAmount,
+            timestamp:block.timestamp,
+            isReceived:false,
+            receivedTimestamp:0
+        });
+        userRewardByWeekOrders[nftOwner][weekIndex] = rOrder;
+        userRewardByYearOrders[nftOwner][getYearIndex(block.timestamp)].push(weekIndex);
+        emit GenerateRewardOrder( tokenAddress, tokenAmount, nftAddress, nftId, nftOwner, weekIndex, profitSharingAmount, feeSharingAmount,block.timestamp);
+    }
 
+    // 领取奖励
+    function receiveReward(uint256 nftId,uint256 weekIndex,address nftAddress) public nonReentrant {
+        require(IERC721(nftAddress).ownerOf(nftId) == msg.sender,"the nftid is not owner");
+        require(userRewardByWeekOrders[msg.sender][weekIndex].user != address(0),"reward order is not exist");
+        require(userRewardByWeekOrders[msg.sender][weekIndex].isReceived == false,"reward is received");
+        uint256 rewardAmount = userRewardByWeekOrders[msg.sender][weekIndex].profitSharingAmount +  userRewardByWeekOrders[msg.sender][weekIndex].feeSharingAmount;
+        SafeERC20.safeTransferFrom(IERC20(jwToken), address(this),msg.sender , rewardAmount);
 
+        userRewardByWeekOrders[msg.sender][weekIndex].isReceived = true;
+        userRewardByWeekOrders[msg.sender][weekIndex].receivedTimestamp = block.timestamp;
+        emit ReceiveReward(msg.sender,nftId, weekIndex, nftAddress,rewardAmount,block.timestamp);
+    }
 
+    // 查询分红记录
+    function queryReward(address user,uint256 year) public view returns(RewardOrder[] memory){
+        uint256[] memory rewardWeekIndexes =  userRewardByYearOrders[user][year];
+        RewardOrder[] memory rewards = new RewardOrder[](rewardWeekIndexes.length);
+        for (uint256 i = 0;i < rewardWeekIndexes.length;i++){
+            rewards[i] = userRewardByWeekOrders[user][rewardWeekIndexes[i]];
+        }
+        return rewards;
+    }
 
+    
+    
 
 
 }
