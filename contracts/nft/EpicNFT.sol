@@ -66,6 +66,7 @@ contract EpicNFT is ERC721Enumerable, AccessControl {
         uint256 firstTokenId,
         uint256 batchSize
     ) internal virtual override {
+        require(transferSwitch,"nft transfer not enabled");
         super._beforeTokenTransfer(from, to, firstTokenId, batchSize);
     }
 
