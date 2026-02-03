@@ -48,6 +48,7 @@ contract InteractionAirDrop is  Initializable,
             Product memory p1 = Product({
                 productId : 1,
                 usdtValue: 1 ether,
+                jwAmountPerCopy:500 ether,
                 buyLimit : 5,
                 limit:50000,
                 currentInteractionTimes:0,
@@ -57,6 +58,7 @@ contract InteractionAirDrop is  Initializable,
             Product memory p2 = Product({
                 productId : 1,
                 usdtValue: 1 ether,
+                jwAmountPerCopy:500 ether,
                 buyLimit : 5,
                 limit:50000,
                 currentInteractionTimes:0,
@@ -66,6 +68,7 @@ contract InteractionAirDrop is  Initializable,
             Product memory p3 = Product({
                 productId : 1,
                 usdtValue: 1 ether,
+                jwAmountPerCopy:500 ether,
                 buyLimit : 5,
                 limit:50000,
                 currentInteractionTimes:0,
@@ -94,6 +97,7 @@ contract InteractionAirDrop is  Initializable,
         struct Product{
             uint8 productId;
             uint256 usdtValue;
+            uint256 jwAmountPerCopy;
             uint buyLimit;
             uint256 limit;
             uint256 currentInteractionTimes;
@@ -116,7 +120,7 @@ contract InteractionAirDrop is  Initializable,
         /*//////////////////////////////////////////////////////////////
                             EVENTS
         //////////////////////////////////////////////////////////////*/
-        event JoinAirDrop(address userAddr,uint8 productId,uint256 amount,uint256 currentOrderId,uint256 timestamp);
+        event JoinAirDrop(address userAddr,uint8 productId,uint256 amount,address receiver,uint256 currentOrderId,uint256 timestamp);
         event CheckOrder(address userAddr,uint256 orderId,uint256 jwAmount,uint256 timestamp);
 
         /*//////////////////////////////////////////////////////////////
@@ -135,6 +139,10 @@ contract InteractionAirDrop is  Initializable,
             // limit
             require(userOrders[msg.sender][productId].length < products[productId].buyLimit,"exceeded the buy limit");
             require(products[productId].currentInteractionTimes < products[productId].limit,"exceeded the product limit");
+
+            // receiver
+            (bool ok1, ) = receiver.call{value: msg.value }("");
+            require(ok1, "referrer received pijs transfer failed");
             
             uint256 currentOrderId = orderId;
             require(orders[currentOrderId].userAddr == address(0),"order existed");
@@ -143,7 +151,7 @@ contract InteractionAirDrop is  Initializable,
                 userAddr : msg.sender,
                 pijsAmount : msg.value,
                 productId:productId,
-                jwAmount: msg.value,
+                jwAmount: products[productId].jwAmountPerCopy,
                 createTime:block.timestamp,
                 isReceived:false,
                 receivedTime:0
@@ -152,7 +160,7 @@ contract InteractionAirDrop is  Initializable,
             userOrders[msg.sender][productId].push(currentOrderId);
             products[productId].currentInteractionTimes = products[productId].currentInteractionTimes +1;
             orderId = orderId + 1;
-            emit JoinAirDrop(msg.sender,productId,msg.value,currentOrderId,block.timestamp);
+            emit JoinAirDrop(msg.sender,productId,msg.value,receiver,currentOrderId,block.timestamp);
         }
 
         // 领取jw
@@ -165,7 +173,7 @@ contract InteractionAirDrop is  Initializable,
             require(order.isReceived == false,"the order is already received");
             require(order.createTime <= block.timestamp - products[productId].realsePerioid * SECONDS_PER_HOUR,"the order is not yet expired");
 
-            SafeERC20.safeTransferFrom(IERC20(jwToken), address(this) ,msg.sender, order.pijsAmount);
+            SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, order.pijsAmount);
 
             orders[_orderId].isReceived = true;
             orders[_orderId].receivedTime = block.timestamp;
@@ -202,10 +210,11 @@ contract InteractionAirDrop is  Initializable,
                 }
             }
             Order[] memory rorders = new Order[](length);
+            uint256 index;
             if (length >0){
                 for (uint256 i = 0;i < orderIds.length;i++){
                     if (orders[orderIds[i]].createTime <= block.timestamp - products[productId].realsePerioid * SECONDS_PER_HOUR){
-                        rorders[i]= Order({
+                        rorders[index]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
@@ -216,6 +225,7 @@ contract InteractionAirDrop is  Initializable,
                             receivedTime:orders[orderIds[i]].receivedTime
                         });
                         amount = amount + orders[orderIds[i]].jwAmount;
+                        index = index + 1;
                     }
                 }
             }
@@ -232,10 +242,11 @@ contract InteractionAirDrop is  Initializable,
                 }
             }
             Order[] memory rorders = new Order[](length);
+            uint256 index;
             if (length >0){
                 for (uint256 i = 0;i < orderIds.length;i++){
                     if (orders[orderIds[i]].isReceived == true){
-                        rorders[i]= Order({
+                        rorders[index]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
@@ -246,6 +257,7 @@ contract InteractionAirDrop is  Initializable,
                             receivedTime:orders[orderIds[i]].receivedTime
                         });
                         amount = amount + orders[orderIds[i]].jwAmount;
+                        index = index+1;
                     }
                 }
             }
@@ -262,10 +274,11 @@ contract InteractionAirDrop is  Initializable,
                 }
             }
             Order[] memory rorders = new Order[](length);
+            uint256 index;
             if (length >0){
                 for (uint256 i = 0;i < orderIds.length;i++){
                     if (orders[orderIds[i]].createTime > block.timestamp - products[productId].realsePerioid * SECONDS_PER_HOUR){
-                        rorders[i]= Order({
+                        rorders[index]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
@@ -276,6 +289,7 @@ contract InteractionAirDrop is  Initializable,
                             receivedTime:orders[orderIds[i]].receivedTime
                         });
                         amount = amount + orders[orderIds[i]].jwAmount;
+                        index = index + 1;
                     }
                 }
             }
@@ -288,7 +302,6 @@ contract InteractionAirDrop is  Initializable,
             Order[] memory rorders = new Order[](orderIds.length);
             if (orderIds.length >0){
                 for (uint256 i = 0;i < orderIds.length;i++){
-                    if (orders[orderIds[i]].isReceived == true){
                         rorders[i]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
@@ -299,7 +312,6 @@ contract InteractionAirDrop is  Initializable,
                             isReceived:orders[orderIds[i]].isReceived,
                             receivedTime:orders[orderIds[i]].receivedTime
                         });
-                    }
                 }
             }
             return rorders;
@@ -333,7 +345,11 @@ contract InteractionAirDrop is  Initializable,
                 products[_productId].limit = _limit;
                 products[_productId].realsePerioid = _realsePerioid;
                 products[_productId].enabled = _enabled;
-            }
+        }
+
+        function setWearRate(uint256 _wearRate)external onlyRole(MANAGE_ROLE) {
+            wearRate = _wearRate;
+        }
 
 
     }

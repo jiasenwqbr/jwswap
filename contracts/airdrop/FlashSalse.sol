@@ -315,6 +315,10 @@ contract FlashSalse is  Initializable,
         function setCanCheck(bool isCanCheck,uint8 _productId)  external onlyRole(MANAGE_ROLE) {
             products[_productId].canCheck = isCanCheck;
         }
+        function setWearRate(uint256 _wearRate)external onlyRole(MANAGE_ROLE) {
+            wearRate = _wearRate;
+        }
+
 
 
 

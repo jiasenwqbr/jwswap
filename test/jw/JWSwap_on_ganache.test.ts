@@ -32,6 +32,7 @@ describe("JWSwap",async () => {
     const usdtAddress = "0x5aCB1D3c7C6767b7601C46370bdEcB4707193944";
     const nftSellManageAddress = "0xC62D7FE8BE64991E6f8d3F8A482D4fE530d46fd1";
     const recommandAddress = "0x336ABF2509ca960f369f0aa263f4713be42209A9";
+    const interactionAirDropAddress = "0x246AEcE8799E1d4E264B76a703aF9F9951E4D6Bc";
     let jwpair:PiJPair;
     let jwPairAddress:any;
     let usdt:PIJS_USDT;
@@ -39,6 +40,7 @@ describe("JWSwap",async () => {
     let usdtPairAddress:any;
     let nftSellManage:NFTSellManage;
     let recommand:Recommendation;
+    let interactionAirDrop:InteractionAirDrop;
 
     beforeEach(async () => {
         [owner,account1,account2,account3,account4] = await ethers.getSigners();
@@ -78,6 +80,7 @@ describe("JWSwap",async () => {
 
         nftSellManage = await ethers.getContractAt("NFTSellManage",nftSellManageAddress);
         recommand = await ethers.getContractAt("Recommendation",recommandAddress);
+        interactionAirDrop = await ethers.getContractAt("InteractionAirDrop",interactionAirDropAddress);
   
     });
     it("blank",async () => {});
@@ -282,12 +285,66 @@ describe("JWSwap",async () => {
 
     });
 
+    it("InteractionAirDrop-joinAirDrop",async () => {
+        //get 1 usdt -> pijs
+        const neededPijsAmount = await nftSellManage.getUSDT2PIJS(ethers.utils.parseEther("1"));
+        console.log("neededPijsAmount:",ethers.utils.formatEther(neededPijsAmount));
 
+        console.log("before joinAirDrop account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("before joinAirDrop account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("before joinAirDrop flashSalseAddress JW balance:",ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
+        console.log("before joinAirDrop receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("before joinAirDrop recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+        const tx00 = await interactionAirDrop.connect(owner).setWearRate(50);
+        await tx00.wait();
+        const tx = await interactionAirDrop.connect(account4).joinAirDrop(1,{
+            value:ethers.utils.parseEther("0.05"),
+            gasLimit: 6721975  
+        });
+        await tx.wait();
 
+        console.log("after joinAirDrop account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("after joinAirDrop account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("after joinAirDrop flashSalseAddress JW balance:",ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
+        console.log("after joinAirDrop receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("after joinAirDrop recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+    });
 
+    it("InteractionAirDrop-queryOrder",async () => {
+        const allorders = await  interactionAirDrop.checkingAllOrders(account4.address,1);
+        console.log("checkingAllOrders:",allorders);
 
+        const notYetExpired = await  interactionAirDrop.checkingNotYetExpired(account4.address,1);
+        console.log("notYetExpired:",notYetExpired);
 
-    
+        const receivedOrder = await  interactionAirDrop.checkingReceivedOrder(account4.address,1);
+        console.log("receivedOrder:",receivedOrder);
+
+        const pendingCollectionOrder = await  interactionAirDrop.checkPendingCollectionOrder(account4.address,1);
+        console.log("pendingCollectionOrder:",pendingCollectionOrder);
+    });
+
+     it("InteractionAirDrop-checkJW",async () => {
+        console.log("before checkJW account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("before checkJW account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("before checkJW flashSalseAddress JW balance:",ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
+        console.log("before checkJW receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("before checkJW recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+        
+        const tx = await interactionAirDrop.connect(account4).checkJW(0,1);
+        await tx.wait();
+
+        console.log("after checkJW account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("after checkJW account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("after checkJW flashSalseAddress JW balance:",ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
+        console.log("after checkJW receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("after checkJW recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+     });
+
+     it("NFTSellManage",async () => {
+        
+     });
+
 
 
 });
@@ -312,4 +369,10 @@ npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "f
 npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "flashBuy-queryOrder"
 
 npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "flashBuy-checkJW"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "InteractionAirDrop-joinAirDrop"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "InteractionAirDrop-queryOrder"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "InteractionAirDrop-checkJW"
 **/
