@@ -46,6 +46,7 @@ contract FlashSalse is  Initializable,
                 productId : 1,
                 usdtValue : 5 ether,
                 buyLimit : 10,
+                jwAmountPerCopy:500 ether,
                 limit : 2000,
                 currentSalseCopies:0,
                 reconmmandRewardPercent:100,
@@ -63,6 +64,7 @@ contract FlashSalse is  Initializable,
             uint256 usdtValue;
             uint buyLimit;
             uint256 limit;
+            uint256 jwAmountPerCopy;
             uint256 currentSalseCopies;
             uint256 reconmmandRewardPercent;
             bool enabled;
@@ -119,10 +121,17 @@ contract FlashSalse is  Initializable,
             require(userHasBuy < products[productId].buyLimit,"exceeded the buy limit");
             require(products[productId].currentSalseCopies + copies < products[productId].limit,"exceeded the product limit");
 
+            // // transfer JW to buyer
+            // SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, products[productId].jwAmountPerCopy * copies);
+            
             // 直推奖励
             uint256 reconmmanderRewardAmount = msg.value * products[productId].reconmmandRewardPercent / DENOMINATOR;
             (bool ok, ) = referrer.call{value: reconmmanderRewardAmount}("");
             require(ok, "referrer received pijs transfer failed");
+
+            // receiver
+            (bool ok1, ) = receiver.call{value: msg.value - reconmmanderRewardAmount}("");
+            require(ok1, "referrer received pijs transfer failed");
 
             uint256 currentOrderId = orderId;
             require(orders[currentOrderId].userAddr == address(0),"order existed");
@@ -133,7 +142,7 @@ contract FlashSalse is  Initializable,
                 pijsAmount : pijsAmount,
                 productId:productId,
                 copies : copies,
-                jwAmount: msg.value,
+                jwAmount: products[productId].jwAmountPerCopy * copies,
                 timestamp:block.timestamp,
                 isReceived : false,
                 receivedTime : 0
@@ -155,8 +164,7 @@ contract FlashSalse is  Initializable,
             require(productId == order.productId,"the product is not correct");
             require(order.isReceived == false,"the order is already received");
 
-            SafeERC20.safeTransferFrom(IERC20(jwToken), address(this) ,msg.sender, order.pijsAmount);
-            
+            SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, order.pijsAmount);
             orders[_orderId].isReceived = true;
             orders[_orderId].receivedTime = block.timestamp;
 
@@ -188,6 +196,7 @@ contract FlashSalse is  Initializable,
             uint256 _usdtValue,
             uint _buyLimit,
             uint256 _limit,
+            uint256 _jwAmountPerCopy,
             uint256 _reconmmandRewardPercent,
             bool _enabled,
             bool _canCheck) external onlyRole(MANAGE_ROLE) {
@@ -196,6 +205,7 @@ contract FlashSalse is  Initializable,
                 products[_productId].usdtValue = _usdtValue;
                 products[_productId].buyLimit = _buyLimit;
                 products[_productId].limit = _limit;
+                products[_productId].jwAmountPerCopy = _jwAmountPerCopy;
                 products[_productId].reconmmandRewardPercent = _reconmmandRewardPercent;
                 products[_productId].enabled = _enabled;
                 products[_productId].canCheck = _canCheck;
@@ -215,30 +225,28 @@ contract FlashSalse is  Initializable,
         }
 
         // 查询用户全部
-        function checkingAllOrders (address user,uint8 productId) public view returns(Order[] memory){
+        function checkingAllOrders (address user,uint8 productId) public view returns(Order[] memory,uint256){
             uint256[] memory orderIds = userOrders[user][productId];
             Order[] memory rorders = new Order[](orderIds.length);
             if (orderIds.length >0){
                 for (uint256 i = 0;i < orderIds.length;i++){
-                    if (orders[orderIds[i]].isReceived == true){
-                        rorders[i]= Order({
-                            orderId : orders[orderIds[i]].orderId,
-                            userAddr : orders[orderIds[i]].userAddr,
-                            pijsAmount : orders[orderIds[i]].pijsAmount,
-                            productId: orders[orderIds[i]].productId,
-                            copies : orders[orderIds[i]].copies,
-                            jwAmount: orders[orderIds[i]].jwAmount,
-                            timestamp: orders[orderIds[i]].timestamp,
-                            isReceived:orders[orderIds[i]].isReceived,
-                            receivedTime:orders[orderIds[i]].receivedTime
-                        });
-                    }
+                    rorders[i]= Order({
+                        orderId : orders[orderIds[i]].orderId,
+                        userAddr : orders[orderIds[i]].userAddr,
+                        pijsAmount : orders[orderIds[i]].pijsAmount,
+                        productId: orders[orderIds[i]].productId,
+                        copies : orders[orderIds[i]].copies,
+                        jwAmount: orders[orderIds[i]].jwAmount,
+                        timestamp: orders[orderIds[i]].timestamp,
+                        isReceived:orders[orderIds[i]].isReceived,
+                        receivedTime:orders[orderIds[i]].receivedTime
+                    });
                 }
             }
-            return rorders;
+            return (rorders,orderIds.length);
         }
         // 查询已领取
-        function checkingReceivedOrder (address user,uint8 productId) public view returns(Order[] memory,uint256){
+        function checkingReceivedOrder (address user,uint8 productId) public view returns(Order[] memory,uint256,uint256){
             uint256[] memory orderIds = userOrders[user][productId];
             uint256 length;
             uint256 amount;
@@ -248,10 +256,11 @@ contract FlashSalse is  Initializable,
                 }
             }
             Order[] memory rorders = new Order[](length);
+            uint256 index;
             if (length >0){
                 for (uint256 i = 0;i < orderIds.length;i++){
                     if (orders[orderIds[i]].isReceived == true){
-                        rorders[i]= Order({
+                        rorders[index]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
@@ -263,13 +272,14 @@ contract FlashSalse is  Initializable,
                             receivedTime:orders[orderIds[i]].receivedTime
                         });
                         amount = amount + orders[orderIds[i]].jwAmount;
+                        index = index+1;
                     }
                 }
             }
-             return (rorders,amount);
+             return (rorders,amount,length);
         }
-        // 查询已领取
-        function checkingUnReceivedOrder (address user,uint8 productId) public view returns(Order[] memory,uint256){
+        // 查询未领取
+        function checkingUnReceivedOrder (address user,uint8 productId) public view returns(Order[] memory,uint256,uint256){
             uint256[] memory orderIds = userOrders[user][productId];
             uint256 length;
             uint256 amount;
@@ -279,10 +289,11 @@ contract FlashSalse is  Initializable,
                 }
             }
             Order[] memory rorders = new Order[](length);
+            uint256 index;
             if (length >0){
                 for (uint256 i = 0;i < orderIds.length;i++){
                     if (orders[orderIds[i]].isReceived == false){
-                        rorders[i]= Order({
+                        rorders[index]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
@@ -294,13 +305,17 @@ contract FlashSalse is  Initializable,
                             receivedTime:orders[orderIds[i]].receivedTime
                         });
                         amount = amount + orders[orderIds[i]].jwAmount;
+                        index = index + 1;
                     }
                 }
             }
-             return (rorders,amount);
+            return (rorders,amount,length);
         }
 
-        
+        function setCanCheck(bool isCanCheck,uint8 _productId)  external onlyRole(MANAGE_ROLE) {
+            products[_productId].canCheck = isCanCheck;
+        }
+
 
 
 
