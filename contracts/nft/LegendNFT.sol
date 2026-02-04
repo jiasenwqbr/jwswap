@@ -75,6 +75,9 @@ contract LegendNFT is ERC721Enumerable, AccessControl {
     ) public view override(ERC721Enumerable, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
+    function getCurrentId() public view returns(uint256){
+        return idCounter.current();
+    }
 
 
 }

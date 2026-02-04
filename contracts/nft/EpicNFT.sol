@@ -76,5 +76,9 @@ contract EpicNFT is ERC721Enumerable, AccessControl {
         return super.supportsInterface(interfaceId);
     }
 
+    function getCurrentId() public view returns(uint256){
+        return idCounter.current();
+    }
+
 
 }

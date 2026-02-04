@@ -33,6 +33,8 @@ describe("JWSwap",async () => {
     const nftSellManageAddress = "0xC62D7FE8BE64991E6f8d3F8A482D4fE530d46fd1";
     const recommandAddress = "0x336ABF2509ca960f369f0aa263f4713be42209A9";
     const interactionAirDropAddress = "0x246AEcE8799E1d4E264B76a703aF9F9951E4D6Bc";
+    const jWTradeMinnerAddress = "0xEA138391d6Fa998108C84F34cf7bEe59cEe6Ce46";
+
     let jwpair:PiJPair;
     let jwPairAddress:any;
     let usdt:PIJS_USDT;
@@ -41,6 +43,7 @@ describe("JWSwap",async () => {
     let nftSellManage:NFTSellManage;
     let recommand:Recommendation;
     let interactionAirDrop:InteractionAirDrop;
+    let jWTradeMinner:JWTradeMinner;
 
     beforeEach(async () => {
         [owner,account1,account2,account3,account4] = await ethers.getSigners();
@@ -81,6 +84,7 @@ describe("JWSwap",async () => {
         nftSellManage = await ethers.getContractAt("NFTSellManage",nftSellManageAddress);
         recommand = await ethers.getContractAt("Recommendation",recommandAddress);
         interactionAirDrop = await ethers.getContractAt("InteractionAirDrop",interactionAirDropAddress);
+        jWTradeMinner = await ethers.getContractAt("JWTradeMinner",jWTradeMinnerAddress);
   
     });
     it("blank",async () => {});
@@ -331,7 +335,7 @@ describe("JWSwap",async () => {
         console.log("before checkJW receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
         console.log("before checkJW recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
         
-        const tx = await interactionAirDrop.connect(account4).checkJW(0,1);
+        const tx = await interactionAirDrop.connect(account4).checkJW(2,1);
         await tx.wait();
 
         console.log("after checkJW account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
@@ -341,9 +345,162 @@ describe("JWSwap",async () => {
         console.log("after checkJW recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
      });
 
-     it("NFTSellManage",async () => {
+    it("NFTSellManage-BuyNFT",async () => {
+        const buyJwAmount = await nftSellManage.getUSDT2JW(ethers.utils.parseEther("2100"));
+        const buyPIJSAmount = await nftSellManage.getUSDT2PIJS(ethers.utils.parseEther("900"));
+        console.log("buyJwAmount:",ethers.utils.formatEther(buyJwAmount));
+        console.log("buyPIJSAmount:",ethers.utils.formatEther(buyPIJSAmount));
+
+        console.log("before buyNFT account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("before buyNFT account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("before buyNFT flashSalseAddress JW balance:",ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
+        console.log("before buyNFT receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("before buyNFT receive JW balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
+        console.log("before buyNFT recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+
+        console.log("Approving tokens...");
+        const approveTx = await jw.connect(account4).approve(
+            nftSellManageAddress, 
+            buyJwAmount
+        );
+        await approveTx.wait();
+        console.log("Approval confirmed");
+        
+        // 检查批准状态
+        const allowance = await jw.allowance(account4.address, nftSellManageAddress);
+        console.log("Allowance:", ethers.utils.formatEther(allowance));
+
+        const tx = await nftSellManage.connect(account4).buyNFT(
+            buyJwAmount,
+            buyPIJSAmount,
+            jwAddress,
+            ethers.utils.parseEther("3000"),
+            legendNFTAddress,
+            {
+                value:buyPIJSAmount
+            }
+        );
+        await tx.wait();
+
+        console.log("after buyNFT account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("after buyNFT account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("after buyNFT flashSalseAddress JW balance:",ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
+        console.log("after buyNFT receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("after buyNFT receive JW balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
+        console.log("after buyNFT recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+    });
+
+    it("NFTSellManage-nftBalance",async () => {
+         console.log("account4 platinum balance:",await platinumNFT.balanceOf(account4.address));
+         console.log("account4 epic balance:",await epicNFT.balanceOf(account4.address));
+         console.log("account4 legend balance:",await legendNFT.balanceOf(account4.address));
+
+         console.log("the platinumNFT owner",await platinumNFT.ownerOf(1));
+         console.log("the epicNFT owner",await epicNFT.ownerOf(1));
+         console.log("the legendNFT owner",await legendNFT.ownerOf(1));
+    });
+
+    it("JWTradeMinner-buyJW",async () => {
+        console.log("before buyNFT account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("before buyNFT account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("before buyNFT receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("before buyNFT receive JW balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
+        console.log("before buyNFT recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+
+        const tx = await jWTradeMinner.connect(account4).buyJW({
+            value:ethers.utils.parseEther("0.2"),
+            gasLimit: 6721975 
+        });
+        await tx.wait();
+
+        console.log("after buyNFT account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("after buyNFT account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("after buyNFT receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("after buyNFT receive JW balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
+        console.log("after buyNFT recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+
+         try {
+            const reserves = await jwpair.getReserves();
+            console.log("jwpair Pair reserves - reserve0:", ethers.utils.formatEther(reserves[0]));
+            console.log("jwpair Pair reserves - reserve1:", ethers.utils.formatEther(reserves[1]));
+            console.log("jwpair Pair token0:", await jwpair.token0());
+            console.log("jwpair Pair token1:", await jwpair.token1());
+        } catch (e) {
+            console.log("jwpair Pair not initialized yet");
+        }
+
+    });
+
+     it("JWTradeMinner-getParams",async () => {
+
+        const tx00 = await jw.setLimitAddressSwitch(false,false);
+        await tx00.wait();
+
+        const tx = await jw.setSellLimitAddressWhitelist(jWTradeMinnerAddress,true);
+        await tx.wait();
+        const tx2 = await jw.setBuyLimitAddressWhitelist(jWTradeMinnerAddress, true);
+        await tx2.wait();
+        console.log("getParams:",await jWTradeMinner.getParams());
+        console.log("sellLimitAddressSwitch:",await jw.sellLimitAddressSwitch());
+        console.log("buyLimitAddressSwitch:",await jw.buyLimitAddressSwitch());
+        console.log("sellLimitAddressWhitelist:",await jw.sellLimitAddressWhitelist(jWTradeMinnerAddress));
+        console.log("buyLimitAddressWhitelist:",await jw.buyLimitAddressWhitelist(jWTradeMinnerAddress));
+
+        console.log("sellTradingEnabled:",await jw.getSellTradingEnabled());
+        console.log("buyLimitAddressSwitch:",await jw.buyLimitAddressSwitch());
+
         
      });
+
+    it("jwswap",async () => {
+        console.log("before buyNFT account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        const deadline = Math.floor(Date.now() / 1000) + 60 * 10; // 10分钟
+        const tx = await piJRouter.connect(account4).swapExactETHForTokensSupportingFeeOnTransferTokens(
+                0,
+                [wpijsAddress, jwAddress],
+                account4.address,
+                deadline,
+                { value: ethers.utils.parseEther("0.1") }
+                );
+         await tx.wait();
+        console.log("after buyNFT account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+    });
+
+    it("JWTradeMinner-sellJW",async () => {
+        console.log("before buyNFT account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("before buyNFT account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("before buyNFT receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("before buyNFT receive JW balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
+        console.log("before buyNFT recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+
+        const tx00 = await jw.connect(account4).approve(jWTradeMinnerAddress,ethers.utils.parseEther("10"));
+        await tx00.wait();
+
+        const tx = await jWTradeMinner.connect(account4).sellJW(jwAddress,ethers.utils.parseEther("10"));
+        await tx.wait();
+
+        console.log("after buyNFT account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        console.log("after buyNFT account4 JW balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("after buyNFT receive pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("after buyNFT receive JW balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
+        console.log("after buyNFT recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
+
+        try {
+            const reserves = await jwpair.getReserves();
+            console.log("jwpair Pair reserves - reserve0:", ethers.utils.formatEther(reserves[0]));
+            console.log("jwpair Pair reserves - reserve1:", ethers.utils.formatEther(reserves[1]));
+            console.log("jwpair Pair token0:", await jwpair.token0());
+            console.log("jwpair Pair token1:", await jwpair.token1());
+        } catch (e) {
+            console.log("jwpair Pair not initialized yet");
+        }
+    });
+
+    it("JWTradeMinner-calcaulateReward",async () => {
+
+    });
+       
+
 
 
 
@@ -375,4 +532,16 @@ npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "I
 npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "InteractionAirDrop-queryOrder"
 
 npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "InteractionAirDrop-checkJW"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "NFTSellManage-BuyNFT"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "NFTSellManage-nftBalance"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-buyJW"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-getParams"
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "jwswap"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-sellJW"
+
 **/

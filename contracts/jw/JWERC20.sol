@@ -118,7 +118,19 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             emit GlobalBuyWhitelistUpdated(_accounts[i], _status);
         }
     }
-    
+    function setGlobalSellWhitelist(address _address, bool _state) public onlyOwner {
+        require(_address != address(0), "JW:ZERO_ADDRESS");
+        globalSellWhitelist[_address] = _state;
+    }
+
+    function batchSetGlobalSellWhitelist(
+        address[] calldata _address,
+        bool _state
+    ) public onlyOwner {
+        for (uint i = 0; i < _address.length; i++) {
+            globalSellWhitelist[_address[i]] = _state;
+        }
+    }
    
     
 
@@ -165,19 +177,7 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         _mint(to, amount);
     }
 
-    function setGlobalSellWhitelist(address _address, bool _state) public onlyOwner {
-        require(_address != address(0), "JW:ZERO_ADDRESS");
-        globalSellWhitelist[_address] = _state;
-    }
-
-    function batchSetGlobalSellWhitelist(
-        address[] calldata _address,
-        bool _state
-    ) public onlyOwner {
-        for (uint i = 0; i < _address.length; i++) {
-            globalSellWhitelist[_address[i]] = _state;
-        }
-    }
+    
 
     
     // === 多个手续费接收者管理函数 ===

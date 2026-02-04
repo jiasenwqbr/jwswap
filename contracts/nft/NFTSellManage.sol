@@ -302,7 +302,7 @@ contract NFTSellManage is  Initializable,
         return usdtAmount;
     }
 
-    function getUSDT2JW(uint256 usdtAmount) internal view returns(uint256) {
+    function getUSDT2JW(uint256 usdtAmount) public view returns(uint256) {
         IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
         // usdt -> pijs
         address[] memory path1 = new address[](2);

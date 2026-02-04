@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
+import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
@@ -176,7 +178,7 @@ contract JWTradeMinner is  Initializable,
         (address referrer,,,) = IRecommendation(recommandContractAddress).getUserInfo(msg.sender);
         require(referrer != address(0),"user is not recommanded");
         uint256 jwReceived = pijsBuyJw(msg.value);
-        SafeERC20.safeTransferFrom(IERC20(jwToken), address(this) ,msg.sender, jwReceived);
+        SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, jwReceived);
 
         // 更新订单
         uint256 currentOrderId = orderId;
@@ -199,10 +201,10 @@ contract JWTradeMinner is  Initializable,
         // 个人交易量
         userTradeTotal[msg.sender] = userTradeTotal[msg.sender] + usdtValue;
         uint256 vollume = getJWTradeVollumePerDay(msg.sender,dayIndex);
-        userTradePerDay[msg.sender][dayIndex] = getJW2USDT(vollume);
-        
+        if (vollume > 0){
+            userTradePerDay[msg.sender][dayIndex] = getJW2USDT(vollume);
+        }
         updateRecommandTradePerday(dayIndex,msg.value,msg.sender);
-
         if (users[msg.sender].fristOrderTime == 0){
             UserInfo memory user = UserInfo({
                 staticRewardBalance : 0,
@@ -275,6 +277,7 @@ contract JWTradeMinner is  Initializable,
         require(referrer != address(0),"user is not recommanded");
         require(amount > 0,"amount should >0");
         require(jwAddress == jwToken,"Invalid jw token");
+
         uint256 ethReceived = jwBuyPIJS(amount);
         (bool ok, ) = msg.sender.call{value: ethReceived}("");
         require(ok, "msg sender received pijs transfer failed");
@@ -300,8 +303,9 @@ contract JWTradeMinner is  Initializable,
         // 个人交易量
         userTradeTotal[msg.sender] = userTradeTotal[msg.sender] + usdtValue;
         uint256 vollume = getJWTradeVollumePerDay(msg.sender,dayIndex);
-        userTradePerDay[msg.sender][dayIndex] = getPIJS2USDT(vollume);
-
+        if (vollume > 0){
+            userTradePerDay[msg.sender][dayIndex] = getPIJS2USDT(vollume);
+        }
         updateRecommandTradePerday(dayIndex,amount,msg.sender);
         if (users[msg.sender].fristOrderTime == 0){
             UserInfo memory user = UserInfo({
@@ -342,8 +346,6 @@ contract JWTradeMinner is  Initializable,
         return afterETHBalance - beforeETHBalance;
     }
 
-
-
     function usdtBuyPIJS(uint256 buyPIJSAmount) internal returns(uint256){
         // 1. 先从用户拉 USDT
         SafeERC20.safeTransferFrom(IERC20(usdtAddress), msg.sender, address(this), buyPIJSAmount);
@@ -368,7 +370,19 @@ contract JWTradeMinner is  Initializable,
         return afterETHBalance - beforeETHBalance;
     }
     function pijsBuyJw(uint256 pijsAmount) internal returns(uint256){
+        require(pijsAmount > 0,"pijsAmount should >0 ");
+        
         IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        // 检查交易对是否存在
+        address pair = IUniswapV2Factory(swapRouter.factory()).getPair(
+            swapRouter.WETH(), 
+            jwToken
+        );
+        require(pair != address(0), "No liquidity pool");
+        
+        // 检查流动性
+        (uint112 reserve0, uint112 reserve1, ) = IUniswapV2Pair(pair).getReserves();
+        require(reserve0 > 0 && reserve1 > 0, "Insufficient liquidity");
         // WETH -> JW
         uint256 beforeJWAmount = IERC20(jwToken).balanceOf(address(this));
         address[] memory path2 = new address[](2);
@@ -384,6 +398,7 @@ contract JWTradeMinner is  Initializable,
         uint256 jwReceived = afterJWAmount - beforeJWAmount;
         return jwReceived;
     }
+
 
     function usdtBuyJW(uint256 buyJwAmount) internal returns(uint256){
          // 1. 先从用户拉 USDT
@@ -577,6 +592,19 @@ contract JWTradeMinner is  Initializable,
         
         return usdtAmount;
     }
+    function getPIJS2JW(uint256 amount) public view returns(uint256) {
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        // pijs-> usdt
+        address[] memory path2 = new address[](2);
+        path2[0] = swapRouter.WETH();
+        path2[1] = jwToken;
+
+        uint[] memory amounts2 = swapRouter.getAmountsOut(amount, path2);
+        uint256 jwAmount = amounts2[1];
+        require(jwAmount > 0, "pijs->jw quote failed");
+        
+        return jwAmount;
+    }
 
     function getJW2USDT(uint256 infoAmount) public view returns(uint256) {
         IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
@@ -674,14 +702,35 @@ contract JWTradeMinner is  Initializable,
            dynamaticPercent = _dynamaticPercent;
     }
 
+    function getParams() external view returns(
+        address,
+        address,
+        address,
+        address,
+        address ,
+        uint256[] memory,
+        uint256[] memory,
+        uint256,
+        uint256,
+        uint256 ){
+            return (
+                jwToken,
+                usdtAddress,
+                swapRouterAddress,
+                manageContractAddress,
+                recommandContractAddress,
+                tradeVolumePerDay ,
+                produceTokenVolumePerDay ,
+                recommandLevel,
+                staticPercent ,
+                dynamaticPercent
+            );
+
+    }
 
 
-    receive() external payable {}
+
+receive() external payable {}
     
     
-
-
-
-
-
 }
