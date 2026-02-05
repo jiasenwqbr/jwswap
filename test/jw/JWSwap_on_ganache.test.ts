@@ -33,7 +33,7 @@ describe("JWSwap",async () => {
     const nftSellManageAddress = "0xC62D7FE8BE64991E6f8d3F8A482D4fE530d46fd1";
     const recommandAddress = "0x336ABF2509ca960f369f0aa263f4713be42209A9";
     const interactionAirDropAddress = "0x246AEcE8799E1d4E264B76a703aF9F9951E4D6Bc";
-    const jWTradeMinnerAddress = "0xEA138391d6Fa998108C84F34cf7bEe59cEe6Ce46";
+    const jWTradeMinnerAddress = "0xa7E3A1637BEdeD9F5a605a700D8046176CF2A8Fc";
 
     let jwpair:PiJPair;
     let jwPairAddress:any;
@@ -408,7 +408,7 @@ describe("JWSwap",async () => {
         console.log("before buyNFT recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
 
         const tx = await jWTradeMinner.connect(account4).buyJW({
-            value:ethers.utils.parseEther("0.2"),
+            value:ethers.utils.parseEther("10"),
             gasLimit: 6721975 
         });
         await tx.wait();
@@ -473,10 +473,10 @@ describe("JWSwap",async () => {
         console.log("before buyNFT receive JW balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
         console.log("before buyNFT recommander pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account1.address)));
 
-        const tx00 = await jw.connect(account4).approve(jWTradeMinnerAddress,ethers.utils.parseEther("10"));
+        const tx00 = await jw.connect(account4).approve(jWTradeMinnerAddress,ethers.utils.parseEther("100"));
         await tx00.wait();
 
-        const tx = await jWTradeMinner.connect(account4).sellJW(jwAddress,ethers.utils.parseEther("10"));
+        const tx = await jWTradeMinner.connect(account4).sellJW(jwAddress,ethers.utils.parseEther("100"));
         await tx.wait();
 
         console.log("after buyNFT account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
@@ -497,6 +497,76 @@ describe("JWSwap",async () => {
     });
 
     it("JWTradeMinner-calcaulateReward",async () => {
+        console.log("queryRewardGenerateRecords:",await jWTradeMinner.queryRewardGenerateRecords(2026,account4.address));
+        
+        const tx = await jWTradeMinner.connect(account4).calcaulateReward({
+            gasLimit: 6721975 
+        });
+        await tx.wait();
+
+        console.log("queryRewardGenerateRecords:",await jWTradeMinner.queryRewardGenerateRecords(2026,account4.address));
+        console.log("getUserInfo:",await jWTradeMinner.getUserInfo(account4.address));
+
+
+    });
+    it("JWTradeMinner-getRecord",async () => {
+        console.log("getUserInfo:",await jWTradeMinner.getUserInfo(account4.address));
+
+        console.log("getDayIndex",await jWTradeMinner.getDayIndex(1770272516));
+        console.log("getYearIndex",await jWTradeMinner.getYearIndex(1770269230));
+        console.log("getUserTradeTotal",await jWTradeMinner.getUserTradeTotal(account4.address));
+        console.log("getUserTradePerDay",await jWTradeMinner.getUserTradePerDay(account4.address,491742));
+        console.log("getPlatformTradeTotal",await jWTradeMinner.getPlatformTradeTotal());
+        console.log("getPlatformTradePerDay",await jWTradeMinner.getPlatformTradePerDay(491742));
+        console.log("getUserOrderIdsPerDay",await jWTradeMinner.getUserOrderIdsPerDay(account4.address,491742));
+        console.log("getUserOrdersPerday",await jWTradeMinner.getUserOrdersPerday(account4.address,491742));
+        console.log("queryRewardGenerateRecords",await jWTradeMinner.queryRewardGenerateRecords(2026,account4.address));
+
+
+       
+        // const _tradeVolumePerDay = [
+        //     ethers.utils.parseEther("1000"),
+        //     ethers.utils.parseEther("600"),
+        //     ethers.utils.parseEther("500"),
+        //     ethers.utils.parseEther("200"),
+        // ];
+        // const _produceTokenVolumePerDay = [
+        //     ethers.utils.parseEther("300"),
+        //     ethers.utils.parseEther("150"),
+        //     ethers.utils.parseEther("100"),
+        //     ethers.utils.parseEther("50"),
+        // ];
+
+        // const tx = await jWTradeMinner.connect(owner).setProduceTokenVolumePerDay(_tradeVolumePerDay,_produceTokenVolumePerDay);
+        // await tx.wait();
+
+        // console.log("getParams",await jWTradeMinner.getParams());
+
+
+    });
+
+    it("JWTradeMinner-receiveProduction",async () => {
+
+
+        // const tx00 = await jw.connect(owner).transfer(jWTradeMinnerAddress,ethers.utils.parseEther("5000"));
+        // await tx00.wait();
+
+        console.log("before received:",ethers.utils.formatEther(await jw.balanceOf(jWTradeMinnerAddress)));
+
+        const userinfo = await jWTradeMinner.getUserInfo(account4.address);
+        console.log("getUserInfo:",userinfo);
+
+        // const tx = await jWTradeMinner.connect(account4).receiveProduction(jwAddress,userinfo.dynRewardBalance,1);
+        // await tx.wait();
+
+        console.log("getUserInfo:",await jWTradeMinner.getUserInfo(account4.address));
+
+        console.log("after received:",ethers.utils.formatEther(await jw.balanceOf(jWTradeMinnerAddress)));
+
+        console.log("queryRewardReceivedRecord",await jWTradeMinner.queryRewardReceivedRecord(2026,account4.address));
+
+
+
 
     });
        
@@ -537,11 +607,23 @@ npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "N
 
 npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "NFTSellManage-nftBalance"
 
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-getParams"
+
 npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-buyJW"
 
-npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-getParams"
+
 npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "jwswap"
 
 npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-sellJW"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-calcaulateReward"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-getRecord"
+
+npx hardhat test ./test/jw/JWSwap_on_ganache.test.ts --network ganache --grep "JWTradeMinner-receiveProduction"
+
+
+
+
 
 **/

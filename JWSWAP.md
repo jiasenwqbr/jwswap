@@ -16,7 +16,7 @@
 
 ## ABI
 
-### 推荐 Recommendation
+### Recommendation 推荐 
 
 Recommendation
 
@@ -370,7 +370,7 @@ mint单个给接收者
 
 
 
-### NFT销售、分红 NFTSellManage
+### NFTSellManage NFT销售、分红 
 
 #### 购买NFT
 
@@ -473,7 +473,7 @@ function queryReward(address user,uint256 year) public view returns(RewardOrder[
 
 
 
-### JW挖矿、奖励  JWTradeMinner
+###  JWTradeMinner JW挖矿、奖励 
 
 
 
@@ -555,7 +555,7 @@ RewardReceivedRecord
 
 ### 空投
 
-#### 抢购 FlashSalse
+#### FlashSalse 抢购 
 
 ##### 购买
 
@@ -623,7 +623,7 @@ function checkJW(uint256 _orderId,uint8 productId) public nonReentrant
 
 
 
-#### 交互空投 InteractionAirDrop
+#### InteractionAirDrop 交互空投 
 
 ##### 参与空投
 
@@ -714,7 +714,7 @@ function checkJW(uint256 _orderId,uint8 productId) public
 
 ### Swap
 
-#### 路由 IPiJRouter02
+#### IPiJRouter02 路由 
 
 路由接口，提供代币交换、流动性管理和价格计算功能。本接口兼容支持手续费代币的转移。 
 
@@ -1072,3 +1072,316 @@ factory()
 
 - `uint[]`: 每个路径段的输入数量数组
 
+#### PiJFactory
+
+PiJFactory 是 PiJ DEX 的工厂合约，负责创建和管理代币交易对。该合约基于 Uniswap V2 Factory 模式，使用 CREATE2 创建确定性地址的交易对合约。
+
+
+
+##### allPairsLength()
+
+获取已创建的交易对总数
+
+```
+function allPairsLength() external view returns (uint)
+```
+
+**返回**
+
+- `uint`: 交易对总数
+
+
+
+##### createPair(address tokenA, address tokenB)
+
+创建新的代币交易对
+
+```
+function createPair(
+    address tokenA,
+    address tokenB
+) external returns (address pair)
+```
+
+**参数**
+
+| 参数     | 类型    | 描述           |
+| :------- | :------ | :------------- |
+| `tokenA` | address | 第一个代币地址 |
+| `tokenB` | address | 第二个代币地址 |
+
+**前提条件**
+
+1. `tokenA != tokenB`（不能相同地址）
+2. `tokenA` 和 `tokenB` 都不能是零地址
+3. 交易对必须不存在
+
+**验证错误**
+
+| 错误消息                   | 条件                   |
+| :------------------------- | :--------------------- |
+| `PiJ: IDENTICAL_ADDRESSES` | `tokenA == tokenB`     |
+| `PiJ: ZERO_ADDRESS`        | `token0 == address(0)` |
+| `PiJ: PAIR_EXISTS`         | 交易对已存在           |
+
+##### setFeeTo(address _feeTo)
+
+设置协议手续费接收地址
+
+**签名**
+
+solidity
+
+```
+function setFeeTo(address _feeTo) external
+```
+
+
+
+**参数**
+
+| 参数     | 类型    | 描述               |
+| :------- | :------ | :----------------- |
+| `_feeTo` | address | 新的手续费接收地址 |
+
+**权限**: 仅 `feeToSetter` 可调用
+**验证错误**: `PiJ: FORBIDDEN`（如果调用者不是 `feeToSetter`）
+
+**用途**
+
+- 设置协议手续费接收地址
+- 设置为 `address(0)` 可关闭手续费
+
+##### setFeeToSetter(address _feeToSetter)
+
+转让手续费设置权限
+
+**签名**
+
+solidity
+
+```
+function setFeeToSetter(address _feeToSetter) external
+```
+
+
+
+**参数**
+
+| 参数           | 类型    | 描述         |
+| :------------- | :------ | :----------- |
+| `_feeToSetter` | address | 新的权限地址 |
+
+**权限**: 仅当前 `feeToSetter` 可调用
+**验证错误**: `PiJ: FORBIDDEN`（如果调用者不是当前 `feeToSetter`）
+
+**注意**: 此操作不可逆，请谨慎操作
+
+#### PiJPair
+
+##### initialize(address _token0, address _token1)
+
+初始化交易对代币
+
+
+
+```
+function initialize(address _token0, address _token1) external
+```
+
+
+
+**参数**
+
+| 参数      | 类型    | 描述           |
+| :-------- | :------ | :------------- |
+| `_token0` | address | 第一个代币地址 |
+| `_token1` | address | 第二个代币地址 |
+
+**权限**: 仅工厂合约可调用
+**验证**: `require(msg.sender == factory, "PiJ: FORBIDDEN")`
+
+
+
+##### getReserves()
+
+获取当前储备金信息
+
+```
+function getReserves() public view returns (
+    uint112 _reserve0,
+    uint112 _reserve1,
+    uint32 _blockTimestampLast
+)
+```
+
+
+
+**返回**
+
+- `_reserve0`: token0 当前储备量
+- `_reserve1`: token1 当前储备量
+- `_blockTimestampLast`: 最后更新时间戳
+
+
+
+##### mint(address to)
+
+添加流动性，铸造 LP 代币
+
+
+
+```
+function mint(address to) external lock returns (uint liquidity)
+```
+
+
+
+**参数**
+
+| 参数 | 类型    | 描述            |
+| :--- | :------ | :-------------- |
+| `to` | address | LP 代币接收地址 |
+
+**前提条件**
+
+1. 调用者必须已将代币转入合约
+2. 代币转入数量必须大于0
+
+**执行流程**
+
+1. 计算新增代币数量
+2. 计算应铸造的流动性数量
+3. 如果是首次铸造，锁定 `MINIMUM_LIQUIDITY`
+4. 铸造 LP 代币给接收者
+5. 更新储备金
+
+**返回**
+
+- `liquidity`: 铸造的 LP 代币数量
+
+**计算公式**
+
+- 首次铸造: `liquidity = √(amount0 * amount1) - MINIMUM_LIQUIDITY`
+- 后续铸造: `liquidity = min(amount0 * totalSupply / reserve0, amount1 * totalSupply / reserve1)`
+
+**验证错误**
+
+| 错误                                 | 条件             |
+| :----------------------------------- | :--------------- |
+| `PiJ: INSUFFICIENT_LIQUIDITY_MINTED` | `liquidity == 0` |
+
+**发出事件**
+
+- `Mint(msg.sender, amount0, amount1)`
+
+
+
+##### burn(address to)
+
+移除流动性，销毁 LP 代币
+
+```
+function burn(address to) external lock returns (uint amount0, uint amount1)
+```
+
+
+
+**参数**
+
+| 参数 | 类型    | 描述         |
+| :--- | :------ | :----------- |
+| `to` | address | 代币接收地址 |
+
+**前提条件**
+
+1. 调用者必须有足够的 LP 代币在合约中
+2. 通常由 Router 合约调用
+
+**执行流程**
+
+1. 计算应返还的代币数量
+2. 销毁 LP 代币
+3. 转账代币给接收者
+4. 更新储备金
+
+**返回**
+
+- `amount0`: 返还的 token0 数量
+- `amount1`: 返还的 token1 数量
+
+**计算公式**
+
+- `amount0 = liquidity * balance0 / totalSupply`
+- `amount1 = liquidity * balance1 / totalSupply`
+
+**验证错误**
+
+| 错误                                 | 条件                           |
+| :----------------------------------- | :----------------------------- |
+| `PiJ: INSUFFICIENT_LIQUIDITY_BURNED` | `amount0 == 0 || amount1 == 0` |
+
+**发出事件**
+
+- `Burn(msg.sender, amount0, amount1, to)`
+
+
+
+##### swap(uint amount0Out, uint amount1Out, address to, bytes data)
+
+执行代币交换
+
+```
+function swap(
+    uint amount0Out,
+    uint amount1Out,
+    address to,
+    bytes calldata data
+) external lock
+```
+
+
+
+**参数**
+
+| 参数         | 类型    | 描述               |
+| :----------- | :------ | :----------------- |
+| `amount0Out` | uint    | 输出的 token0 数量 |
+| `amount1Out` | uint    | 输出的 token1 数量 |
+| `to`         | address | 输出代币接收地址   |
+| `data`       | bytes   | 回调数据（可选）   |
+
+**前提条件**
+
+1. 至少一个输出数量大于0
+2. 输出数量小于储备金
+3. 接收地址不能是代币合约本身
+4. 满足恒定乘积公式（考虑手续费）
+
+**执行流程**
+
+1. 检查输出数量有效性
+2. 转账输出代币
+3. 如果设置了回调，调用 `PiJCall`
+4. 计算输入数量
+5. 验证恒定乘积
+6. 更新储备金
+
+**手续费计算**
+
+- 交易手续费: 0.25%
+- 调整后余额: `balance * 10000 - amountIn * 25`
+
+**验证错误**
+
+| 错误                              | 条件                                                         |
+| :-------------------------------- | :----------------------------------------------------------- |
+| `PiJ: INSUFFICIENT_OUTPUT_AMOUNT` | `amount0Out == 0 && amount1Out == 0`                         |
+| `PiJ: INSUFFICIENT_LIQUIDITY`     | `amount0Out ≥ reserve0 || amount1Out ≥ reserve1`             |
+| `PiJ: INVALID_TO`                 | `to == token0 || to == token1`                               |
+| `PiJ: INSUFFICIENT_INPUT_AMOUNT`  | `amount0In == 0 && amount1In == 0`                           |
+| `PiJ: K`                          | 不满足 `balance0Adjusted * balance1Adjusted ≥ reserve0 * reserve1 * 10000²` |
+
+**发出事件**
+
+- `Swap(msg.sender, amount0In, amount1In, amount0Out, amount1Out, to)`

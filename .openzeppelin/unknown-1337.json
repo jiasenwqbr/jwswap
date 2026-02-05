@@ -60,6 +60,11 @@
       "address": "0x246AEcE8799E1d4E264B76a703aF9F9951E4D6Bc",
       "txHash": "0xc4b59f7650cf98f173cfc937a63e5eb750072da9c925662ff16ce7fabd76afed",
       "kind": "uups"
+    },
+    {
+      "address": "0xa7E3A1637BEdeD9F5a605a700D8046176CF2A8Fc",
+      "txHash": "0xbd81c260a7dc1b0df0380a711c27049fa09362deb01d214da9af4b1e39355ad5",
+      "kind": "uups"
     }
   ],
   "impls": {
@@ -16505,6 +16510,4325 @@
             "numberOfBytes": "160"
           },
           "t_struct(UserInfo)7257_storage": {
+            "label": "struct JWTradeMinner.UserInfo",
+            "members": [
+              {
+                "label": "staticRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "dynRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastCalRewardTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fristOrderTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "staticRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "dynRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "d95b16d99c59d5554413295b932f61a6e54ba16ab589f61cdfe7dc635e6ecb8e": {
+      "address": "0x8210B8b04a554aE9F037520f0634C6d814Af71dD",
+      "txHash": "0x8a3a6259c806bfb5bfa4bb21a611c7f0659b409f699181a7f92a8ddfec4b99fe",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:65"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:66"
+          },
+          {
+            "label": "manageContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:67"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:68"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:69"
+          },
+          {
+            "label": "tradeVolumePerDay",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:71"
+          },
+          {
+            "label": "produceTokenVolumePerDay",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:72"
+          },
+          {
+            "label": "produceTokenPerDay",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:73"
+          },
+          {
+            "label": "userTradePerDay",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:80"
+          },
+          {
+            "label": "userTradeTotal",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:82"
+          },
+          {
+            "label": "userReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:84"
+          },
+          {
+            "label": "platformTradePerDay",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:87"
+          },
+          {
+            "label": "platformTradeTotal",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:90"
+          },
+          {
+            "label": "platformReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:93"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "365",
+            "type": "t_mapping(t_uint256,t_struct(Swap)7230_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:102"
+          },
+          {
+            "label": "userOrderIdsPerDay",
+            "offset": 0,
+            "slot": "366",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:105"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "367",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:107"
+          },
+          {
+            "label": "users",
+            "offset": 0,
+            "slot": "368",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7257_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:117"
+          },
+          {
+            "label": "recommandLevel",
+            "offset": 0,
+            "slot": "369",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:118"
+          },
+          {
+            "label": "staticPercent",
+            "offset": 0,
+            "slot": "370",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:119"
+          },
+          {
+            "label": "dynamaticPercent",
+            "offset": 0,
+            "slot": "371",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:120"
+          },
+          {
+            "label": "rewardReceivedOrderId",
+            "offset": 0,
+            "slot": "372",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:122"
+          },
+          {
+            "label": "rewardGenerateId",
+            "offset": 0,
+            "slot": "373",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:124"
+          },
+          {
+            "label": "rewardReceivedRecords",
+            "offset": 0,
+            "slot": "374",
+            "type": "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7284_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:127"
+          },
+          {
+            "label": "userRewardReceivedRecords",
+            "offset": 0,
+            "slot": "375",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:131"
+          },
+          {
+            "label": "rewardGenerateRecords",
+            "offset": 0,
+            "slot": "376",
+            "type": "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7309_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:138"
+          },
+          {
+            "label": "userRewardGenerateRecords",
+            "offset": 0,
+            "slot": "377",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:141"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint256 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_uint256))": {
+            "label": "mapping(address => mapping(uint256 => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7257_storage)": {
+            "label": "mapping(address => struct JWTradeMinner.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint256 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7309_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardGenerateRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7284_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardReceivedRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Swap)7230_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.Swap)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(RewardGenerateRecord)7309_storage": {
+            "label": "struct JWTradeMinner.RewardGenerateRecord",
+            "members": [
+              {
+                "label": "rewardGenerateId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tradeAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "recommandAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "staticProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "dynProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_struct(RewardReceivedRecord)7284_storage": {
+            "label": "struct JWTradeMinner.RewardReceivedRecord",
+            "members": [
+              {
+                "label": "rewardReceivedOrderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "productionType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Swap)7230_storage": {
+            "label": "struct JWTradeMinner.Swap",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "swapType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "1"
+              },
+              {
+                "label": "amountIn",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "amountOut",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(UserInfo)7257_storage": {
+            "label": "struct JWTradeMinner.UserInfo",
+            "members": [
+              {
+                "label": "staticRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "dynRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastCalRewardTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fristOrderTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "staticRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "dynRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "75bd6a1337c15318eab47757548969e292272bde74bfdad10ff83254da7b25a5": {
+      "address": "0xEa26Cad6f9246a63955fE3C05E9376Cd1F883359",
+      "txHash": "0xf22ab919f240d8a78af79f67ba1b752f63433839a47e733bec401466dc5e5101",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:65"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:66"
+          },
+          {
+            "label": "manageContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:67"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:68"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:69"
+          },
+          {
+            "label": "tradeVolumePerDay",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:71"
+          },
+          {
+            "label": "produceTokenVolumePerDay",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:72"
+          },
+          {
+            "label": "produceTokenPerDay",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:73"
+          },
+          {
+            "label": "userTradePerDay",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:80"
+          },
+          {
+            "label": "userTradeTotal",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:82"
+          },
+          {
+            "label": "userReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:84"
+          },
+          {
+            "label": "platformTradePerDay",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:87"
+          },
+          {
+            "label": "platformTradeTotal",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:90"
+          },
+          {
+            "label": "platformReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:93"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "365",
+            "type": "t_mapping(t_uint256,t_struct(Swap)7230_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:102"
+          },
+          {
+            "label": "userOrderIdsPerDay",
+            "offset": 0,
+            "slot": "366",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:105"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "367",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:107"
+          },
+          {
+            "label": "users",
+            "offset": 0,
+            "slot": "368",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7257_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:117"
+          },
+          {
+            "label": "recommandLevel",
+            "offset": 0,
+            "slot": "369",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:118"
+          },
+          {
+            "label": "staticPercent",
+            "offset": 0,
+            "slot": "370",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:119"
+          },
+          {
+            "label": "dynamaticPercent",
+            "offset": 0,
+            "slot": "371",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:120"
+          },
+          {
+            "label": "rewardReceivedOrderId",
+            "offset": 0,
+            "slot": "372",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:122"
+          },
+          {
+            "label": "rewardGenerateId",
+            "offset": 0,
+            "slot": "373",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:124"
+          },
+          {
+            "label": "rewardReceivedRecords",
+            "offset": 0,
+            "slot": "374",
+            "type": "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7284_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:127"
+          },
+          {
+            "label": "userRewardReceivedRecords",
+            "offset": 0,
+            "slot": "375",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:131"
+          },
+          {
+            "label": "rewardGenerateRecords",
+            "offset": 0,
+            "slot": "376",
+            "type": "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7309_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:138"
+          },
+          {
+            "label": "userRewardGenerateRecords",
+            "offset": 0,
+            "slot": "377",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:141"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint256 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_uint256))": {
+            "label": "mapping(address => mapping(uint256 => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7257_storage)": {
+            "label": "mapping(address => struct JWTradeMinner.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint256 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7309_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardGenerateRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7284_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardReceivedRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Swap)7230_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.Swap)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(RewardGenerateRecord)7309_storage": {
+            "label": "struct JWTradeMinner.RewardGenerateRecord",
+            "members": [
+              {
+                "label": "rewardGenerateId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tradeAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "recommandAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "staticProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "dynProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_struct(RewardReceivedRecord)7284_storage": {
+            "label": "struct JWTradeMinner.RewardReceivedRecord",
+            "members": [
+              {
+                "label": "rewardReceivedOrderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "productionType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Swap)7230_storage": {
+            "label": "struct JWTradeMinner.Swap",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "swapType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "1"
+              },
+              {
+                "label": "amountIn",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "amountOut",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(UserInfo)7257_storage": {
+            "label": "struct JWTradeMinner.UserInfo",
+            "members": [
+              {
+                "label": "staticRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "dynRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastCalRewardTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fristOrderTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "staticRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "dynRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "f70189b7f3baee874c07cf8482ee022031963624390cfc1b805053cec5167f5f": {
+      "address": "0xF79498De4a996e237BAf0E8133BCB17E2AFB04f5",
+      "txHash": "0x1c3d9788f8ad6b20817c4449ea0f09f81c3f326fc5c935c23e99568fa5f928b7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:65"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:66"
+          },
+          {
+            "label": "manageContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:67"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:68"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:69"
+          },
+          {
+            "label": "tradeVolumePerDay",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:71"
+          },
+          {
+            "label": "produceTokenVolumePerDay",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:72"
+          },
+          {
+            "label": "produceTokenPerDay",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:73"
+          },
+          {
+            "label": "userTradePerDay",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:84"
+          },
+          {
+            "label": "userTradeTotal",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:86"
+          },
+          {
+            "label": "userReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:88"
+          },
+          {
+            "label": "platformTradePerDay",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:91"
+          },
+          {
+            "label": "platformTradeTotal",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:94"
+          },
+          {
+            "label": "platformReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:97"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "365",
+            "type": "t_mapping(t_uint256,t_struct(Swap)7232_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:106"
+          },
+          {
+            "label": "userOrderIdsPerDay",
+            "offset": 0,
+            "slot": "366",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:109"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "367",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:111"
+          },
+          {
+            "label": "users",
+            "offset": 0,
+            "slot": "368",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7259_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:121"
+          },
+          {
+            "label": "recommandLevel",
+            "offset": 0,
+            "slot": "369",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:122"
+          },
+          {
+            "label": "staticPercent",
+            "offset": 0,
+            "slot": "370",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:123"
+          },
+          {
+            "label": "dynamaticPercent",
+            "offset": 0,
+            "slot": "371",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:124"
+          },
+          {
+            "label": "rewardReceivedOrderId",
+            "offset": 0,
+            "slot": "372",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:126"
+          },
+          {
+            "label": "rewardGenerateId",
+            "offset": 0,
+            "slot": "373",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:128"
+          },
+          {
+            "label": "rewardReceivedRecords",
+            "offset": 0,
+            "slot": "374",
+            "type": "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:131"
+          },
+          {
+            "label": "userRewardReceivedRecords",
+            "offset": 0,
+            "slot": "375",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:135"
+          },
+          {
+            "label": "rewardGenerateRecords",
+            "offset": 0,
+            "slot": "376",
+            "type": "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:142"
+          },
+          {
+            "label": "userRewardGenerateRecords",
+            "offset": 0,
+            "slot": "377",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:145"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint256 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_uint256))": {
+            "label": "mapping(address => mapping(uint256 => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7259_storage)": {
+            "label": "mapping(address => struct JWTradeMinner.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint256 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardGenerateRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardReceivedRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Swap)7232_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.Swap)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(RewardGenerateRecord)7311_storage": {
+            "label": "struct JWTradeMinner.RewardGenerateRecord",
+            "members": [
+              {
+                "label": "rewardGenerateId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tradeAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "recommandAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "staticProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "dynProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_struct(RewardReceivedRecord)7286_storage": {
+            "label": "struct JWTradeMinner.RewardReceivedRecord",
+            "members": [
+              {
+                "label": "rewardReceivedOrderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "productionType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Swap)7232_storage": {
+            "label": "struct JWTradeMinner.Swap",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "swapType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "1"
+              },
+              {
+                "label": "amountIn",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "amountOut",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(UserInfo)7259_storage": {
+            "label": "struct JWTradeMinner.UserInfo",
+            "members": [
+              {
+                "label": "staticRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "dynRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastCalRewardTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fristOrderTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "staticRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "dynRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "33dc00a3bf916d885b661f7b561914fcdf796e7a1f08c1cd493146bfd6eb8957": {
+      "address": "0x07f9702721fAcD8792dFdde2c32266f41DFF7a99",
+      "txHash": "0x57a4ccd357202cd377ffaac0a9ab9a1208d884013b0a6ee3d55583b4c78200a4",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:65"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:66"
+          },
+          {
+            "label": "manageContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:67"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:68"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:69"
+          },
+          {
+            "label": "tradeVolumePerDay",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:71"
+          },
+          {
+            "label": "produceTokenVolumePerDay",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:72"
+          },
+          {
+            "label": "produceTokenPerDay",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:73"
+          },
+          {
+            "label": "userTradePerDay",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:84"
+          },
+          {
+            "label": "userTradeTotal",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:86"
+          },
+          {
+            "label": "userReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:88"
+          },
+          {
+            "label": "platformTradePerDay",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:91"
+          },
+          {
+            "label": "platformTradeTotal",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:94"
+          },
+          {
+            "label": "platformReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:97"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "365",
+            "type": "t_mapping(t_uint256,t_struct(Swap)7232_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:106"
+          },
+          {
+            "label": "userOrderIdsPerDay",
+            "offset": 0,
+            "slot": "366",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:109"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "367",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:111"
+          },
+          {
+            "label": "users",
+            "offset": 0,
+            "slot": "368",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7259_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:121"
+          },
+          {
+            "label": "recommandLevel",
+            "offset": 0,
+            "slot": "369",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:122"
+          },
+          {
+            "label": "staticPercent",
+            "offset": 0,
+            "slot": "370",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:123"
+          },
+          {
+            "label": "dynamaticPercent",
+            "offset": 0,
+            "slot": "371",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:124"
+          },
+          {
+            "label": "rewardReceivedOrderId",
+            "offset": 0,
+            "slot": "372",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:126"
+          },
+          {
+            "label": "rewardGenerateId",
+            "offset": 0,
+            "slot": "373",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:128"
+          },
+          {
+            "label": "rewardReceivedRecords",
+            "offset": 0,
+            "slot": "374",
+            "type": "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:131"
+          },
+          {
+            "label": "userRewardReceivedRecords",
+            "offset": 0,
+            "slot": "375",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:135"
+          },
+          {
+            "label": "rewardGenerateRecords",
+            "offset": 0,
+            "slot": "376",
+            "type": "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:142"
+          },
+          {
+            "label": "userRewardGenerateRecords",
+            "offset": 0,
+            "slot": "377",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:145"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint256 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_uint256))": {
+            "label": "mapping(address => mapping(uint256 => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7259_storage)": {
+            "label": "mapping(address => struct JWTradeMinner.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint256 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardGenerateRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardReceivedRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Swap)7232_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.Swap)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(RewardGenerateRecord)7311_storage": {
+            "label": "struct JWTradeMinner.RewardGenerateRecord",
+            "members": [
+              {
+                "label": "rewardGenerateId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tradeAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "recommandAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "staticProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "dynProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_struct(RewardReceivedRecord)7286_storage": {
+            "label": "struct JWTradeMinner.RewardReceivedRecord",
+            "members": [
+              {
+                "label": "rewardReceivedOrderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "productionType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Swap)7232_storage": {
+            "label": "struct JWTradeMinner.Swap",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "swapType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "1"
+              },
+              {
+                "label": "amountIn",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "amountOut",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(UserInfo)7259_storage": {
+            "label": "struct JWTradeMinner.UserInfo",
+            "members": [
+              {
+                "label": "staticRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "dynRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastCalRewardTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fristOrderTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "staticRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "dynRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "c472737ef5eaa023d450ad4bd889c84a997f5642c8942f6eb8ab59e5ce49ca6d": {
+      "address": "0x567bdab530eD5c7Ce65C1f3126089aA4980C84E1",
+      "txHash": "0xd325df915380218674b4cf59c5def2358b10340a049932d913343938e8e916d1",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:65"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:66"
+          },
+          {
+            "label": "manageContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:67"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:68"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:69"
+          },
+          {
+            "label": "tradeVolumePerDay",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:71"
+          },
+          {
+            "label": "produceTokenVolumePerDay",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:72"
+          },
+          {
+            "label": "produceTokenPerDay",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:73"
+          },
+          {
+            "label": "userTradePerDay",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:84"
+          },
+          {
+            "label": "userTradeTotal",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:86"
+          },
+          {
+            "label": "userReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:88"
+          },
+          {
+            "label": "platformTradePerDay",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:91"
+          },
+          {
+            "label": "platformTradeTotal",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:94"
+          },
+          {
+            "label": "platformReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:97"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "365",
+            "type": "t_mapping(t_uint256,t_struct(Swap)7232_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:106"
+          },
+          {
+            "label": "userOrderIdsPerDay",
+            "offset": 0,
+            "slot": "366",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:109"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "367",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:111"
+          },
+          {
+            "label": "users",
+            "offset": 0,
+            "slot": "368",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7259_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:121"
+          },
+          {
+            "label": "recommandLevel",
+            "offset": 0,
+            "slot": "369",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:122"
+          },
+          {
+            "label": "staticPercent",
+            "offset": 0,
+            "slot": "370",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:123"
+          },
+          {
+            "label": "dynamaticPercent",
+            "offset": 0,
+            "slot": "371",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:124"
+          },
+          {
+            "label": "rewardReceivedOrderId",
+            "offset": 0,
+            "slot": "372",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:126"
+          },
+          {
+            "label": "rewardGenerateId",
+            "offset": 0,
+            "slot": "373",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:128"
+          },
+          {
+            "label": "rewardReceivedRecords",
+            "offset": 0,
+            "slot": "374",
+            "type": "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:131"
+          },
+          {
+            "label": "userRewardReceivedRecords",
+            "offset": 0,
+            "slot": "375",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:135"
+          },
+          {
+            "label": "rewardGenerateRecords",
+            "offset": 0,
+            "slot": "376",
+            "type": "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:142"
+          },
+          {
+            "label": "userRewardGenerateRecords",
+            "offset": 0,
+            "slot": "377",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:145"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint256 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_uint256))": {
+            "label": "mapping(address => mapping(uint256 => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7259_storage)": {
+            "label": "mapping(address => struct JWTradeMinner.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint256 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardGenerateRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardReceivedRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Swap)7232_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.Swap)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(RewardGenerateRecord)7311_storage": {
+            "label": "struct JWTradeMinner.RewardGenerateRecord",
+            "members": [
+              {
+                "label": "rewardGenerateId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tradeAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "recommandAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "staticProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "dynProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_struct(RewardReceivedRecord)7286_storage": {
+            "label": "struct JWTradeMinner.RewardReceivedRecord",
+            "members": [
+              {
+                "label": "rewardReceivedOrderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "productionType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Swap)7232_storage": {
+            "label": "struct JWTradeMinner.Swap",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "swapType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "1"
+              },
+              {
+                "label": "amountIn",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "amountOut",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(UserInfo)7259_storage": {
+            "label": "struct JWTradeMinner.UserInfo",
+            "members": [
+              {
+                "label": "staticRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "dynRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastCalRewardTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fristOrderTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "staticRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "dynRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "b396ebd9bfd474db6b313c05cd2a3d7f8a25c3e76d4b624d2e1865ed0e26b966": {
+      "address": "0xe99b2BAe78fea94FE751fD9241f79F2A0fd3b10A",
+      "txHash": "0x54a17c64a930a9ab2300fab451c9c441247a038bed582e3fc00a48cac90f25a5",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:65"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:66"
+          },
+          {
+            "label": "manageContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:67"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:68"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:69"
+          },
+          {
+            "label": "tradeVolumePerDay",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:71"
+          },
+          {
+            "label": "produceTokenVolumePerDay",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:72"
+          },
+          {
+            "label": "produceTokenPerDay",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:73"
+          },
+          {
+            "label": "userTradePerDay",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:84"
+          },
+          {
+            "label": "userTradeTotal",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:86"
+          },
+          {
+            "label": "userReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:88"
+          },
+          {
+            "label": "platformTradePerDay",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:91"
+          },
+          {
+            "label": "platformTradeTotal",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:94"
+          },
+          {
+            "label": "platformReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:97"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "365",
+            "type": "t_mapping(t_uint256,t_struct(Swap)7232_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:106"
+          },
+          {
+            "label": "userOrderIdsPerDay",
+            "offset": 0,
+            "slot": "366",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:109"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "367",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:111"
+          },
+          {
+            "label": "users",
+            "offset": 0,
+            "slot": "368",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7259_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:121"
+          },
+          {
+            "label": "recommandLevel",
+            "offset": 0,
+            "slot": "369",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:122"
+          },
+          {
+            "label": "staticPercent",
+            "offset": 0,
+            "slot": "370",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:123"
+          },
+          {
+            "label": "dynamaticPercent",
+            "offset": 0,
+            "slot": "371",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:124"
+          },
+          {
+            "label": "rewardReceivedOrderId",
+            "offset": 0,
+            "slot": "372",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:126"
+          },
+          {
+            "label": "rewardGenerateId",
+            "offset": 0,
+            "slot": "373",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:128"
+          },
+          {
+            "label": "rewardReceivedRecords",
+            "offset": 0,
+            "slot": "374",
+            "type": "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:131"
+          },
+          {
+            "label": "userRewardReceivedRecords",
+            "offset": 0,
+            "slot": "375",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:135"
+          },
+          {
+            "label": "rewardGenerateRecords",
+            "offset": 0,
+            "slot": "376",
+            "type": "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:142"
+          },
+          {
+            "label": "userRewardGenerateRecords",
+            "offset": 0,
+            "slot": "377",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:145"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint256 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_uint256))": {
+            "label": "mapping(address => mapping(uint256 => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7259_storage)": {
+            "label": "mapping(address => struct JWTradeMinner.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint256 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardGenerateRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardReceivedRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Swap)7232_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.Swap)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(RewardGenerateRecord)7311_storage": {
+            "label": "struct JWTradeMinner.RewardGenerateRecord",
+            "members": [
+              {
+                "label": "rewardGenerateId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tradeAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "recommandAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "staticProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "dynProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_struct(RewardReceivedRecord)7286_storage": {
+            "label": "struct JWTradeMinner.RewardReceivedRecord",
+            "members": [
+              {
+                "label": "rewardReceivedOrderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "productionType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Swap)7232_storage": {
+            "label": "struct JWTradeMinner.Swap",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "swapType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "1"
+              },
+              {
+                "label": "amountIn",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "amountOut",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(UserInfo)7259_storage": {
+            "label": "struct JWTradeMinner.UserInfo",
+            "members": [
+              {
+                "label": "staticRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "dynRewardBalance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastCalRewardTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fristOrderTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "staticRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "dynRewardReceived",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "8fbbf22ec64cb8d8e1c02ad10901965d07a9d46ba7d598e0769e2e0cb2abe0cb": {
+      "address": "0x2F40FE2228490F9196CA2b722Bf34B439f18386a",
+      "txHash": "0xc5f887720cbe39114858c64fd4866570937689aa84de3d1b973c42959ee141fa",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:65"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:66"
+          },
+          {
+            "label": "manageContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:67"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:68"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:69"
+          },
+          {
+            "label": "tradeVolumePerDay",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:71"
+          },
+          {
+            "label": "produceTokenVolumePerDay",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:72"
+          },
+          {
+            "label": "produceTokenPerDay",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:73"
+          },
+          {
+            "label": "userTradePerDay",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:84"
+          },
+          {
+            "label": "userTradeTotal",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:86"
+          },
+          {
+            "label": "userReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:88"
+          },
+          {
+            "label": "platformTradePerDay",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:91"
+          },
+          {
+            "label": "platformTradeTotal",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:94"
+          },
+          {
+            "label": "platformReferalChainTradePerDay",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:97"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "365",
+            "type": "t_mapping(t_uint256,t_struct(Swap)7232_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:106"
+          },
+          {
+            "label": "userOrderIdsPerDay",
+            "offset": 0,
+            "slot": "366",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:109"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "367",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:111"
+          },
+          {
+            "label": "users",
+            "offset": 0,
+            "slot": "368",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7259_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:121"
+          },
+          {
+            "label": "recommandLevel",
+            "offset": 0,
+            "slot": "369",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:122"
+          },
+          {
+            "label": "staticPercent",
+            "offset": 0,
+            "slot": "370",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:123"
+          },
+          {
+            "label": "dynamaticPercent",
+            "offset": 0,
+            "slot": "371",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:124"
+          },
+          {
+            "label": "rewardReceivedOrderId",
+            "offset": 0,
+            "slot": "372",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:126"
+          },
+          {
+            "label": "rewardGenerateId",
+            "offset": 0,
+            "slot": "373",
+            "type": "t_uint256",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:128"
+          },
+          {
+            "label": "rewardReceivedRecords",
+            "offset": 0,
+            "slot": "374",
+            "type": "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:131"
+          },
+          {
+            "label": "userRewardReceivedRecords",
+            "offset": 0,
+            "slot": "375",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:135"
+          },
+          {
+            "label": "rewardGenerateRecords",
+            "offset": 0,
+            "slot": "376",
+            "type": "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:142"
+          },
+          {
+            "label": "userRewardGenerateRecords",
+            "offset": 0,
+            "slot": "377",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "JWTradeMinner",
+            "src": "contracts/jw/JWTradeMinner.sol:145"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint256 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_uint256))": {
+            "label": "mapping(address => mapping(uint256 => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7259_storage)": {
+            "label": "mapping(address => struct JWTradeMinner.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint256 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardGenerateRecord)7311_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardGenerateRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardReceivedRecord)7286_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.RewardReceivedRecord)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Swap)7232_storage)": {
+            "label": "mapping(uint256 => struct JWTradeMinner.Swap)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(RewardGenerateRecord)7311_storage": {
+            "label": "struct JWTradeMinner.RewardGenerateRecord",
+            "members": [
+              {
+                "label": "rewardGenerateId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tradeAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "recommandAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "staticProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "dynProductionAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_struct(RewardReceivedRecord)7286_storage": {
+            "label": "struct JWTradeMinner.RewardReceivedRecord",
+            "members": [
+              {
+                "label": "rewardReceivedOrderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "productionType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Swap)7232_storage": {
+            "label": "struct JWTradeMinner.Swap",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "swapType",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "1"
+              },
+              {
+                "label": "amountIn",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "amountOut",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(UserInfo)7259_storage": {
             "label": "struct JWTradeMinner.UserInfo",
             "members": [
               {

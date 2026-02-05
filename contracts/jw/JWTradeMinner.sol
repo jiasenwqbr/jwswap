@@ -71,8 +71,12 @@ contract JWTradeMinner is  Initializable,
     uint256[] tradeVolumePerDay;
     uint256[] produceTokenVolumePerDay;
     mapping(uint256 => uint256) produceTokenPerDay;
-    uint256 public constant SECONDS_PER_DAY = 86400;
+    
+    // for test
+    uint256 public constant SECONDS_PER_DAY = 60*60;
     uint256 public constant SECONDS_PER_YEAR = 365 days;
+    // uint256 public constant SECONDS_PER_DAY = 86400;
+    // uint256 public constant SECONDS_PER_YEAR = 365 days;
     
 
     // 交易量
@@ -192,6 +196,7 @@ contract JWTradeMinner is  Initializable,
         });
         orders[currentOrderId] = order;
         userOrderIdsPerDay[msg.sender][dayIndex].push(currentOrderId);
+        orderId = orderId + 1;
 
         // 更新交易量
         // 平台交易量
@@ -264,10 +269,6 @@ contract JWTradeMinner is  Initializable,
         
     }
 
-    
-
-
-
     // 卖jw
     function sellJW(address jwAddress,uint256 amount) public  nonReentrant {
         uint256 createTime = block.timestamp;
@@ -294,6 +295,7 @@ contract JWTradeMinner is  Initializable,
         });
         orders[currentOrderId] = order;
         userOrderIdsPerDay[msg.sender][dayIndex].push(currentOrderId);
+        orderId = orderId + 1;
 
         // 更新交易量
         // 平台交易量
@@ -505,7 +507,7 @@ contract JWTradeMinner is  Initializable,
         return dayProduction;
     }
 
-    // 领取查出
+    // 领取产出
     function receiveProduction(address token,uint256 amount,uint8 productionType) public nonReentrant{
         // validate recommand
         (address referrer,,,) = IRecommendation(recommandContractAddress).getUserInfo(msg.sender);
@@ -517,14 +519,14 @@ contract JWTradeMinner is  Initializable,
         if (productionType == 0){
             require(users[msg.sender].staticRewardBalance > 0,"no static production");
             require(users[msg.sender].staticRewardBalance >= amount,"not enough static production");
-            SafeERC20.safeTransferFrom(IERC20(token), address(this),msg.sender, amount);
+            SafeERC20.safeTransfer(IERC20(token), msg.sender, amount);
             users[msg.sender].staticRewardBalance = users[msg.sender].staticRewardBalance - amount;
             users[msg.sender].staticRewardReceived = users[msg.sender].staticRewardReceived + amount;
 
         } else {
             require(users[msg.sender].dynRewardBalance > 0,"no dyn production");
             require(users[msg.sender].dynRewardBalance >= amount,"not enough dyn production");
-            SafeERC20.safeTransferFrom(IERC20(token), address(this),msg.sender, amount);
+            SafeERC20.safeTransfer(IERC20(token),msg.sender, amount);
             users[msg.sender].dynRewardBalance = users[msg.sender].dynRewardBalance - amount;
             users[msg.sender].dynRewardReceived = users[msg.sender].dynRewardReceived + amount;
 
@@ -577,6 +579,9 @@ contract JWTradeMinner is  Initializable,
     }
     function getPlatformTradePerDay(uint256 dayIndex) public  view returns(uint256) {
         return platformTradePerDay[dayIndex];
+    }
+    function getUserOrderIdsPerDay(address user,uint256 dayIndex) public view returns(uint256[] memory){
+        return userOrderIdsPerDay[user][dayIndex];
     }
 
     function getPIJS2USDT(uint256 amount) public view returns(uint256) {
@@ -655,9 +660,18 @@ contract JWTradeMinner is  Initializable,
         return userOrderIdsPerDay[user][dayIndex];
     }
 
+    function getUserOrdersPerday(address user,uint256 dayIndex) external view returns (Swap[] memory){
+        uint256[] memory ids = userOrderIdsPerDay[user][dayIndex];
+        Swap[] memory swaps = new Swap[](ids.length);
+        for (uint256 i = 0;i < ids.length;i++){
+            swaps[i] = orders[ids[i]];
+        }
+        return swaps;
+    }
+
     // 查询奖励记录
     function queryRewardGenerateRecords(uint256 year,address user) public view returns(RewardGenerateRecord[] memory){
-        uint256[] memory recordIds = userRewardReceivedRecords[user][year];
+        uint256[] memory recordIds = userRewardGenerateRecords[user][year];
         RewardGenerateRecord[] memory records = new RewardGenerateRecord[](recordIds.length);
         for (uint256 i = 0;i < recordIds.length;i++){
             records[i] = rewardGenerateRecords[recordIds[i]];
@@ -667,7 +681,7 @@ contract JWTradeMinner is  Initializable,
 
     // 查询奖励领取记录
     function queryRewardReceivedRecord(uint256 year,address user) public view returns(RewardReceivedRecord[] memory){
-        uint256[] memory recordIds = userRewardGenerateRecords[user][year];
+        uint256[] memory recordIds = userRewardReceivedRecords[user][year];
         RewardReceivedRecord[] memory records = new RewardReceivedRecord[](recordIds.length);
         for (uint256 i = 0;i < recordIds.length;i++){
             records[i] = rewardReceivedRecords[recordIds[i]];
@@ -702,6 +716,11 @@ contract JWTradeMinner is  Initializable,
            dynamaticPercent = _dynamaticPercent;
     }
 
+    function setProduceTokenVolumePerDay(uint256[] memory _tradeVolumePerDay,uint256[] memory _produceTokenVolumePerDay)external onlyRole(MANAGE_ROLE){
+        tradeVolumePerDay = _tradeVolumePerDay;
+        produceTokenVolumePerDay = _produceTokenVolumePerDay;
+    }
+
     function getParams() external view returns(
         address,
         address,
@@ -728,9 +747,13 @@ contract JWTradeMinner is  Initializable,
 
     }
 
+    function getUserInfo(address userAddress) public view returns(UserInfo memory){
+        return users[userAddress];
+    }
 
 
-receive() external payable {}
+
+    receive() external payable {}
     
     
 }
