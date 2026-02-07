@@ -34,6 +34,7 @@ contract JWTradeMinner is  Initializable,
             address _jwToken,
             address _usdtAddress,
             address _swapRouterAddress,
+            address _swapOrangeRouterAddress,
             address _manageContractAddress,
             address _recommandContractAddress,
             uint256[] memory _tradeVolumePerDay,
@@ -49,6 +50,7 @@ contract JWTradeMinner is  Initializable,
             jwToken = _jwToken;
             usdtAddress = _usdtAddress;
             swapRouterAddress = _swapRouterAddress;
+            swapOrangeRouterAddress = _swapOrangeRouterAddress;
             manageContractAddress = _manageContractAddress;
             recommandContractAddress = _recommandContractAddress;
             tradeVolumePerDay = _tradeVolumePerDay;
@@ -67,6 +69,7 @@ contract JWTradeMinner is  Initializable,
     address manageContractAddress;
     address recommandContractAddress;
     address swapRouterAddress;
+    address swapOrangeRouterAddress;
     // Sort by size from largest to smallest
     uint256[] tradeVolumePerDay;
     uint256[] produceTokenVolumePerDay;
@@ -352,9 +355,9 @@ contract JWTradeMinner is  Initializable,
         // 1. 先从用户拉 USDT
         SafeERC20.safeTransferFrom(IERC20(usdtAddress), msg.sender, address(this), buyPIJSAmount);
         // 2. 再授权 Router
-        SafeERC20.safeApprove(IERC20(usdtAddress), swapRouterAddress, 0);
-        SafeERC20.safeApprove(IERC20(usdtAddress),swapRouterAddress, buyPIJSAmount);
-        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        SafeERC20.safeApprove(IERC20(usdtAddress), swapOrangeRouterAddress, 0);
+        SafeERC20.safeApprove(IERC20(usdtAddress),swapOrangeRouterAddress, buyPIJSAmount);
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapOrangeRouterAddress);
         // 2. USDT -> WETH
         address[] memory path1 = new address[](2);
         path1[0] = usdtAddress;
@@ -406,9 +409,9 @@ contract JWTradeMinner is  Initializable,
          // 1. 先从用户拉 USDT
         SafeERC20.safeTransferFrom(IERC20(usdtAddress), msg.sender, address(this), buyJwAmount);
         // 2. 再授权 Router
-        SafeERC20.safeApprove(IERC20(usdtAddress), swapRouterAddress, 0);
-        SafeERC20.safeApprove(IERC20(usdtAddress),swapRouterAddress, buyJwAmount);
-        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        SafeERC20.safeApprove(IERC20(usdtAddress), swapOrangeRouterAddress, 0);
+        SafeERC20.safeApprove(IERC20(usdtAddress),swapOrangeRouterAddress, buyJwAmount);
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapOrangeRouterAddress);
         // 3. USDT -> WETH
         address[] memory path1 = new address[](2);
         path1[0] = usdtAddress;
@@ -424,12 +427,13 @@ contract JWTradeMinner is  Initializable,
         );
         uint256 afterETHBalance = address(this).balance;
         uint256 ethReceived = afterETHBalance - beforeETHBalance;
+        IUniswapV2Router02 swapOrangeRouter = IUniswapV2Router02(swapRouterAddress);
         // WETH -> JW
         uint256 beforeJWAmount = IERC20(jwToken).balanceOf(address(this));
         address[] memory path2 = new address[](2);
         path2[0] = swapRouter.WETH();
         path2[1] = jwToken;
-        swapRouter.swapExactETHForTokensSupportingFeeOnTransferTokens{value: ethReceived}(
+        swapOrangeRouter.swapExactETHForTokensSupportingFeeOnTransferTokens{value: ethReceived}(
             0,
             path2,
             address(this),
@@ -526,7 +530,7 @@ contract JWTradeMinner is  Initializable,
         } else {
             require(users[msg.sender].dynRewardBalance > 0,"no dyn production");
             require(users[msg.sender].dynRewardBalance >= amount,"not enough dyn production");
-            SafeERC20.safeTransfer(IERC20(token),msg.sender, amount);
+            SafeERC20.safeTransfer(IERC20(token), msg.sender, amount);
             users[msg.sender].dynRewardBalance = users[msg.sender].dynRewardBalance - amount;
             users[msg.sender].dynRewardReceived = users[msg.sender].dynRewardReceived + amount;
 

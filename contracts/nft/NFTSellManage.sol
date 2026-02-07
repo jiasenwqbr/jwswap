@@ -31,6 +31,7 @@ contract NFTSellManage is  Initializable,
             address _receiver,
             address _recommandContractAddress,
             address _swapRouterAddress,
+            address _swapOrangeRouterAddress,
             address _jwToken,
             address[3] memory nftaddresses,
             uint256[3] memory usdtPrice,
@@ -48,6 +49,7 @@ contract NFTSellManage is  Initializable,
             receiver = _receiver;
             recommandContractAddress = _recommandContractAddress;
             swapRouterAddress = _swapRouterAddress;
+            swapOrangeRouterAddress = _swapOrangeRouterAddress;
             jwToken = _jwToken;
 
             // init product
@@ -90,6 +92,7 @@ contract NFTSellManage is  Initializable,
     address receiver;
     address recommandContractAddress;
     address swapRouterAddress;
+    address swapOrangeRouterAddress;
     address jwToken;
     mapping(address => uint256) userNfts;
     uint256 public currentNftId;
@@ -255,7 +258,7 @@ contract NFTSellManage is  Initializable,
     }
 
     function getPIJS2USDT(uint256 amount) public view returns(uint256) {
-        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapOrangeRouterAddress);
         // pijs-> usdt
         address[] memory path2 = new address[](2);
         path2[0] = swapRouter.WETH();
@@ -268,7 +271,7 @@ contract NFTSellManage is  Initializable,
         return usdtAmount;
     }
     function getUSDT2PIJS(uint256 amount) public view returns(uint256) {
-        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapOrangeRouterAddress);
         // pijs-> usdt
         address[] memory path2 = new address[](2);
         path2[0] = usdtAddress;
@@ -290,12 +293,14 @@ contract NFTSellManage is  Initializable,
         uint[] memory amounts1 = swapRouter.getAmountsOut(infoAmount, path1);
         uint256 bnbAmount = amounts1[1];
         require(bnbAmount > 0, "jw->pijs quote failed");
+        
+         IUniswapV2Router02 swapOrangeRouter = IUniswapV2Router02(swapOrangeRouterAddress);
         // pijs -> jw
         address[] memory path2 = new address[](2);
-        path2[0] = swapRouter.WETH();
+        path2[0] = swapOrangeRouter.WETH();
         path2[1] = usdtAddress;
 
-        uint[] memory amounts2 = swapRouter.getAmountsOut(bnbAmount, path2);
+        uint[] memory amounts2 = swapOrangeRouter.getAmountsOut(bnbAmount, path2);
         uint256 usdtAmount = amounts2[1];
         require(usdtAmount > 0, "pijs->USDT quote failed");
         
@@ -303,15 +308,17 @@ contract NFTSellManage is  Initializable,
     }
 
     function getUSDT2JW(uint256 usdtAmount) public view returns(uint256) {
-        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        
+         IUniswapV2Router02 swapOrangeRouter = IUniswapV2Router02(swapOrangeRouterAddress);
         // usdt -> pijs
         address[] memory path1 = new address[](2);
         path1[0] = usdtAddress;
-        path1[1] = swapRouter.WETH();
-        uint[] memory amounts1 = swapRouter.getAmountsOut(usdtAmount, path1);
+        path1[1] = swapOrangeRouter.WETH();
+        uint[] memory amounts1 = swapOrangeRouter.getAmountsOut(usdtAmount, path1);
         uint256 bnbAmount = amounts1[1];
         require(bnbAmount > 0, "USDT->pijs quote failed");
 
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
         // pijs -> jw
         address[] memory path2 = new address[](2);
         path2[0] = swapRouter.WETH();

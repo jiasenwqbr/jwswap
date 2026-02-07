@@ -2,9 +2,55 @@
 
 ## 合约地址
 
+------- 两个swap公用WPIJS、USDT
 
+WPIJS contract address is: 0x3749077a8D8a4fCFF10daAb9Bc130Ce4E609Ce54
 
+PIJS_USDT contract address is: 0xc4610478b18b116f88A2F22A8685467f970e7ffc
 
+--------- orange swap
+
+PiJFactory contract address is:  0xe3DCD243995ec02d0F4Fbf71A264A9453C15c7e1
+
+PiJRouter contract address is: 0x317A073A77b9Bdad986462eF87114aDA8876de67
+
+wpijs/usdt pair address: 0xc9E033a97913e9096B49e4F816Ab74fd0B853505
+
+----------jwswap
+
+PiJFactory contract address is:  0x97490047CA48F96a451Fdc24C95b5E2d432EE588
+
+PiJRouter contract address is: 0x3D436e3503B40a2c73D0EA70ab407405aDaf13d5
+
+JW contract address is: 0x178e60b40733E3C3933B0c41e12A96D72ac3878C
+
+jw/wpijs pair address: 0x1C615759387B380C0Db47048589E29D4BA9F0983
+
+---------- 推荐合约
+
+Recommendation address is: 0x27Bc64142dEd44c1d5b4FDA3E1A818b0d5C8Edb1
+
+---------- NFT合约 （PlatinumNFT 铂金NFT、EpicNFT史诗NFT、LegendNFT传奇NFT）
+
+PlatinumNFT contract address is: 0x602832375e571b87172546DcD2D7E41006b4e852
+EpicNFT contract address is: 0xD6669860c0a1C8A123c2760aE697D1AE83b6B861
+LegendNFT contract address is: 0xe86D824A1a43Dc241A7b94B6f42a1d13cAd5a282
+
+---------- NFT销售管理合约 
+
+NFTSellManage address is: 0x8B769E9BE8271e07a0ccb9b53E57d659D0963fe4
+
+---------- 抢购合约
+
+FlashSalse address is: 0x320aA310BB4145F81b24d0BE8Ad1431242ccC670
+
+---------- 交互空投合约
+
+InteractionAirDrop address is: 0x465535ab7F50B1B3Dc4D6C140B0a5e0983d9340A
+
+---------- JW挖矿合约
+
+JWTradeMinner address is: 0x401fB5e3a679D6b0a6F8281cB59aD4E24d00cF74
 
 
 

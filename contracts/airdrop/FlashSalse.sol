@@ -29,7 +29,8 @@ contract FlashSalse is  Initializable,
             address _usdtAddress,
             address _receiver,
             address _recommandContractAddress,
-            address _swapRouterAddress
+            address _swapRouterAddress,
+            address _swapOrangeRouterAddress
         ) public initializer {
             __AccessControlEnumerable_init();
             __ReentrancyGuard_init();
@@ -41,6 +42,7 @@ contract FlashSalse is  Initializable,
             receiver = _receiver;
             recommandContractAddress = _recommandContractAddress;
             swapRouterAddress = _swapRouterAddress;
+            swapOrangeRouterAddress = _swapOrangeRouterAddress;
 
             Product memory p1 = Product({
                 productId : 1,
@@ -86,6 +88,7 @@ contract FlashSalse is  Initializable,
         address usdtAddress;
         address recommandContractAddress;
         address swapRouterAddress;
+        address swapOrangeRouterAddress;
         address receiver;
         uint256 public constant SECONDS_PER_HOUR = 60 * 60;
         uint256 orderId;
@@ -211,7 +214,7 @@ contract FlashSalse is  Initializable,
                 products[_productId].canCheck = _canCheck;
         }
         function getPIJS2USDT(uint256 amount) public view returns(uint256) {
-            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapOrangeRouterAddress);
             // pijs-> usdt
             address[] memory path2 = new address[](2);
             path2[0] = swapRouter.WETH();

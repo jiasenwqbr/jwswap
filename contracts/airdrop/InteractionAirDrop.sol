@@ -29,6 +29,7 @@ contract InteractionAirDrop is  Initializable,
             address _receiver,
             address _recommandContractAddress,
             address _swapRouterAddress,
+            address _swapOrangeRouterAddress,
             address _jwToken,
             uint256 _wearRate
         ) public initializer {
@@ -42,6 +43,7 @@ contract InteractionAirDrop is  Initializable,
             receiver = _receiver;
             recommandContractAddress = _recommandContractAddress;
             swapRouterAddress = _swapRouterAddress;
+            swapOrangeRouterAddress = _swapOrangeRouterAddress;
             jwToken = _jwToken;
             wearRate = _wearRate;
 
@@ -108,6 +110,7 @@ contract InteractionAirDrop is  Initializable,
         address usdtAddress;
         address recommandContractAddress;
         address swapRouterAddress;
+        address swapOrangeRouterAddress;
         address receiver;
         uint256 public constant SECONDS_PER_HOUR = 60 * 60;
         uint256 orderId;

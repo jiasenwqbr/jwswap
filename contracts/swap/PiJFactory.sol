@@ -712,6 +712,7 @@ contract PiJFactory is IPiJFactory {
         address tokenB
     ) external returns (address pair) {
         require(tokenA != tokenB, "PiJ: IDENTICAL_ADDRESSES");
+        // require(tokenA != address("") && tokenB !="","");
         (address token0, address token1) = tokenA < tokenB
             ? (tokenA, tokenB)
             : (tokenB, tokenA);
