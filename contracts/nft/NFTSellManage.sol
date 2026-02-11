@@ -343,6 +343,8 @@ contract NFTSellManage is  Initializable,
 
     // 生成奖励记录
     function generateRewardOrder(address tokenAddress,uint256 tokenAmount,address nftAddress,uint256 nftId,address nftOwner,uint256 weekIndex,uint256 profitSharingAmount,uint256 feeSharingAmount) external onlyRole(OPERATE_ROLE) {
+        
+        
         require(tokenAddress == jwToken,"jw address is invalid");
         require(tokenAmount > 0,"tokenAmount should >0");
         require(products[nftAddress].nftAddr != address(0),"nft address is invalid");

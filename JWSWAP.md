@@ -1,6 +1,6 @@
 # JWSWAP
 
-## 合约地址
+## 测试网合约地址
 
 ------- 两个swap公用WPIJS、USDT
 
@@ -22,13 +22,15 @@ PiJFactory contract address is:  0x97490047CA48F96a451Fdc24C95b5E2d432EE588
 
 PiJRouter contract address is: 0x3D436e3503B40a2c73D0EA70ab407405aDaf13d5
 
-JW contract address is: 0x178e60b40733E3C3933B0c41e12A96D72ac3878C
+JW contract address is: 0x242895F66647FAaeA5f1E7C63f39f44ffC095642
 
 jw/wpijs pair address: 0x1C615759387B380C0Db47048589E29D4BA9F0983
 
 ---------- 推荐合约
 
 Recommendation address is: 0x27Bc64142dEd44c1d5b4FDA3E1A818b0d5C8Edb1
+
+推荐的根地址:0x600A06CF3A0152cbd4b1b090432b3220653bD972
 
 ---------- NFT合约 （PlatinumNFT 铂金NFT、EpicNFT史诗NFT、LegendNFT传奇NFT）
 
@@ -46,7 +48,7 @@ FlashSalse address is: 0x320aA310BB4145F81b24d0BE8Ad1431242ccC670
 
 ---------- 交互空投合约
 
-InteractionAirDrop address is: 0x465535ab7F50B1B3Dc4D6C140B0a5e0983d9340A
+InteractionAirDrop address is: 0x8Cf5AC8d2A4B9762570520Df3867f51DA8dfb71C
 
 ---------- JW挖矿合约
 
@@ -73,6 +75,17 @@ function register(address referrerAddress)
 ```
 
 - referrerAddress 推荐人
+
+event
+
+```
+ event ReferralRegistered(address user,address referrer,address[] referralChain,uint256 timestamp);
+```
+
+- user 参与者地址
+- referrer 推荐人地址
+- referralChain 推荐链数组  [1直接推荐人,2间接推荐人,3,4....]
+- timestamp 参与时间
 
 
 
@@ -219,10 +232,16 @@ function setSellFeeReceivers(address[] calldata _receivers, uint256[] calldata _
 
 
 
-#### 添加购买手续费接收者
+#### 添加购买手续费接收者(挖矿交易)
 
 ```
 function addBuyFeeReceiver(address _receiver, uint256 _rate) external onlyOwner
+```
+
+#### 添加购买手续费接收者(正常swap交易)
+
+```
+function setBuyFeeReceiversNormal(address[] calldata _receivers, uint256[] calldata _rates) external onlyOwner 
 ```
 
 
@@ -671,6 +690,30 @@ function checkJW(uint256 _orderId,uint8 productId) public nonReentrant
 
 #### InteractionAirDrop 交互空投 
 
+##### 查询阶段信息
+
+```
+function getProduct(uint8 productId) public view returns(Product memory)
+```
+
+入参：
+
+productId 1 一期 2 二期 3 三期
+
+返回值：
+
+Product
+
+- uint8 productId 1 一期 2 二期 3 三期
+- uint256 usdtValue 支付usdt数量
+- uint256 jwAmountPerCopy 每份jw数量
+- uint buyLimit 单用户购买限制
+- uint256 limit 总限制
+- uint256 currentInteractionTimes 当前交互总次数
+-  uint256 realsePerioid  释放周期
+- bool enabled  是否启用
+-   uint256 startTime 开始上线时间
+
 ##### 参与空投
 
 ```
@@ -680,6 +723,57 @@ function joinAirDrop(uint8 productId) public
 入参：
 
 - productId 1 一期 2 二期 3 三期
+
+事件：
+
+```
+ event JoinAirDrop(address userAddr,uint8 productId,uint256 amount,address receiver,uint256 currentOrderId,address referrer,address indriectReferrer,uint256 driectReferrerIntegrationInc,uint256 inDriectReferrerIntegrationInc,uint256 timestamp);
+```
+
+- userAddr 参与者地址
+- productId 1 一期 2 二期 3 三期
+- amount 支付的pijs
+- receiver 支付的pijs的接收者
+- currentOrderId 订单id
+- referrer 直接推荐人
+- indriectReferrer 间接推荐人
+- driectReferrerIntegrationInc  直接推荐人增加的积分
+- inDriectReferrerIntegrationInc 简介推荐人增加的积分
+- timestamp 时间戳
+
+
+
+##### 购买同等数量JW
+
+```
+function buyJW(uint256 productId,uint256 _orderId) public payable nonReentrant 
+```
+
+入参：
+
+- productId 1 一期 2 二期 3 三期
+- _orderId 订单ID
+
+
+
+##### 按期查询交互空投、支付金额
+
+```
+function getAllAirdropSumByUser(address user,uint256 productId) public view returns (uint256,uint256,uint256)
+```
+
+入参：
+
+- user 用户地址
+- productId 期
+
+返回值：
+
+- 时间
+- 空投代币
+- 支付金额
+
+
 
 ##### 查询用户全部空投
 
@@ -705,7 +799,7 @@ Order[]
 - isReceived 是否领
 - receivedTime 领取时间
 
-##### 查询待领取的
+##### 查询待领取的 (待释放)
 
 ```
  function checkPendingCollectionOrder(address user,uint8 productId) public view returns(Order[] memory ,uint256)
@@ -719,7 +813,7 @@ Order[]
 function checkingReceivedOrder (address user,uint8 productId) public view returns(Order[] memory,uint256)
 ```
 
-##### 查询未到期
+##### 查询未到期（释放中）
 
 ```
 function checkingNotYetExpired(address user,uint8 productId) public view returns(Order[] memory,uint256 )
@@ -755,6 +849,55 @@ function checkJW(uint256 _orderId,uint8 productId) public
 
 - user 用户地址
 - productId 期
+
+##### 查看用户积分
+
+```
+function getUserIntegration(address user) public view returns(uint256)
+```
+
+
+
+##### 查询直推用户数、查询推荐空投用户数、我的积分、推荐列表
+
+```
+function getUserInfo(address user) public view returns(uint256,uint256,uint256,RecomandCol[] memory) 
+```
+
+入参：
+
+- user 用户地址
+
+返回值：
+
+- 推荐用户数
+- 推荐空投用户数
+- 我的积分
+- 推荐列表
+
+##### 查询我的团队总人数
+
+```
+function getTeamCount(address user) external view returns (uint256)
+```
+
+入参：
+
+- user 用户地址
+
+返回值：
+
+- 团队人数
+
+##### 查询全部产品信息
+
+```
+function getProducts() external view returns(Product memory,Product memory,Product memory)
+```
+
+
+
+
 
 
 

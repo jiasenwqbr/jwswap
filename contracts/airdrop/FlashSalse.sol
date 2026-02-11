@@ -322,6 +322,25 @@ contract FlashSalse is  Initializable,
             wearRate = _wearRate;
         }
 
+        function getUSDT2PIJS(uint256 amount) public view returns(uint256) {
+            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapOrangeRouterAddress);
+            // pijs-> usdt
+            address[] memory path2 = new address[](2);
+            path2[0] = usdtAddress;
+            path2[1] = swapRouter.WETH();
+
+            uint[] memory amounts2 = swapRouter.getAmountsOut(amount, path2);
+            uint256 pijsAmount = amounts2[1];
+            require(pijsAmount > 0, "USDT -> pijs quote failed");
+            
+            return pijsAmount;
+        }
+
+        function getRouterAddress() public view returns(address,address) {
+            return (swapRouterAddress,swapOrangeRouterAddress);
+        }
+
+
 
 
 

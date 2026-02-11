@@ -19,11 +19,17 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     event TradeWhitelistUpdated(address indexed account, bool status);
     event TradeWhitelistBuyLimitUpdated(address indexed account, uint256 limit);
     event BuyFeeReceiverAdded(address indexed receiver, uint256 rate);
+    event BuyFeeReceiverAddedNormal(address indexed receiver, uint256 rate);
     event SellFeeReceiverAdded(address indexed receiver, uint256 rate);
+    event SellFeeReceiverAddedNormal(address indexed receiver, uint256 rate);
     event BuyFeeReceiverUpdated(uint256 indexed index, address receiver, uint256 rate);
     event SellFeeReceiverUpdated(uint256 indexed index, address receiver, uint256 rate);
+    event BuyFeeReceiverUpdatedNormal(uint256 indexed index, address receiver, uint256 rate);
+    event SellFeeReceiverUpdatedNormal(uint256 indexed index, address receiver, uint256 rate);
     event BuyFeeReceiverRemoved(uint256 indexed index);
     event SellFeeReceiverRemoved(uint256 indexed index);
+    event BuyFeeReceiverRemovedNormal(uint256 indexed index);
+    event SellFeeReceiverRemovedNormal(uint256 indexed index);
     event TradingEnabledUpdated(bool enabled);
     event PairEnabledStatusUpdated(address indexed pair, bool enabled);
     
@@ -44,13 +50,17 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     // 支持多个手续费接收者的结构体
     struct FeeReceiver {
         address receiver;
-        uint256 rate; // 费率，基数1000，例如25表示2.5%
+        uint256 rate; // 费率，基数10000，例如25表示2.5%
     }
     
     
     // 支持多个手续费接收者
     FeeReceiver[] public buyFeeReceivers;
     FeeReceiver[] public sellFeeReceivers;
+
+    FeeReceiver[] public buyFeeReceiversNormal;
+    FeeReceiver[] public sellFeeReceiversNormal;
+
     bool public tradeToPublic;
 
     address public operator;
@@ -192,10 +202,10 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         uint256 totalRate = 0;
         for (uint256 i = 0; i < _rates.length; i++) {
             // require(_receivers[i] != address(0), "JW: Zero address");
-            require(_rates[i] > 0 && _rates[i] <= 1000, "JW: Invalid rate");
+            require(_rates[i] > 0 && _rates[i] <= 10000, "JW: Invalid rate");
             totalRate += _rates[i];
         }
-        require(totalRate <= 1000, "JW: Total buy fee rate exceeds 100%");
+        require(totalRate <= 10000, "JW: Total buy fee rate exceeds 100%");
         
         // 清空现有设置
         delete buyFeeReceivers;
@@ -204,6 +214,29 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         for (uint256 i = 0; i < _receivers.length; i++) {
             buyFeeReceivers.push(FeeReceiver(_receivers[i], _rates[i]));
             emit BuyFeeReceiverAdded(_receivers[i], _rates[i]);
+        }
+    }
+
+    function setBuyFeeReceiversNormal(address[] calldata _receivers, uint256[] calldata _rates) external onlyOwner {
+        require(_receivers.length == _rates.length, "JW: Arrays length mismatch");
+        require(_receivers.length > 0, "JW: Empty arrays");
+        
+        // 检查总费率不超过100%
+        uint256 totalRate = 0;
+        for (uint256 i = 0; i < _rates.length; i++) {
+            // require(_receivers[i] != address(0), "JW: Zero address");
+            require(_rates[i] > 0 && _rates[i] <= 10000, "JW: Invalid rate");
+            totalRate += _rates[i];
+        }
+        require(totalRate <= 10000, "JW: Total buy fee rate exceeds 100%");
+        
+        // 清空现有设置
+        delete buyFeeReceiversNormal;
+        
+        // 添加新设置
+        for (uint256 i = 0; i < _receivers.length; i++) {
+            buyFeeReceiversNormal.push(FeeReceiver(_receivers[i], _rates[i]));
+            emit BuyFeeReceiverAddedNormal(_receivers[i], _rates[i]);
         }
     }
     
@@ -216,10 +249,10 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         uint256 totalRate = 0;
         for (uint256 i = 0; i < _rates.length; i++) {
             // require(_receivers[i] != address(0), "JW: Zero address");
-            require(_rates[i] > 0 && _rates[i] <= 1000, "JW: Invalid rate");
+            require(_rates[i] > 0 && _rates[i] <= 10000, "JW: Invalid rate");
             totalRate += _rates[i];
         }
-        require(totalRate <= 1000, "JW: Total sell fee rate exceeds 100%");
+        require(totalRate <= 10000, "JW: Total sell fee rate exceeds 100%");
         
         // 清空现有设置
         delete sellFeeReceivers;
@@ -230,54 +263,125 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             emit SellFeeReceiverAdded(_receivers[i], _rates[i]);
         }
     }
+
+    // 批量设置出售手续费接收者（清空后重新设置）
+    function setSellFeeReceiversNormal(address[] calldata _receivers, uint256[] calldata _rates) external onlyOwner {
+        require(_receivers.length == _rates.length, "JW: Arrays length mismatch");
+        require(_receivers.length > 0, "JW: Empty arrays");
+        
+        // 检查总费率不超过100%
+        uint256 totalRate = 0;
+        for (uint256 i = 0; i < _rates.length; i++) {
+            // require(_receivers[i] != address(0), "JW: Zero address");
+            require(_rates[i] > 0 && _rates[i] <= 10000, "JW: Invalid rate");
+            totalRate += _rates[i];
+        }
+        require(totalRate <= 10000, "JW: Total sell fee rate exceeds 100%");
+        
+        // 清空现有设置
+        delete sellFeeReceiversNormal;
+        
+        // 添加新设置
+        for (uint256 i = 0; i < _receivers.length; i++) {
+            sellFeeReceiversNormal.push(FeeReceiver(_receivers[i], _rates[i]));
+            emit SellFeeReceiverAddedNormal(_receivers[i], _rates[i]);
+        }
+    }
+    
     
     // 清空所有购买手续费接收者
     function clearAllBuyFeeReceivers() external onlyOwner {
         delete buyFeeReceivers;
     }
+
+    function clearAllBuyFeeReceiversNormal() external onlyOwner {
+        delete buyFeeReceiversNormal;
+    }
+    
     
     // 清空所有出售手续费接收者
     function clearAllSellFeeReceivers() external onlyOwner {
         delete sellFeeReceivers;
     }
+    function clearAllSellFeeReceiversNormal() external onlyOwner {
+        delete sellFeeReceiversNormal;
+    }
+    
     
     // 添加购买手续费接收者
     function addBuyFeeReceiver(address _receiver, uint256 _rate) external onlyOwner {
         // require(_receiver != address(0), "JW: Zero address");
-        require(_rate > 0 && _rate <= 1000, "JW: Invalid rate"); // 最大100%
+        require(_rate > 0 && _rate <= 10000, "JW: Invalid rate"); // 最大100%
         
         // 检查总费率不超过100%
         uint256 totalRate = _getTotalBuyFeeRate() + _rate;
-        require(totalRate <= 1000, "JW: Total buy fee rate exceeds 100%");
+        require(totalRate <= 10000, "JW: Total buy fee rate exceeds 100%");
         
         buyFeeReceivers.push(FeeReceiver(_receiver, _rate));
         emit BuyFeeReceiverAdded(_receiver, _rate);
+    }
+
+    function addBuyFeeReceiverNormal(address _receiver, uint256 _rate) external onlyOwner {
+        // require(_receiver != address(0), "JW: Zero address");
+        require(_rate > 0 && _rate <= 10000, "JW: Invalid rate"); // 最大100%
+        
+        // 检查总费率不超过100%
+        uint256 totalRate = _getTotalBuyFeeRateNormal() + _rate;
+        require(totalRate <= 10000, "JW: Total buy fee rate exceeds 100%");
+        
+        buyFeeReceiversNormal.push(FeeReceiver(_receiver, _rate));
+        emit BuyFeeReceiverAddedNormal(_receiver, _rate);
     }
     
     // 添加出售手续费接收者
     function addSellFeeReceiver(address _receiver, uint256 _rate) external onlyOwner {
         // require(_receiver != address(0), "JW: Zero address");
-        require(_rate > 0 && _rate <= 1000, "JW: Invalid rate"); // 最大100%
+        require(_rate > 0 && _rate <= 10000, "JW: Invalid rate"); // 最大100%
         
         // 检查总费率不超过100%
         uint256 totalRate = _getTotalSellFeeRate() + _rate;
-        require(totalRate <= 1000, "JW: Total sell fee rate exceeds 100%");
+        require(totalRate <= 10000, "JW: Total sell fee rate exceeds 100%");
         
         sellFeeReceivers.push(FeeReceiver(_receiver, _rate));
         emit SellFeeReceiverAdded(_receiver, _rate);
+    }
+
+    function addSellFeeReceiverNormal(address _receiver, uint256 _rate) external onlyOwner {
+        // require(_receiver != address(0), "JW: Zero address");
+        require(_rate > 0 && _rate <= 10000, "JW: Invalid rate"); // 最大100%
+        
+        // 检查总费率不超过100%
+        uint256 totalRate = _getTotalSellFeeRateNormal() + _rate;
+        require(totalRate <= 10000, "JW: Total sell fee rate exceeds 100%");
+        
+        sellFeeReceiversNormal.push(FeeReceiver(_receiver, _rate));
+        emit SellFeeReceiverAddedNormal(_receiver, _rate);
     }
     
     // 更新购买手续费接收者
     function updateBuyFeeReceiver(uint256 _index, address _receiver, uint256 _rate) external onlyOwner {
         require(_index < buyFeeReceivers.length, "JW: Index out of bounds");
         // require(_receiver != address(0), "JW: Zero address");
-        require(_rate > 0 && _rate <= 1000, "JW: Invalid rate");
+        require(_rate > 0 && _rate <= 10000, "JW: Invalid rate");
         
         // 检查总费率不超过100%（排除当前更新的项）
         uint256 totalRate = _getTotalBuyFeeRate() - buyFeeReceivers[_index].rate + _rate;
-        require(totalRate <= 1000, "JW: Total buy fee rate exceeds 100%");
+        require(totalRate <= 10000, "JW: Total buy fee rate exceeds 100%");
         
         buyFeeReceivers[_index] = FeeReceiver(_receiver, _rate);
+        emit BuyFeeReceiverUpdated(_index, _receiver, _rate);
+    }
+
+    function updateBuyFeeReceiverNormal(uint256 _index, address _receiver, uint256 _rate) external onlyOwner {
+        require(_index < buyFeeReceiversNormal.length, "JW: Index out of bounds");
+        // require(_receiver != address(0), "JW: Zero address");
+        require(_rate > 0 && _rate <= 10000, "JW: Invalid rate");
+        
+        // 检查总费率不超过100%（排除当前更新的项）
+        uint256 totalRate = _getTotalBuyFeeRateNormal() - buyFeeReceiversNormal[_index].rate + _rate;
+        require(totalRate <= 10000, "JW: Total buy fee rate exceeds 100%");
+        
+        buyFeeReceiversNormal[_index] = FeeReceiver(_receiver, _rate);
         emit BuyFeeReceiverUpdated(_index, _receiver, _rate);
     }
     
@@ -285,15 +389,29 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     function updateSellFeeReceiver(uint256 _index, address _receiver, uint256 _rate) external onlyOwner {
         require(_index < sellFeeReceivers.length, "JW: Index out of bounds");
         // require(_receiver != address(0), "JW: Zero address");
-        require(_rate > 0 && _rate <= 1000, "JW: Invalid rate");
+        require(_rate > 0 && _rate <= 10000, "JW: Invalid rate");
         
         // 检查总费率不超过100%（排除当前更新的项）
         uint256 totalRate = _getTotalSellFeeRate() - sellFeeReceivers[_index].rate + _rate;
-        require(totalRate <= 1000, "JW: Total sell fee rate exceeds 100%");
+        require(totalRate <= 10000, "JW: Total sell fee rate exceeds 100%");
         
         sellFeeReceivers[_index] = FeeReceiver(_receiver, _rate);
         emit SellFeeReceiverUpdated(_index, _receiver, _rate);
     }
+
+    function updateSellFeeReceiverNormal(uint256 _index, address _receiver, uint256 _rate) external onlyOwner {
+        require(_index < sellFeeReceiversNormal.length, "JW: Index out of bounds");
+        // require(_receiver != address(0), "JW: Zero address");
+        require(_rate > 0 && _rate <= 10000, "JW: Invalid rate");
+        
+        // 检查总费率不超过100%（排除当前更新的项）
+        uint256 totalRate = _getTotalSellFeeRateNormal() - sellFeeReceiversNormal[_index].rate + _rate;
+        require(totalRate <= 10000, "JW: Total sell fee rate exceeds 100%");
+        
+        sellFeeReceiversNormal[_index] = FeeReceiver(_receiver, _rate);
+        emit SellFeeReceiverUpdatedNormal(_index, _receiver, _rate);
+    }
+    
     
     // 删除购买手续费接收者
     function removeBuyFeeReceiver(uint256 _index) external onlyOwner {
@@ -301,6 +419,12 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         buyFeeReceivers[_index] = buyFeeReceivers[buyFeeReceivers.length - 1];
         buyFeeReceivers.pop();
         emit BuyFeeReceiverRemoved(_index);
+    }
+    function removeBuyFeeReceiverNormal(uint256 _index) external onlyOwner {
+        require(_index < buyFeeReceiversNormal.length, "JW: Index out of bounds");
+        buyFeeReceiversNormal[_index] = buyFeeReceiversNormal[buyFeeReceiversNormal.length - 1];
+        buyFeeReceiversNormal.pop();
+        emit BuyFeeReceiverRemovedNormal(_index);
     }
     
     // 删除出售手续费接收者
@@ -310,15 +434,29 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         sellFeeReceivers.pop();
         emit SellFeeReceiverRemoved(_index);
     }
+    function removeSellFeeReceiverNormal(uint256 _index) external onlyOwner {
+        require(_index < sellFeeReceiversNormal.length, "JW: Index out of bounds");
+        sellFeeReceiversNormal[_index] = sellFeeReceiversNormal[sellFeeReceiversNormal.length - 1];
+        sellFeeReceiversNormal.pop();
+        emit SellFeeReceiverRemoved(_index);
+    }
+    
     
     // 获取购买手续费接收者数量
     function getBuyFeeReceiversCount() external view returns (uint256) {
         return buyFeeReceivers.length;
     }
+    function getBuyFeeReceiversCountNormal() external view returns (uint256) {
+        return buyFeeReceiversNormal.length;
+    }
+    
     
     // 获取出售手续费接收者数量
     function getSellFeeReceiversCount() external view returns (uint256) {
         return sellFeeReceivers.length;
+    }
+    function getSellFeeReceiversCountNormal() external view returns (uint256) {
+        return sellFeeReceiversNormal.length;
     }
     
     // === 查询函数 ===
@@ -329,6 +467,11 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         FeeReceiver memory feeReceiver = buyFeeReceivers[_index];
         return (feeReceiver.receiver, feeReceiver.rate);
     }
+    function getBuyFeeReceiverNormal(uint256 _index) external view returns (address receiver, uint256 rate) {
+        require(_index < buyFeeReceiversNormal.length, "JW: Index out of bounds");
+        FeeReceiver memory feeReceiver = buyFeeReceiversNormal[_index];
+        return (feeReceiver.receiver, feeReceiver.rate);
+    }
     
     // 获取出售手续费接收者信息
     function getSellFeeReceiver(uint256 _index) external view returns (address receiver, uint256 rate) {
@@ -336,15 +479,26 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         FeeReceiver memory feeReceiver = sellFeeReceivers[_index];
         return (feeReceiver.receiver, feeReceiver.rate);
     }
+    function getSellFeeReceiverNormal(uint256 _index) external view returns (address receiver, uint256 rate) {
+        require(_index < sellFeeReceiversNormal.length, "JW: Index out of bounds");
+        FeeReceiver memory feeReceiver = sellFeeReceiversNormal[_index];
+        return (feeReceiver.receiver, feeReceiver.rate);
+    }
     
     // 获取所有购买手续费接收者
     function getAllBuyFeeReceivers() external view returns (FeeReceiver[] memory) {
         return buyFeeReceivers;
     }
+    function getAllBuyFeeReceiversNormal() external view returns (FeeReceiver[] memory) {
+        return buyFeeReceiversNormal;
+    }
     
     // 获取所有出售手续费接收者
     function getAllSellFeeReceivers() external view returns (FeeReceiver[] memory) {
         return sellFeeReceivers;
+    }
+    function getAllSellFeeReceiversNormal() external view returns (FeeReceiver[] memory) {
+        return sellFeeReceiversNormal;
     }
     
     // 检查是否为全局白名单用户
@@ -352,15 +506,21 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         return globalBuyWhitelist[_account];
     }
    
-    
     // 获取总购买手续费率
     function getTotalBuyFeeRate() external view returns (uint256) {
         return _getTotalBuyFeeRate();
     }
+    function getTotalBuyFeeRateNormal() external view returns (uint256) {
+        return _getTotalBuyFeeRateNormal();
+    }
+    
     
     // 获取总出售手续费率
     function getTotalSellFeeRate() external view returns (uint256) {
         return _getTotalSellFeeRate();
+    }
+    function getTotalSellFeeRateNormal() external view returns (uint256) {
+        return _getTotalSellFeeRateNormal();
     }
     
     // 内部函数：计算总购买手续费率
@@ -368,6 +528,14 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         uint256 totalRate = 0;
         for (uint256 i = 0; i < buyFeeReceivers.length; i++) {
             totalRate += buyFeeReceivers[i].rate;
+        }
+        return totalRate;
+    }
+
+    function _getTotalBuyFeeRateNormal() internal view returns (uint256) {
+        uint256 totalRate = 0;
+        for (uint256 i = 0; i < buyFeeReceiversNormal.length; i++) {
+            totalRate += buyFeeReceiversNormal[i].rate;
         }
         return totalRate;
     }
@@ -380,10 +548,18 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         }
         return totalRate;
     }
+    function _getTotalSellFeeRateNormal() internal view returns (uint256) {
+        uint256 totalRate = 0;
+        for (uint256 i = 0; i < sellFeeReceiversNormal.length; i++) {
+            totalRate += sellFeeReceiversNormal[i].rate;
+        }
+        return totalRate;
+    }
 
     function setTradeToPublic(bool _tradeToPublic) public onlyOwner {
         tradeToPublic = _tradeToPublic;
     }
+    
 
 
    function _transfer(address from, address to, uint256 amount) internal {
@@ -409,10 +585,14 @@ contract JW is IERC20, IERC20Metadata, Ownable {
                     require(buyTradingEnabled,"JW: tradingEnabled not enable");
                     _swapTransfer(from, to, amount); 
                 } else {
-                    require(buyTradingEnabled,"JW: tradingEnabled not enable");
-                    _swapTransfer(from, to, amount); 
+                    if (buyLimitAddressWhitelist[to]){
+                        require(buyTradingEnabled,"JW: tradingEnabled not enable");
+                        _swapTransfer(from, to, amount); 
+                    } else {
+                        require(buyTradingEnabled,"JW: tradingEnabled not enable");
+                        _swapTransferNormal(from, to, amount); 
+                    }
                 }
-                
             }  
         } else if (pairs[to]){ /* ================= 卖出收税 减额度================= */
             require(sellTradingEnabled,"JW: tradingEnabled not enable");
@@ -424,10 +604,14 @@ contract JW is IERC20, IERC20Metadata, Ownable {
                     require(sellTradingEnabled,"JW: tradingEnabled not enable");
                     _swapTransfer(from, to, amount); 
                 } else {
-                    require(sellTradingEnabled,"JW: tradingEnabled not enable");
-                    _swapTransfer(from, to, amount); 
+                    if (sellLimitAddressWhitelist[from]){
+                        require(sellTradingEnabled,"JW: tradingEnabled not enable");
+                        _swapTransfer(from, to, amount); 
+                    } else {
+                        require(sellTradingEnabled,"JW: tradingEnabled not enable");
+                        _swapTransferNormal(from, to, amount); 
+                    }
                 }
-               
             }
             
         } else {
@@ -454,7 +638,7 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             if (buyFeeReceivers.length > 0) {
                 // 使用多个手续费接收者
                 for (uint256 i = 0; i < buyFeeReceivers.length; i++) {
-                    uint256 feeAmount = (amount * buyFeeReceivers[i].rate) / 1000;
+                    uint256 feeAmount = (amount * buyFeeReceivers[i].rate) / 10000;
                         if (feeAmount > 0) {
                             _standardTransfer(from, buyFeeReceivers[i].receiver, feeAmount);
                             totalFeeAmount += feeAmount;
@@ -469,7 +653,7 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             if (sellFeeReceivers.length > 0) {
                 // 使用多个手续费接收者
                 for (uint256 i = 0; i < sellFeeReceivers.length; i++) {
-                    uint256 feeAmount = (amount * sellFeeReceivers[i].rate) / 1000;
+                    uint256 feeAmount = (amount * sellFeeReceivers[i].rate) / 10000;
                         if (feeAmount > 0) {
                             _standardTransfer(from, sellFeeReceivers[i].receiver, feeAmount);
                             totalFeeAmount += feeAmount;
@@ -479,6 +663,40 @@ contract JW is IERC20, IERC20Metadata, Ownable {
 
             uint256 transferAmount = amount - totalFeeAmount;
             
+            _standardTransfer(from, to, transferAmount);
+        }
+    }
+
+    function _swapTransferNormal(address from, address to, uint256 amount) internal {
+        if (pairs[from]) {
+            // buy - 从 swap 中购买
+            uint256 totalFeeAmount = 0;
+            if (buyFeeReceiversNormal.length > 0) {
+                // 使用多个手续费接收者
+                for (uint256 i = 0; i < buyFeeReceiversNormal.length; i++) {
+                    uint256 feeAmount = (amount * buyFeeReceiversNormal[i].rate) / 10000;
+                        if (feeAmount > 0) {
+                            _standardTransfer(from, buyFeeReceiversNormal[i].receiver, feeAmount);
+                            totalFeeAmount += feeAmount;
+                        }
+                }
+            }
+            uint256 transferAmount = amount - totalFeeAmount;
+            _standardTransfer(from, to, transferAmount);
+        } else {
+            // sell - 卖出到 swap
+            uint256 totalFeeAmount = 0;
+            if (sellFeeReceiversNormal.length > 0) {
+                // 使用多个手续费接收者
+                for (uint256 i = 0; i < sellFeeReceiversNormal.length; i++) {
+                    uint256 feeAmount = (amount * sellFeeReceiversNormal[i].rate) / 10000;
+                        if (feeAmount > 0) {
+                            _standardTransfer(from, sellFeeReceiversNormal[i].receiver, feeAmount);
+                            totalFeeAmount += feeAmount;
+                        } 
+                }
+            }
+            uint256 transferAmount = amount - totalFeeAmount;
             _standardTransfer(from, to, transferAmount);
         }
     }

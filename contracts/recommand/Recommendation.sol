@@ -19,7 +19,7 @@ contract Recommendation is AccessControlUpgradeable, OwnableUpgradeable, Reentra
     mapping(address => UserInfo) public users;
     mapping(address => address[]) public referralChains;
     
-    event ReferralRegistered(address  user, address[] referralChain,uint256 timestamp);
+    event ReferralRegistered(address user,address referrer,address[] referralChain,uint256 timestamp);
 
 
     function _authorizeUpgrade(
@@ -82,7 +82,7 @@ contract Recommendation is AccessControlUpgradeable, OwnableUpgradeable, Reentra
         
         referralChains[user] = chain;
         
-        emit ReferralRegistered(user,referralChains[user],block.timestamp);
+        emit ReferralRegistered(user,referrerAddress,referralChains[user],block.timestamp);
     }
     
     // 获取用户的完整推荐信息
@@ -108,6 +108,7 @@ contract Recommendation is AccessControlUpgradeable, OwnableUpgradeable, Reentra
     function getGenesisAddress() public view returns (address) {
         return genesisAddress;
     }
+    
 
     
 

@@ -712,7 +712,20 @@ contract PiJFactory is IPiJFactory {
         address tokenB
     ) external returns (address pair) {
         require(tokenA != tokenB, "PiJ: IDENTICAL_ADDRESSES");
-        // require(tokenA != address("") && tokenB !="","");
+        
+        address wethAddress = 0x3749077a8D8a4fCFF10daAb9Bc130Ce4E609Ce54;
+        address usdtAddress = 0xc4610478b18b116f88A2F22A8685467f970e7ffc;
+        // tokenA == weth
+        if (tokenA == wethAddress){
+            // tokenB != usdt
+            require(tokenB != usdtAddress,"PIJS/USDT pair not allowed");
+        }
+        // tokenB == weth
+        if (tokenB == wethAddress){
+            // tokenA != usdt
+            require(tokenA != usdtAddress,"PIJS/USDT pair not allowed");
+        }
+
         (address token0, address token1) = tokenA < tokenB
             ? (tokenA, tokenB)
             : (tokenB, tokenA);
