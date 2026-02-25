@@ -690,6 +690,8 @@ contract PiJFactory is IPiJFactory {
     address public feeToSetter;
 
     mapping(address => mapping(address => address)) public getPair;
+    mapping(address => bool) isCreatePairTokenList;
+    address admin;
     address[] public allPairs;
 
     event PairCreated(
@@ -701,10 +703,19 @@ contract PiJFactory is IPiJFactory {
 
     constructor(address _feeToSetter) public {
         feeToSetter = _feeToSetter;
+        admin = msg.sender;
     }
 
     function allPairsLength() external view returns (uint) {
         return allPairs.length;
+    }
+    function setIsCreatePairToken(address token,bool isCanCreate) external {
+        require(msg.sender == admin,"only admin can do this");
+        isCreatePairTokenList[token] = isCanCreate;
+    }
+    function changeAdmin(address _admin) external {
+        require(msg.sender == admin,"only admin can change");
+        admin = _admin;
     }
 
     function createPair(
@@ -714,16 +725,13 @@ contract PiJFactory is IPiJFactory {
         require(tokenA != tokenB, "PiJ: IDENTICAL_ADDRESSES");
         
         address wethAddress = 0x3749077a8D8a4fCFF10daAb9Bc130Ce4E609Ce54;
-        address usdtAddress = 0xc4610478b18b116f88A2F22A8685467f970e7ffc;
         // tokenA == weth
         if (tokenA == wethAddress){
-            // tokenB != usdt
-            require(tokenB != usdtAddress,"PIJS/USDT pair not allowed");
+            require(isCreatePairTokenList[tokenB] == true,"pair not allowed");
         }
         // tokenB == weth
         if (tokenB == wethAddress){
-            // tokenA != usdt
-            require(tokenA != usdtAddress,"PIJS/USDT pair not allowed");
+            require(isCreatePairTokenList[tokenA] == true,"pair not allowed");
         }
 
         (address token0, address token1) = tokenA < tokenB

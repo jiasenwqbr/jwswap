@@ -21,7 +21,7 @@ describe("JWSwap",async () => {
     let wpijs:WPIJS;
     let piJFactory:PiJFactory;
     let piJRouter:PiJRouter;
-    const jwAddress = "0x277f645940F501D1D7D14d447073b43a55aC4Cb0";
+    const jwAddress = "0x9ea37BF0b8bAAa7991651e1f8386baE5DB516a9F";
     const platinumNFTAddress = "0x1FfbaEd0D022CA599351E2877365F670FE900a5f";
     const epicNFTAddress = "0x134b45aB7d3f37513b788dAa0149d48f3D02B007";
     const legendNFTAddress = "0xf37d3CD10fE2C11dc4c5dCFA5502A072eC9f501a";
@@ -219,7 +219,7 @@ describe("JWSwap",async () => {
         }
     });
     it("transferJW",async () => {
-        const tx = await jw.connect(owner).transfer(flashSalseAddress,ethers.utils.parseEther("100000"));
+        const tx = await jw.connect(owner).transfer("0x953022d715A3CbEaaF805412C7938F9830EEb122",ethers.utils.parseEther("100000"));
         await tx.wait();
         console.log(ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
 

@@ -45,6 +45,11 @@
       "address": "0x8Cf5AC8d2A4B9762570520Df3867f51DA8dfb71C",
       "txHash": "0xcfb29ddc982a7cf90f8b71a3078e60f967868e1df48ab46e217bc2188e4baa43",
       "kind": "uups"
+    },
+    {
+      "address": "0xFd5577f62435Cf6c721461B7fE6cF73eBEc754cD",
+      "txHash": "0x91630ba4dc3a727de6e047f32ed9aed6e24f71cdbe5ad85ac591028b46d61ed6",
+      "kind": "uups"
     }
   ],
   "impls": {
@@ -5538,6 +5543,2701 @@
     "178694e2956ca6dd8d7dbd18696588cc83e0fc67331be9f8be4a3318a5b3f693": {
       "address": "0xE9755C83B5C7C361F06A26edebd6B2F5b5A169Ad",
       "txHash": "0xad462bed3a60001b833400cdcc0ad71128b3bb4022454ebe106fc7f2942c4d1e",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:121"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:122"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:123"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:124"
+          },
+          {
+            "label": "swapOrangeRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:125"
+          },
+          {
+            "label": "receiver",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:126"
+          },
+          {
+            "label": "developer",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:127"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:129"
+          },
+          {
+            "label": "wearRate",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:130"
+          },
+          {
+            "label": "developerPersentage",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:132"
+          },
+          {
+            "label": "products",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_uint8,t_struct(Product)7107_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:133"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_struct(Order)7088_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:134"
+          },
+          {
+            "label": "userOrders",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_mapping(t_address,t_mapping(t_uint8,t_array(t_uint256)dyn_storage))",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:135"
+          },
+          {
+            "label": "userInfos",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7193_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:155"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint8,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint8 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7193_storage)": {
+            "label": "mapping(address => struct InteractionAirDrop.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Order)7088_storage)": {
+            "label": "mapping(uint256 => struct InteractionAirDrop.Order)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint8 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_struct(Product)7107_storage)": {
+            "label": "mapping(uint8 => struct InteractionAirDrop.Product)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Order)7088_storage": {
+            "label": "struct InteractionAirDrop.Order",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "pijsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "productId",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "jwAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "createTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "purchaseSameQuantity",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "purchaseSameQuantityTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "isReceived",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "receivedTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "9"
+              }
+            ],
+            "numberOfBytes": "320"
+          },
+          "t_struct(Product)7107_storage": {
+            "label": "struct InteractionAirDrop.Product",
+            "members": [
+              {
+                "label": "productId",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "usdtValue",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "jwAmountPerCopy",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "buyLimit",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "limit",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "currentInteractionTimes",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "realsePerioid",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "enabled",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              }
+            ],
+            "numberOfBytes": "288"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(UserInfo)7193_storage": {
+            "label": "struct InteractionAirDrop.UserInfo",
+            "members": [
+              {
+                "label": "user",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "myIntegration",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userDirectRecomandIntegration",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "userIndirectRecomandIntegration",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "buyJWAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "realseBuyJWAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "buyTimestamp",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "airdropJwAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "airdropJwReceivedAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "airdropJwTime",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "receivedTimestamp",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "13c9aa84b23732e705c2002865422571ae4f9800206b631717bf2163c4b3a469": {
+      "address": "0x8e05D771e72E618214DC964f1ee09B7a166E48dC",
+      "txHash": "0x501f6f1f2d7b0a36c73f835e773ff809533a87966b31c33454a4f9a4f12a80bd",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:91"
+          },
+          {
+            "label": "receiver",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:92"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:93"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:94"
+          },
+          {
+            "label": "swapOrangeRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:95"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_address",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:96"
+          },
+          {
+            "label": "userNfts",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:97"
+          },
+          {
+            "label": "currentNftId",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_uint256",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:98"
+          },
+          {
+            "label": "products",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_mapping(t_address,t_struct(NFTProduct)6949_storage)",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:106"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_mapping(t_uint256,t_struct(Order)6969_storage)",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:118"
+          },
+          {
+            "label": "userOrderIds",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:119"
+          },
+          {
+            "label": "ordersPerDay",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:120"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_uint256",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:127"
+          },
+          {
+            "label": "wearRate",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_uint256",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:128"
+          },
+          {
+            "label": "userRewardByWeekOrders",
+            "offset": 0,
+            "slot": "365",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(RewardOrder)7021_storage))",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:142"
+          },
+          {
+            "label": "userRewardByYearOrders",
+            "offset": 0,
+            "slot": "366",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))",
+            "contract": "NFTSellManage",
+            "src": "contracts/nft/NFTSellManage.sol:143"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(address => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint256 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_struct(RewardOrder)7021_storage))": {
+            "label": "mapping(address => mapping(uint256 => struct NFTSellManage.RewardOrder))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(NFTProduct)6949_storage)": {
+            "label": "mapping(address => struct NFTSellManage.NFTProduct)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint256 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Order)6969_storage)": {
+            "label": "mapping(uint256 => struct NFTSellManage.Order)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(RewardOrder)7021_storage)": {
+            "label": "mapping(uint256 => struct NFTSellManage.RewardOrder)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(NFTProduct)6949_storage": {
+            "label": "struct NFTSellManage.NFTProduct",
+            "members": [
+              {
+                "label": "nftAddr",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "usdtPrice",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "limit",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_struct(Order)6969_storage": {
+            "label": "struct NFTSellManage.Order",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "product",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "nftId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "purchasedJwAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "purchasedPIJSAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "usdtValue",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              }
+            ],
+            "numberOfBytes": "224"
+          },
+          "t_struct(RewardOrder)7021_storage": {
+            "label": "struct NFTSellManage.RewardOrder",
+            "members": [
+              {
+                "label": "weekIndex",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "user",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "tokenAddress",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "nftAddress",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "nftId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "profitSharingAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "feeSharingAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "timestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "isReceived",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "receivedTimestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "9"
+              }
+            ],
+            "numberOfBytes": "320"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "398eeed876900accd4e7f4241232f8063fd3743dbb168251d95de7f4173dc3ad": {
+      "address": "0x6Bd2a3e468eEA10638dc02061bb53eD5cb3E51F4",
+      "txHash": "0x0232a88658fb93f500b50ddde381897d24153dbb77c2d9a552def3a118fd3a3c",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:121"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:122"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:123"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:124"
+          },
+          {
+            "label": "swapOrangeRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:125"
+          },
+          {
+            "label": "receiver",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:126"
+          },
+          {
+            "label": "developer",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:127"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:129"
+          },
+          {
+            "label": "wearRate",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:130"
+          },
+          {
+            "label": "developerPersentage",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:132"
+          },
+          {
+            "label": "products",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_uint8,t_struct(Product)8188_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:133"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_struct(Order)8169_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:134"
+          },
+          {
+            "label": "userOrders",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_mapping(t_address,t_mapping(t_uint8,t_array(t_uint256)dyn_storage))",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:135"
+          },
+          {
+            "label": "userInfos",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_address,t_struct(UserInfo)8274_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:155"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint8,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint8 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)8274_storage)": {
+            "label": "mapping(address => struct InteractionAirDrop.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Order)8169_storage)": {
+            "label": "mapping(uint256 => struct InteractionAirDrop.Order)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint8 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_struct(Product)8188_storage)": {
+            "label": "mapping(uint8 => struct InteractionAirDrop.Product)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Order)8169_storage": {
+            "label": "struct InteractionAirDrop.Order",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "pijsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "productId",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "jwAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "createTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "purchaseSameQuantity",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "purchaseSameQuantityTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "isReceived",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "receivedTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "9"
+              }
+            ],
+            "numberOfBytes": "320"
+          },
+          "t_struct(Product)8188_storage": {
+            "label": "struct InteractionAirDrop.Product",
+            "members": [
+              {
+                "label": "productId",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "usdtValue",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "jwAmountPerCopy",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "buyLimit",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "limit",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "currentInteractionTimes",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "realsePerioid",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "enabled",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              }
+            ],
+            "numberOfBytes": "288"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(UserInfo)8274_storage": {
+            "label": "struct InteractionAirDrop.UserInfo",
+            "members": [
+              {
+                "label": "user",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "myIntegration",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userDirectRecomandIntegration",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "userIndirectRecomandIntegration",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "buyJWAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "realseBuyJWAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "buyTimestamp",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "airdropJwAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "airdropJwReceivedAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "airdropJwTime",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "receivedTimestamp",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "e4f6dc434db2f4c9279b29dd5099803684b63db80748b5ea5d1912b4150281ed": {
+      "address": "0x1375E91522Cbc110d6844c1187610869373D9ca4",
+      "txHash": "0x5c10c00c34a35faf0d8ef9fa2d12d34e869de651aac71fe1f754b296b11af407",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:121"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:122"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:123"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:124"
+          },
+          {
+            "label": "swapOrangeRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:125"
+          },
+          {
+            "label": "receiver",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:126"
+          },
+          {
+            "label": "developer",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:127"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:129"
+          },
+          {
+            "label": "wearRate",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:130"
+          },
+          {
+            "label": "developerPersentage",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:132"
+          },
+          {
+            "label": "products",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_uint8,t_struct(Product)7107_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:133"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_struct(Order)7088_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:134"
+          },
+          {
+            "label": "userOrders",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_mapping(t_address,t_mapping(t_uint8,t_array(t_uint256)dyn_storage))",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:135"
+          },
+          {
+            "label": "userInfos",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_address,t_struct(UserInfo)7193_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:155"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint8,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint8 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)7193_storage)": {
+            "label": "mapping(address => struct InteractionAirDrop.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Order)7088_storage)": {
+            "label": "mapping(uint256 => struct InteractionAirDrop.Order)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint8 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_struct(Product)7107_storage)": {
+            "label": "mapping(uint8 => struct InteractionAirDrop.Product)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Order)7088_storage": {
+            "label": "struct InteractionAirDrop.Order",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "pijsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "productId",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "jwAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "createTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "purchaseSameQuantity",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "purchaseSameQuantityTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "isReceived",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "receivedTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "9"
+              }
+            ],
+            "numberOfBytes": "320"
+          },
+          "t_struct(Product)7107_storage": {
+            "label": "struct InteractionAirDrop.Product",
+            "members": [
+              {
+                "label": "productId",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "usdtValue",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "jwAmountPerCopy",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "buyLimit",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "limit",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "currentInteractionTimes",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "realsePerioid",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "enabled",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              }
+            ],
+            "numberOfBytes": "288"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(UserInfo)7193_storage": {
+            "label": "struct InteractionAirDrop.UserInfo",
+            "members": [
+              {
+                "label": "user",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "myIntegration",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userDirectRecomandIntegration",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "userIndirectRecomandIntegration",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "buyJWAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "realseBuyJWAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "buyTimestamp",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "airdropJwAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "airdropJwReceivedAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "airdropJwTime",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "receivedTimestamp",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "ab3d1ebc91936d792cded92d0222c34d4e1d3ff5256f35effa65d4d040f5bfc9": {
+      "address": "0x6eE5B70cf3652678134e6609C98892FDBA2262Dc",
+      "txHash": "0x637d563877dc23617b32b0f6e2c16d3920eb4948ccfcd844dad3ddc8fbf864ec",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)169_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:57"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "_roleMembers",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlEnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol:76"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "jwToken",
+            "offset": 0,
+            "slot": "351",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:121"
+          },
+          {
+            "label": "usdtAddress",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:122"
+          },
+          {
+            "label": "recommandContractAddress",
+            "offset": 0,
+            "slot": "353",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:123"
+          },
+          {
+            "label": "swapRouterAddress",
+            "offset": 0,
+            "slot": "354",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:124"
+          },
+          {
+            "label": "swapOrangeRouterAddress",
+            "offset": 0,
+            "slot": "355",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:125"
+          },
+          {
+            "label": "receiver",
+            "offset": 0,
+            "slot": "356",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:126"
+          },
+          {
+            "label": "developer",
+            "offset": 0,
+            "slot": "357",
+            "type": "t_address",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:127"
+          },
+          {
+            "label": "orderId",
+            "offset": 0,
+            "slot": "358",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:129"
+          },
+          {
+            "label": "wearRate",
+            "offset": 0,
+            "slot": "359",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:130"
+          },
+          {
+            "label": "developerPersentage",
+            "offset": 0,
+            "slot": "360",
+            "type": "t_uint256",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:132"
+          },
+          {
+            "label": "products",
+            "offset": 0,
+            "slot": "361",
+            "type": "t_mapping(t_uint8,t_struct(Product)8188_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:133"
+          },
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "362",
+            "type": "t_mapping(t_uint256,t_struct(Order)8169_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:134"
+          },
+          {
+            "label": "userOrders",
+            "offset": 0,
+            "slot": "363",
+            "type": "t_mapping(t_address,t_mapping(t_uint8,t_array(t_uint256)dyn_storage))",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:135"
+          },
+          {
+            "label": "userInfos",
+            "offset": 0,
+            "slot": "364",
+            "type": "t_mapping(t_address,t_struct(UserInfo)8274_storage)",
+            "contract": "InteractionAirDrop",
+            "src": "contracts/airdrop/InteractionAirDrop.sol:155"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint8,t_array(t_uint256)dyn_storage))": {
+            "label": "mapping(address => mapping(uint8 => uint256[]))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserInfo)8274_storage)": {
+            "label": "mapping(address => struct InteractionAirDrop.UserInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(AddressSet)3411_storage)": {
+            "label": "mapping(bytes32 => struct EnumerableSetUpgradeable.AddressSet)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)169_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Order)8169_storage)": {
+            "label": "mapping(uint256 => struct InteractionAirDrop.Order)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(uint8 => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_struct(Product)8188_storage)": {
+            "label": "mapping(uint8 => struct InteractionAirDrop.Product)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AddressSet)3411_storage": {
+            "label": "struct EnumerableSetUpgradeable.AddressSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)3096_storage",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Order)8169_storage": {
+            "label": "struct InteractionAirDrop.Order",
+            "members": [
+              {
+                "label": "orderId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "userAddr",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "pijsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "productId",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "jwAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "createTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "purchaseSameQuantity",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "purchaseSameQuantityTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "isReceived",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "receivedTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "9"
+              }
+            ],
+            "numberOfBytes": "320"
+          },
+          "t_struct(Product)8188_storage": {
+            "label": "struct InteractionAirDrop.Product",
+            "members": [
+              {
+                "label": "productId",
+                "type": "t_uint8",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "usdtValue",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "jwAmountPerCopy",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "buyLimit",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "limit",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "currentInteractionTimes",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "realsePerioid",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "enabled",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              }
+            ],
+            "numberOfBytes": "288"
+          },
+          "t_struct(RoleData)169_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Set)3096_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(UserInfo)8274_storage": {
+            "label": "struct InteractionAirDrop.UserInfo",
+            "members": [
+              {
+                "label": "user",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "myIntegration",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "userDirectRecomandIntegration",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "userIndirectRecomandIntegration",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "buyJWAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "realseBuyJWAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "buyTimestamp",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "airdropJwAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "airdropJwReceivedAmount",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "airdropJwTime",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "receivedTimestamp",
+                "type": "t_mapping(t_uint256,t_uint256)",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "98571240bad2d670d282ca6023c88ce70b99aaf3165f275feb6872ea85c87493": {
+      "address": "0xB99E76644D6b2f0e1d4B3Cb0f457E594eF9E56Ad",
+      "txHash": "0x2ca5a64f226ad0d0fdb21024c4fe48e3d5868b8744463be9ee1734d77e831e94",
       "layout": {
         "solcVersion": "0.8.20",
         "storage": [

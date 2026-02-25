@@ -183,12 +183,19 @@ contract InteractionAirDrop is  Initializable,
             uint256 developerAmount = msg.value * developerPersentage / DENOMINATOR;
             uint256 receiverAmount = msg.value - developerAmount;
             // receiver
-            (bool ok1, ) = receiver.call{value: receiverAmount }("");
-            require(ok1, "receiver received pijs transfer failed");
+            // (bool ok1, ) = receiver.call{value: receiverAmount }("");
+            // require(ok1, "receiver received pijs transfer failed");
+            // IERC20(jwToken).transfer("0x000000000000000000000000000000000000dEaD",receiverAmount);
+
+            uint256 receivedAmount = pijsBuyJw(receiverAmount);
+            IERC20(jwToken).transfer(0x000000000000000000000000000000000000dEaD,receivedAmount);
+
+
             
             //10% --> developer address
             (bool ok2, ) = developer.call{value: developerAmount }("");
             require(ok2, "developer received pijs transfer failed");
+
 
             // UPDATE to integation
             uint256 driectReferrerIntegrationInc;
@@ -240,6 +247,25 @@ contract InteractionAirDrop is  Initializable,
             userInfos[msg.sender].airdropJwTime[productId] = block.timestamp;
 
             emit JoinAirDrop(msg.sender,productId,msg.value,receiver,currentOrderId,referrer,indriectReferrer,driectReferrerIntegrationInc,inDriectReferrerIntegrationInc,block.timestamp);
+        }
+
+        function pijsBuyJw(uint256 buyJWAmount) internal returns(uint256) {
+            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            // WETH -> JW
+            uint256 beforeJWAmount = IERC20(jwToken).balanceOf(address(this));
+            address[] memory path2 = new address[](2);
+            path2[0] = swapRouter.WETH();
+            path2[1] = jwToken;
+            swapRouter.swapExactETHForTokensSupportingFeeOnTransferTokens{value: buyJWAmount}(
+                0,
+                path2,
+                address(this),
+                block.timestamp + 300
+            );
+            uint256 afterJWAmount = IERC20(jwToken).balanceOf(address(this));
+            uint256 jwReceived = afterJWAmount - beforeJWAmount;
+            
+            return jwReceived;
         }
 
         // 购买同等数量的JW
@@ -301,7 +327,7 @@ contract InteractionAirDrop is  Initializable,
             
             return jwAmount;
         }
-        
+
         function getJW2PIJS(uint256 amount) public view returns(uint256) {
             IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
             // pijs-> usdt
@@ -592,6 +618,10 @@ contract InteractionAirDrop is  Initializable,
         // 查询阶段信息
         function getProduct(uint8 productId) public view returns(Product memory){
             return products[productId];
+        }
+        function setJwToken(address _jw) external onlyRole(MANAGE_ROLE) {
+            require(_jw != address(0),"0 address");
+            jwToken = _jw;
         }
 
 

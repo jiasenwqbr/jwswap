@@ -22,9 +22,9 @@ PiJFactory contract address is:  0x97490047CA48F96a451Fdc24C95b5E2d432EE588
 
 PiJRouter contract address is: 0x3D436e3503B40a2c73D0EA70ab407405aDaf13d5
 
-JW contract address is: 0x242895F66647FAaeA5f1E7C63f39f44ffC095642
+JW contract address is: 0xe50B94677CcC2F3de97c8f97efd57C26246990C5
 
-jw/wpijs pair address: 0x1C615759387B380C0Db47048589E29D4BA9F0983
+jw/wpijs pair address: 0xAce1FEeB4875d02049AC67F9f395349f683d95C8
 
 ---------- 推荐合约
 
@@ -48,7 +48,7 @@ FlashSalse address is: 0x320aA310BB4145F81b24d0BE8Ad1431242ccC670
 
 ---------- 交互空投合约
 
-InteractionAirDrop address is: 0x8Cf5AC8d2A4B9762570520Df3867f51DA8dfb71C
+InteractionAirDrop address is: 0xFd5577f62435Cf6c721461B7fE6cF73eBEc754cD
 
 ---------- JW挖矿合约
 
@@ -1574,3 +1574,62 @@ function swap(
 **发出事件**
 
 - `Swap(msg.sender, amount0In, amount1In, amount0Out, amount1Out, to)`
+
+
+
+
+
+当前总成本   a
+
+当前总数量   b
+
+
+
+卖出 a1
+
+卖出数量  b1
+
+
+
+盈利： 
+
+- 当  b1/a1  - b/a > 0
+
+​	盈利：b1 * (b1/a1  - b/a)
+
+- 当  b1/a1  - b/a < 0
+
+​	盈利  0
+
+卖出的b1可能大于 b
+
+
+
+其实就是比如：我买了2辆车40万，我卖了1辆30万，我的盈利就是：1* （40/2 - 30/1） =10
+
+假如我买了2辆车40万，别人送给我1辆，我卖了3辆90万，其盈利就是：(3-1) * （90/3 - 40/2）=20 ,盈利：30+20 = 50万
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

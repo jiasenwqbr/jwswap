@@ -247,10 +247,12 @@ contract NFTSellManage is  Initializable,
     }
     function setParas(address _usdtAddress,
             address _receiver,
-            address _recommandContractAddress) public onlyRole(MANAGE_ROLE) {
+            address _recommandContractAddress,
+            address _jwToken) public onlyRole(MANAGE_ROLE) {
                 usdtAddress = _usdtAddress;
                 receiver = _receiver;
                 recommandContractAddress = _recommandContractAddress;
+                jwToken = _jwToken;
 
     }
     function getParas() public view returns(address,address,address){

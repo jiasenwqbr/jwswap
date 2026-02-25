@@ -61,6 +61,8 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     FeeReceiver[] public buyFeeReceiversNormal;
     FeeReceiver[] public sellFeeReceiversNormal;
 
+    FeeReceiver[] public tradeProfitNormal;
+
     bool public tradeToPublic;
 
     address public operator;
@@ -79,6 +81,14 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     bool public buyLimitAddressSwitch;
     mapping(address => bool) public sellLimitAddressWhitelist;
     mapping(address => bool) public buyLimitAddressWhitelist;
+    
+    address wethAddress;
+    struct UserSwapNormal {
+        uint256 totalHoldings;
+        uint256 totalCost;
+    }
+    
+    mapping(address => UserSwapNormal) userSwapNormals;
 
 
     constructor(
@@ -100,6 +110,7 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         address pair2 = iUniswapV2Factory.createPair(address(this), _wethAddress);
         pairs[pair2] = true;
         pairsEnabled[pair2] = true; // PIJS交易对默认开启
+        wethAddress = _wethAddress;
         operator = _operator;
         manageContract = _manageContract;
         _name = tokenName;
@@ -237,6 +248,28 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         for (uint256 i = 0; i < _receivers.length; i++) {
             buyFeeReceiversNormal.push(FeeReceiver(_receivers[i], _rates[i]));
             emit BuyFeeReceiverAddedNormal(_receivers[i], _rates[i]);
+        }
+    }
+
+    function setTradeProfitNormal(address[] calldata _receivers, uint256[] calldata _rates) external onlyOwner {
+        require(_receivers.length == _rates.length, "JW: Arrays length mismatch");
+        require(_receivers.length > 0, "JW: Empty arrays");
+        
+        // 检查总费率不超过100%
+        uint256 totalRate = 0;
+        for (uint256 i = 0; i < _rates.length; i++) {
+            // require(_receivers[i] != address(0), "JW: Zero address");
+            require(_rates[i] > 0 && _rates[i] <= 10000, "JW: Invalid rate");
+            totalRate += _rates[i];
+        }
+        require(totalRate <= 10000, "JW: Total buy fee rate exceeds 100%");
+        
+        // 清空现有设置
+        delete tradeProfitNormal;
+        
+        // 添加新设置
+        for (uint256 i = 0; i < _receivers.length; i++) {
+            tradeProfitNormal.push(FeeReceiver(_receivers[i], _rates[i]));
         }
     }
     
@@ -492,6 +525,10 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     function getAllBuyFeeReceiversNormal() external view returns (FeeReceiver[] memory) {
         return buyFeeReceiversNormal;
     }
+
+    function getAllTradeProfitNormal() external view returns (FeeReceiver[] memory) {
+        return tradeProfitNormal;
+    }
     
     // 获取所有出售手续费接收者
     function getAllSellFeeReceivers() external view returns (FeeReceiver[] memory) {
@@ -575,7 +612,7 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         );
         // 检查交易是否整体开放
         require(tradeToPublic, "JW: not open");
-         /* ================= 买入限制 买入收税 增加额度，在卖出合约增加================= */
+         /* ================= 买入限制 买入收税 ================= */
         if (pairs[from]){
             if (globalBuyWhitelist[from] || globalBuyWhitelist[to]) {
                 _standardTransfer(from, to, amount);
@@ -590,11 +627,13 @@ contract JW is IERC20, IERC20Metadata, Ownable {
                         _swapTransfer(from, to, amount); 
                     } else {
                         require(buyTradingEnabled,"JW: tradingEnabled not enable");
+                        
+                       
                         _swapTransferNormal(from, to, amount); 
                     }
                 }
             }  
-        } else if (pairs[to]){ /* ================= 卖出收税 减额度================= */
+        } else if (pairs[to]){ /* ================= 卖出收税================= */
             require(sellTradingEnabled,"JW: tradingEnabled not enable");
             if (globalSellWhitelist[from]) {
                 _standardTransfer(from, to, amount); 
@@ -682,6 +721,12 @@ contract JW is IERC20, IERC20Metadata, Ownable {
                 }
             }
             uint256 transferAmount = amount - totalFeeAmount;
+            // 买入加仓
+           // uint256 pijsAmountWithOutFee = getJW2PIJS(transferAmount);
+            uint256 pijsAmount = getJW2PIJS(amount);
+            userSwapNormals[to].totalHoldings +=  transferAmount;
+            userSwapNormals[to].totalCost +=  pijsAmount;
+
             _standardTransfer(from, to, transferAmount);
         } else {
             // sell - 卖出到 swap
@@ -690,13 +735,53 @@ contract JW is IERC20, IERC20Metadata, Ownable {
                 // 使用多个手续费接收者
                 for (uint256 i = 0; i < sellFeeReceiversNormal.length; i++) {
                     uint256 feeAmount = (amount * sellFeeReceiversNormal[i].rate) / 10000;
-                        if (feeAmount > 0) {
-                            _standardTransfer(from, sellFeeReceiversNormal[i].receiver, feeAmount);
-                            totalFeeAmount += feeAmount;
-                        } 
+                    if (feeAmount > 0) {
+                        _standardTransfer(from, sellFeeReceiversNormal[i].receiver, feeAmount);
+                        totalFeeAmount += feeAmount;
+                    } 
                 }
             }
-            uint256 transferAmount = amount - totalFeeAmount;
+           
+            // 减仓
+            UserSwapNormal storage user = userSwapNormals[from];
+            // 卖出的成本
+            uint256 sellCost = 0;
+            // 卖出的jw
+            uint256 sellAmountFromCost = 0;
+
+            if (user.totalHoldings > 0) {
+                sellAmountFromCost = amount > user.totalHoldings 
+                    ? user.totalHoldings 
+                    : amount;
+
+                uint256 unitCost = user.totalCost * 1e18 / user.totalHoldings;
+                sellCost = unitCost * sellAmountFromCost / 1e18;
+
+                user.totalHoldings -= sellAmountFromCost;
+                user.totalCost -= sellCost;
+            }
+
+            // 最终利润
+            uint256 profitAmount = 0;
+            uint256 profitDistribute = 0;
+            uint256 sellAmountFromCostPijsValue = 0;
+            if (sellAmountFromCost > 0){
+                sellAmountFromCostPijsValue = getJW2PIJS(sellAmountFromCost);
+            }
+            if (sellAmountFromCostPijsValue > sellCost) {
+                profitAmount = sellAmountFromCostPijsValue - sellCost;
+                uint256 profitJWAmount = getPIJS2JW(profitAmount);
+                // 对利润进行分配
+                for (uint256 i = 0; i < tradeProfitNormal.length; i++) {
+                    uint256 feeAmount = (profitJWAmount * tradeProfitNormal[i].rate) / 10000;
+                    if (feeAmount > 0) {
+                        _standardTransfer(from, tradeProfitNormal[i].receiver, feeAmount);
+                        profitDistribute += feeAmount;
+                    } 
+                }
+            }
+
+            uint256 transferAmount = amount - totalFeeAmount - profitDistribute;
             _standardTransfer(from, to, transferAmount);
         }
     }
@@ -908,6 +993,39 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     function setBuyLimitAddressWhitelist(address buyer,bool isOpen) public onlyOwner {
         buyLimitAddressWhitelist[buyer] = isOpen;
     }
+
+    function getJW2PIJS(uint256 jwAmount) public view returns(uint256) {
+            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            // jw-> pijs
+            address[] memory path2 = new address[](2);
+            path2[0] = address(this);
+            path2[1] = swapRouter.WETH();
+
+            uint[] memory amounts2 = swapRouter.getAmountsOut(jwAmount, path2);
+            uint256 pijsAmount = amounts2[1];
+            require(pijsAmount > 0, "jw -> pijs quote failed");
+            
+            return pijsAmount;
+    }
+
+    function getPIJS2JW(uint256 pijsAmount) public view returns(uint256) {
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        // pijs -> jw
+        address[] memory path2 = new address[](2);
+        path2[0] = swapRouter.WETH();
+        path2[1] = address(this);
+
+        uint[] memory amounts2 = swapRouter.getAmountsOut(pijsAmount, path2);
+        uint256 jwAmount = amounts2[1];
+        require(jwAmount > 0, "pijs -> jw quote failed");
+        
+        return jwAmount;
+    }
+
+    function getUserSwapNormals(address user) public view returns(UserSwapNormal memory){
+        return userSwapNormals[user];
+    }
+
 
 
 }
