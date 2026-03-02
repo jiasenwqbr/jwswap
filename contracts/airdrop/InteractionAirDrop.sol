@@ -182,15 +182,10 @@ contract InteractionAirDrop is  Initializable,
 
             uint256 developerAmount = msg.value * developerPersentage / DENOMINATOR;
             uint256 receiverAmount = msg.value - developerAmount;
-            // receiver
-            // (bool ok1, ) = receiver.call{value: receiverAmount }("");
-            // require(ok1, "receiver received pijs transfer failed");
-            // IERC20(jwToken).transfer("0x000000000000000000000000000000000000dEaD",receiverAmount);
+        
 
             uint256 receivedAmount = pijsBuyJw(receiverAmount);
             IERC20(jwToken).transfer(0x000000000000000000000000000000000000dEaD,receivedAmount);
-
-
             
             //10% --> developer address
             (bool ok2, ) = developer.call{value: developerAmount }("");
@@ -250,13 +245,30 @@ contract InteractionAirDrop is  Initializable,
         }
 
         function pijsBuyJw(uint256 buyJWAmount) internal returns(uint256) {
+            // pijs -> usdt   usdt -> jw
+            IUniswapV2Router02 swapOrangeRouter = IUniswapV2Router02(swapOrangeRouterAddress);
+            // pijs -> usdt 
+            uint256 beforeUSDTAmount = IERC20(usdtAddress).balanceOf(address(this));
+            address[] memory path1 = new address[](2);
+            path1[0] = swapOrangeRouter.WETH();
+            path1[1] = usdtAddress;
+            swapOrangeRouter.swapExactETHForTokensSupportingFeeOnTransferTokens{value: buyJWAmount}(
+                0,
+                path1,
+                address(this),
+                block.timestamp + 300
+            );
+            uint256 afterUsdtAmount = IERC20(usdtAddress).balanceOf(address(this));
+            uint256 usdtReceived = afterUsdtAmount - beforeUSDTAmount;
+
+            // usdt -> jw
             IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
-            // WETH -> JW
-            uint256 beforeJWAmount = IERC20(jwToken).balanceOf(address(this));
             address[] memory path2 = new address[](2);
-            path2[0] = swapRouter.WETH();
+            path2[0] = usdtAddress;
             path2[1] = jwToken;
-            swapRouter.swapExactETHForTokensSupportingFeeOnTransferTokens{value: buyJWAmount}(
+            uint256 beforeJWAmount = IERC20(jwToken).balanceOf(address(this));
+            swapRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+                usdtReceived,
                 0,
                 path2,
                 address(this),
@@ -374,7 +386,7 @@ contract InteractionAirDrop is  Initializable,
                             FUNCTIONS   setter  getter query
         //////////////////////////////////////////////////////////////*/
         function getPIJS2USDT(uint256 amount) public view returns(uint256) {
-            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapOrangeRouterAddress);
             // pijs-> usdt
             address[] memory path2 = new address[](2);
             path2[0] = swapRouter.WETH();

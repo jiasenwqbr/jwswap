@@ -32,6 +32,7 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     event SellFeeReceiverRemovedNormal(uint256 indexed index);
     event TradingEnabledUpdated(bool enabled);
     event PairEnabledStatusUpdated(address indexed pair, bool enabled);
+    event ProfitDistribute(address from,address to,uint256 amount,uint256 timestamp);
     
     
     mapping(address => uint256) private _balances;
@@ -76,6 +77,7 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     mapping(address => bool) public pairsEnabled; //交易对开放状态
     address private manageContract;
     address public swapRouterAddress;
+    address public swapOrangeRouterAddress;
 
     bool public sellLimitAddressSwitch;
     bool public buyLimitAddressSwitch;
@@ -89,6 +91,7 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     }
     
     mapping(address => UserSwapNormal) userSwapNormals;
+    address usdtAddress;
 
 
     constructor(
@@ -97,9 +100,11 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         uint256 mintAmount,
         address _receiver,
         IUniswapV2Router02 _iUniswapV2Router02,
+        address _swapOrangeRouterAddress,
         address _operator,
         address _wethAddress,
-        address _manageContract
+        address _manageContract,
+        address _usdtAddress
         
     ) {
         // 初始化后通过 addBuyFeeReceiver/addSellFeeReceiver 设置手续费接收者
@@ -107,12 +112,14 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             _iUniswapV2Router02.factory()
         );
         swapRouterAddress = address(_iUniswapV2Router02);
-        address pair2 = iUniswapV2Factory.createPair(address(this), _wethAddress);
+        swapOrangeRouterAddress = _swapOrangeRouterAddress;
+        address pair2 = iUniswapV2Factory.createPair(address(this), _usdtAddress);
         pairs[pair2] = true;
         pairsEnabled[pair2] = true; // PIJS交易对默认开启
         wethAddress = _wethAddress;
         operator = _operator;
         manageContract = _manageContract;
+        usdtAddress = _usdtAddress;
         _name = tokenName;
         _symbol = tokenSymbol;
         _mint(_receiver, mintAmount * 10 ** decimals());
@@ -723,9 +730,9 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             uint256 transferAmount = amount - totalFeeAmount;
             // 买入加仓
            // uint256 pijsAmountWithOutFee = getJW2PIJS(transferAmount);
-            uint256 pijsAmount = getJW2PIJS(amount);
+            uint256 usdtAmount = getJW2USDT(amount);
             userSwapNormals[to].totalHoldings +=  transferAmount;
-            userSwapNormals[to].totalCost +=  pijsAmount;
+            userSwapNormals[to].totalCost +=  usdtAmount;
 
             _standardTransfer(from, to, transferAmount);
         } else {
@@ -758,7 +765,12 @@ contract JW is IERC20, IERC20Metadata, Ownable {
                 sellCost = unitCost * sellAmountFromCost / 1e18;
 
                 user.totalHoldings -= sellAmountFromCost;
-                user.totalCost -= sellCost;
+                // 当减仓为0时，成本可能有残留
+                if (user.totalHoldings == 0){
+                    user.totalCost  = 0;
+                } else {
+                    user.totalCost -= sellCost;
+                }
             }
 
             // 最终利润
@@ -766,16 +778,17 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             uint256 profitDistribute = 0;
             uint256 sellAmountFromCostPijsValue = 0;
             if (sellAmountFromCost > 0){
-                sellAmountFromCostPijsValue = getJW2PIJS(sellAmountFromCost);
+                sellAmountFromCostPijsValue = getJW2USDT(sellAmountFromCost);
             }
             if (sellAmountFromCostPijsValue > sellCost) {
                 profitAmount = sellAmountFromCostPijsValue - sellCost;
-                uint256 profitJWAmount = getPIJS2JW(profitAmount);
+                uint256 profitJWAmount = getUSDT2JW(profitAmount);
                 // 对利润进行分配
                 for (uint256 i = 0; i < tradeProfitNormal.length; i++) {
                     uint256 feeAmount = (profitJWAmount * tradeProfitNormal[i].rate) / 10000;
                     if (feeAmount > 0) {
                         _standardTransfer(from, tradeProfitNormal[i].receiver, feeAmount);
+                        emit ProfitDistribute(from,to,feeAmount,block.timestamp);
                         profitDistribute += feeAmount;
                     } 
                 }
@@ -1008,8 +1021,23 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             return pijsAmount;
     }
 
+    function getJW2USDT(uint256 jwAmount) public view returns(uint256) {
+            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            // jw-> usdt
+            address[] memory path2 = new address[](2);
+            path2[0] = address(this);
+            path2[1] = usdtAddress;
+
+            uint[] memory amounts2 = swapRouter.getAmountsOut(jwAmount, path2);
+            uint256 pijsAmount = amounts2[1];
+            require(pijsAmount > 0, "jw -> usdt quote failed");
+            
+            return pijsAmount;
+    }
+
     function getPIJS2JW(uint256 pijsAmount) public view returns(uint256) {
         IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+
         // pijs -> jw
         address[] memory path2 = new address[](2);
         path2[0] = swapRouter.WETH();
@@ -1018,6 +1046,21 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         uint[] memory amounts2 = swapRouter.getAmountsOut(pijsAmount, path2);
         uint256 jwAmount = amounts2[1];
         require(jwAmount > 0, "pijs -> jw quote failed");
+        
+        return jwAmount;
+    }
+
+    function getUSDT2JW(uint256 pijsAmount) public view returns(uint256) {
+        
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        
+        address[] memory path2 = new address[](2);
+        path2[0] = swapRouter.WETH();
+        path2[1] = usdtAddress;
+
+        uint[] memory amounts2 = swapRouter.getAmountsOut(pijsAmount, path2);
+        uint256 jwAmount = amounts2[1];
+        require(jwAmount > 0, "usdt ->  pijs quote failed");
         
         return jwAmount;
     }
