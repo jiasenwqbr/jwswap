@@ -34,7 +34,7 @@ describe("JWSwap",async () => {
     const usdtAddress = "0xc4610478b18b116f88A2F22A8685467f970e7ffc";
     const nftSellManageAddress = "0x8B769E9BE8271e07a0ccb9b53E57d659D0963fe4";
     const recommandAddress = "0x27Bc64142dEd44c1d5b4FDA3E1A818b0d5C8Edb1";
-    const interactionAirDropAddress = "0x8Cf5AC8d2A4B9762570520Df3867f51DA8dfb71C";
+    const interactionAirDropAddress = "0xFd5577f62435Cf6c721461B7fE6cF73eBEc754cD";
     const jWTradeMinnerAddress = "0x401fB5e3a679D6b0a6F8281cB59aD4E24d00cF74";
 
     const piOrangeFactoryAddress = "0xe3DCD243995ec02d0F4Fbf71A264A9453C15c7e1";
@@ -470,7 +470,8 @@ describe("JWSwap",async () => {
 
     });
     it("transferJW",async () => {
-        const user = "0x953022d715A3CbEaaF805412C7938F9830EEb122";
+        // const user = "0x953022d715A3CbEaaF805412C7938F9830EEb122";
+        const user = "0x3705D46DbBFb5CbFDD4D7C26E25EF7EF38697e9b";
         console.log(ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(owner.address)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(account4.address)));
@@ -483,11 +484,11 @@ describe("JWSwap",async () => {
         const tx = await jw.connect(owner).transfer(user,ethers.utils.parseEther("100000"));
         await tx.wait();
 
-        const tx2 = await jw.connect(owner).transfer(account4.address,ethers.utils.parseEther("100"));
-        await tx2.wait();
+        // const tx2 = await jw.connect(owner).transfer(account4.address,ethers.utils.parseEther("100"));
+        // await tx2.wait();
 
-        // const tx1 = await usdt.connect(owner).transfer(user,ethers.utils.parseEther("10000"));
-        // await tx1.wait();
+        const tx1 = await usdt.connect(owner).transfer(user,ethers.utils.parseEther("10000"));
+        await tx1.wait();
 
         console.log(ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(owner.address)));
@@ -602,7 +603,7 @@ describe("JWSwap",async () => {
         const tx00 = await interactionAirDrop.connect(owner).setWearRate(50);
         await tx00.wait();
         const tx = await interactionAirDrop.connect(account4).joinAirDrop(1,{
-            value:ethers.utils.parseEther("0.05"),
+            value:neededPijsAmount,
             gasLimit: 6721975  
         });
         await tx.wait();

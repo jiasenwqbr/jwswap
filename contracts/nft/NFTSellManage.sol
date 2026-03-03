@@ -286,50 +286,30 @@ contract NFTSellManage is  Initializable,
         return pijsAmount;
     }
 
-    function getJW2USDT(uint256 infoAmount) public view returns(uint256) {
+    function getJW2USDT(uint256 jwAmount) public view returns(uint256) {
         IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
         // jw -> pijs
         address[] memory path1 = new address[](2);
         path1[0] = jwToken;
-        path1[1] = swapRouter.WETH();
-        uint[] memory amounts1 = swapRouter.getAmountsOut(infoAmount, path1);
-        uint256 bnbAmount = amounts1[1];
-        require(bnbAmount > 0, "jw->pijs quote failed");
-        
-         IUniswapV2Router02 swapOrangeRouter = IUniswapV2Router02(swapOrangeRouterAddress);
-        // pijs -> jw
-        address[] memory path2 = new address[](2);
-        path2[0] = swapOrangeRouter.WETH();
-        path2[1] = usdtAddress;
-
-        uint[] memory amounts2 = swapOrangeRouter.getAmountsOut(bnbAmount, path2);
-        uint256 usdtAmount = amounts2[1];
-        require(usdtAmount > 0, "pijs->USDT quote failed");
-        
+        path1[1] = usdtAddress;
+        uint[] memory amounts1 = swapRouter.getAmountsOut(jwAmount, path1);
+        uint256 usdtAmount = amounts1[1];
+        require(usdtAmount > 0, "jw->usdt quote failed");
         return usdtAmount;
     }
 
     function getUSDT2JW(uint256 usdtAmount) public view returns(uint256) {
         
-         IUniswapV2Router02 swapOrangeRouter = IUniswapV2Router02(swapOrangeRouterAddress);
-        // usdt -> pijs
-        address[] memory path1 = new address[](2);
-        path1[0] = usdtAddress;
-        path1[1] = swapOrangeRouter.WETH();
-        uint[] memory amounts1 = swapOrangeRouter.getAmountsOut(usdtAmount, path1);
-        uint256 bnbAmount = amounts1[1];
-        require(bnbAmount > 0, "USDT->pijs quote failed");
-
         IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
-        // pijs -> jw
+        // usdt -> jw
         address[] memory path2 = new address[](2);
-        path2[0] = swapRouter.WETH();
+        path2[0] = usdtAddress;
         path2[1] = jwToken;
-        uint[] memory amounts2 = swapRouter.getAmountsOut(bnbAmount, path2);
-        uint256 infoAmount = amounts2[1];
-        require(infoAmount > 0, "pijs->jw quote failed");
+        uint[] memory amounts2 = swapRouter.getAmountsOut(usdtAmount, path2);
+        uint256 jwAmount = amounts2[1];
+        require(jwAmount > 0, "usdt->jw quote failed");
 
-        return infoAmount;
+        return jwAmount;
     }
 
     function getOrder(uint256 _orderId) external view returns(Order memory) {

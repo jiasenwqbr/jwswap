@@ -22,9 +22,9 @@ PiJFactory contract address is:  0x97490047CA48F96a451Fdc24C95b5E2d432EE588
 
 PiJRouter contract address is: 0x3D436e3503B40a2c73D0EA70ab407405aDaf13d5
 
-JW contract address is: 0xe50B94677CcC2F3de97c8f97efd57C26246990C5
+JW contract address is: 0xf4Ac8fa7B1e88bB56e771A6C07A2d02FAfd03204
 
-jw/wpijs pair address: 0xAce1FEeB4875d02049AC67F9f395349f683d95C8
+jw/usdt pair address: 0x26E03ADc2127a2D0bB346A401426ACB5AAE43D79
 
 ---------- 推荐合约
 
@@ -44,15 +44,15 @@ NFTSellManage address is: 0x8B769E9BE8271e07a0ccb9b53E57d659D0963fe4
 
 ---------- 抢购合约
 
-FlashSalse address is: 0x320aA310BB4145F81b24d0BE8Ad1431242ccC670
+FlashSalse address is: 0x414eC87C4c27fE1c382333b6838D571AbBd5C32c
 
 ---------- 交互空投合约
 
-InteractionAirDrop address is: 0xFd5577f62435Cf6c721461B7fE6cF73eBEc754cD
+InteractionAirDrop address is: 0xF1bA312dD4fC43a1dc6a64bdE7a3Fe6121903e8e
 
 ---------- JW挖矿合约
 
-JWTradeMinner address is: 0x401fB5e3a679D6b0a6F8281cB59aD4E24d00cF74
+JWTradeMinner address is: 0x3040fa8370c61E26a7a244793a9EA15eC5C57bec
 
 
 
@@ -306,7 +306,40 @@ function getSellFeeReceiver(uint256 _index) external view returns (address recei
 function setLimitAddressSwitch(bool _sellLimitAddressSwitch,bool _buyLimitAddressSwitch) public onlyOwner
 ```
 
+#### 交易税事件
 
+```
+event ProfitDistribute(address from,address to,uint256 amount,uint256 timestamp);
+```
+
+- from
+- to 交易税接收地址
+- amount 交易税JW数量
+- timestamp 时间
+
+#### usdt2jw
+
+```
+ function getUSDT2JW(uint256 pijsAmount) public view returns(uint256)
+```
+
+
+
+#### 查询用户的持仓和成本
+
+```
+function getUserSwapNormals(address user) public view returns(UserSwapNormal memory)
+```
+
+```
+struct UserSwapNormal {
+        uint256 totalHoldings;
+        uint256 totalCost;
+    }
+```
+
+- totalHoldings 总持仓（JW）
+- totalCost 总成本（USDT）
 
 
 
@@ -451,6 +484,24 @@ function buyNFT(uint256 buyJwAmount,uint256 buyPIJSAmount,address jwTokenAddress
 - usdtValue  usdt价值
 - nftAddress nft地址仅限（PlatinumNFT 铂金NFT、EpicNFT史诗NFT、LegendNFT传奇NFT）
 
+事件：
+
+```
+event  BuyNFT(address user,uint256 buyJwAmount,uint256 buyPIJSAmount,address nftAddress,uint256 nftId,
+        uint256 dayIndex,uint256 currentOrderId,uint256 createTime);
+```
+
+- user 用户地址
+- buyJwAmount 支付jw数量
+- buyPIJSAmount 支付的pijs数量
+- nftAddress nft地址
+- nftId 购买到的nft
+- dayIndex
+- currentOrderId 当前订单id
+- createTime 购买时间
+
+
+
 #### PIJS2USDT pijs兑换美元数量
 
 ```
@@ -545,8 +596,31 @@ function queryReward(address user,uint256 year) public view returns(RewardOrder[
 #### 买JW
 
 ```
-function buyJW() public payable nonReentrant 
+function buyJW(address tokenAddress,uint256 tokenAmount) public  nonReentrant
 ```
+
+入参：
+
+- tokenAddress usdt地址
+- tokenAmount usdt数量
+
+事件：
+
+```
+ event BuyJW(address user,uint256 amountIn,uint256 amountOut,uint256 dayIndex,uint256 currentOrderId,
+    uint256 userTradeTotalVol,uint256 userTradePerDayVol,uint256 platformTradeTotalVol,uint256 platformTradePerDayVol,uint256 createTime);
+```
+
+- user 用户地址
+- amountIn usdt数量
+- amountOut 购买到的jw数量
+- dayIndex 日期
+- currentOrderId 当前订单id nonce
+- userTradeTotalVol 用户总交易量
+- userTradePerDayVol 用户当天的交易量
+- platformTradeTotalVol 平台总交易量
+- platformTradePerDayVol 平台当天交易量
+- createTime 购买时间
 
 
 
@@ -556,9 +630,30 @@ function buyJW() public payable nonReentrant
 function sellJW(address jwAddress,uint256 amount) public  nonReentrant 
 ```
 
+入参：
 
+- jwAddress 
+- amount jw数量
 
-#### 计算个人JW产出
+事件：
+
+```
+event SellJW(address user,uint256 amountIn,uint256 amountOut,uint256 dayIndex,uint256 currentOrderId,
+    uint256 userTradeTotalVol,uint256 userTradePerDayVol,uint256 platformTradeTotalVol,uint256 platformTradePerDayVol,uint256 createTime);
+```
+
+- user 用户地址
+- amountIn jw数量
+- amountOut 得到usdt数量
+- dayIndex 日期（第几天）
+- currentOrderId 当前订单id
+- userTradeTotalVol 用户总交易量
+- userTradePerDayVol 用户当天的交易量
+- platformTradeTotalVol 平台总交易量
+- platformTradePerDayVol 平台当天交易量
+- createTime 购买时间 
+
+#### 计算个人JW产出（作废）
 
 ```
 function calcaulateReward() public payable nonReentrant
@@ -625,13 +720,32 @@ RewardReceivedRecord
 ##### 购买
 
 ```
-function flashBuy(uint8 productId,uint8 copies)
+ function flashBuy(uint8 productId,uint8 copies,address tokenAddress,uint256 amount)
 ```
 
 入参：
 
 - productId 产品ID （目前填写1）
 - copies 购买份数
+- tokenAddress usdt合约地址
+- amount 支付usdt数量
+
+事件：
+
+```
+event FlashBuy(address user,uint256 amount,address referrer,uint256 reconmmanderRewardAmount,uint256 currentOrderId,uint8 productId,uint256 copies,uint256 timestamp);
+```
+
+- user 用户地址
+- amount 支付usdt数量
+- referrer 推荐人地址
+- reconmmanderRewardAmount 推荐人接收到的usdt数量
+- currentOrderId 当前订单id
+- productId 产品id
+- copies 购买数量
+- timestamp 抢购时间
+
+
 
 ##### 查询已领取
 
@@ -685,6 +799,17 @@ function checkJW(uint256 _orderId,uint8 productId) public nonReentrant
 
 - _orderId 订单ID
 - productId 产品ID
+
+事件：
+
+```
+event CheckJW(address user,uint256 orderId,uint256 jwAmount,uint256 timestamp);
+```
+
+- user 用户地址
+- orderId 订单id
+- jwAmount 领取的jw数量
+- timestamp 领取时间
 
 
 
@@ -746,15 +871,25 @@ function joinAirDrop(uint8 productId) public
 ##### 购买同等数量JW
 
 ```
-function buyJW(uint256 productId,uint256 _orderId) public payable nonReentrant 
+function purchaseSameQuantityJWWithUSDT(uint256 productId,uint256 _orderId,uint256 usdtAmount)
 ```
 
 入参：
 
 - productId 1 一期 2 二期 3 三期
 - _orderId 订单ID
+- usdtAmount usdt数量
 
+事件：
 
+```
+event PurchaseSameQuantityJWWithUSDT(address userAddr,uint256 usdtAmount,uint256 jwReceived,uint256 timestamp);
+```
+
+- userAddr 用户地址
+- usdtAmount 支付的usdt数量
+- jwReceived 收到的jw数量
+- timestamp 购买时间
 
 ##### 按期查询交互空投、支付金额
 
@@ -849,6 +984,19 @@ function checkJW(uint256 _orderId,uint8 productId) public
 
 - user 用户地址
 - productId 期
+
+事件：
+
+```
+ event CheckOrder(address userAddr,uint256 orderId,uint256 jwAmount,uint256 timestamp);
+```
+
+- userAddr 用户地址
+- orderId 订单id
+- jwAmount 领取的jw
+- timestamp 领取时间
+
+
 
 ##### 查看用户积分
 

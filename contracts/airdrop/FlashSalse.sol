@@ -76,7 +76,7 @@ contract FlashSalse is  Initializable,
         struct Order{
             uint256 orderId;
             address userAddr;
-            uint256 pijsAmount;
+            uint256 usdtAmount;
             uint8 productId;
             uint256 copies;
             uint256 jwAmount;
@@ -101,24 +101,23 @@ contract FlashSalse is  Initializable,
         /*//////////////////////////////////////////////////////////////
                             EVENTS
         //////////////////////////////////////////////////////////////*/
-        event FlashBuy(address user,uint256 amount,address referrer,uint256 reconmmanderRewardAmount,uint256 currentOrderId,uint8 productId,uint256 copies,uint256 pijsAmount,uint256 timestamp);
+        event FlashBuy(address user,uint256 amount,address referrer,uint256 reconmmanderRewardAmount,uint256 currentOrderId,uint8 productId,uint256 copies,uint256 timestamp);
         event CheckJW(address user,uint256 orderId,uint256 jwAmount,uint256 timestamp);
 
 
         /*//////////////////////////////////////////////////////////////
                             FUNCTIONS
         //////////////////////////////////////////////////////////////*/
-        function flashBuy(uint8 productId,uint8 copies) public payable nonReentrant {
+        function flashBuy(uint8 productId,uint8 copies,address tokenAddress,uint256 amount) public payable nonReentrant {
             require(productId != 0,"Invaild product");
             require(copies != 0,"Invaild copies");
             require(products[productId].enabled == true,"product not enabled");
              (address referrer,,,) = IRecommendation(recommandContractAddress).getUserInfo(msg.sender);
             require(referrer != address(0),"user is not recommanded");
-            require(msg.value>0,"value shoud >0");
-            // 判断jw和pijs价值的usdt价值是否
-            uint256 buyPIJSAmount2usd = getPIJS2USDT(msg.value);
             uint256 usdtValue = products[productId].usdtValue;
-            require(buyPIJSAmount2usd >= usdtValue * copies * (DENOMINATOR - wearRate)/DENOMINATOR ,"the value of  pijs can not reached usdtValue");
+            require(amount >= usdtValue * copies,"can not reached usdtValue");
+            require(tokenAddress == usdtAddress,"must pay usdt");
+            SafeERC20.safeTransfer(IERC20(usdtAddress), address(this), amount);
              // limit
             uint256 userHasBuy = getUserBuyCopies(msg.sender,productId);
             require(userHasBuy < products[productId].buyLimit,"exceeded the buy limit");
@@ -128,21 +127,24 @@ contract FlashSalse is  Initializable,
             // SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, products[productId].jwAmountPerCopy * copies);
             
             // 直推奖励
-            uint256 reconmmanderRewardAmount = msg.value * products[productId].reconmmandRewardPercent / DENOMINATOR;
-            (bool ok, ) = referrer.call{value: reconmmanderRewardAmount}("");
-            require(ok, "referrer received pijs transfer failed");
+            uint256 reconmmanderRewardAmount = amount * products[productId].reconmmandRewardPercent / DENOMINATOR;
+            SafeERC20.safeTransfer(IERC20(usdtAddress), referrer, reconmmanderRewardAmount);
+            // (bool ok, ) = referrer.call{value: reconmmanderRewardAmount}("");
+            // require(ok, "referrer received pijs transfer failed");
+
 
             // receiver
-            (bool ok1, ) = receiver.call{value: msg.value - reconmmanderRewardAmount}("");
-            require(ok1, "referrer received pijs transfer failed");
+            // (bool ok1, ) = receiver.call{value: msg.value - reconmmanderRewardAmount}("");
+            // require(ok1, "referrer received pijs transfer failed");
+            SafeERC20.safeTransfer(IERC20(usdtAddress), receiver, amount - reconmmanderRewardAmount);
 
             uint256 currentOrderId = orderId;
             require(orders[currentOrderId].userAddr == address(0),"order existed");
-            uint256 pijsAmount = msg.value;
+            // uint256 pijsAmount = msg.value;
             Order memory order = Order({
                 orderId:currentOrderId,
                 userAddr : msg.sender,
-                pijsAmount : pijsAmount,
+                usdtAmount : amount,
                 productId:productId,
                 copies : copies,
                 jwAmount: products[productId].jwAmountPerCopy * copies,
@@ -155,7 +157,7 @@ contract FlashSalse is  Initializable,
             products[productId].currentSalseCopies = products[productId].currentSalseCopies + copies;
             orderId = orderId + 1;
 
-            emit FlashBuy(msg.sender,msg.value,referrer,reconmmanderRewardAmount,currentOrderId,productId,copies,pijsAmount,block.timestamp);
+            emit FlashBuy(msg.sender,amount,referrer,reconmmanderRewardAmount,currentOrderId,productId,copies,block.timestamp);
         }
 
         function checkJW(uint256 _orderId,uint8 productId) public nonReentrant {
@@ -167,7 +169,7 @@ contract FlashSalse is  Initializable,
             require(productId == order.productId,"the product is not correct");
             require(order.isReceived == false,"the order is already received");
 
-            SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, order.pijsAmount);
+            SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, order.jwAmount);
             orders[_orderId].isReceived = true;
             orders[_orderId].receivedTime = block.timestamp;
 
@@ -236,7 +238,7 @@ contract FlashSalse is  Initializable,
                     rorders[i]= Order({
                         orderId : orders[orderIds[i]].orderId,
                         userAddr : orders[orderIds[i]].userAddr,
-                        pijsAmount : orders[orderIds[i]].pijsAmount,
+                        usdtAmount : orders[orderIds[i]].usdtAmount,
                         productId: orders[orderIds[i]].productId,
                         copies : orders[orderIds[i]].copies,
                         jwAmount: orders[orderIds[i]].jwAmount,
@@ -266,7 +268,7 @@ contract FlashSalse is  Initializable,
                         rorders[index]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
-                            pijsAmount : orders[orderIds[i]].pijsAmount,
+                            usdtAmount : orders[orderIds[i]].usdtAmount,
                             productId: orders[orderIds[i]].productId,
                             copies : orders[orderIds[i]].copies,
                             jwAmount: orders[orderIds[i]].jwAmount,
@@ -299,7 +301,7 @@ contract FlashSalse is  Initializable,
                         rorders[index]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
-                            pijsAmount : orders[orderIds[i]].pijsAmount,
+                            usdtAmount : orders[orderIds[i]].usdtAmount,
                             productId: orders[orderIds[i]].productId,
                             copies : orders[orderIds[i]].copies,
                             jwAmount: orders[orderIds[i]].jwAmount,

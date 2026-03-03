@@ -99,6 +99,8 @@ contract InteractionAirDrop is  Initializable,
             uint256 orderId;
             address userAddr;
             uint256 pijsAmount;
+            uint256 burnJWAmount;
+            uint256 developerAmount;
             uint8 productId;
             uint256 jwAmount;
             uint256 createTime;
@@ -162,6 +164,7 @@ contract InteractionAirDrop is  Initializable,
         event JoinAirDrop(address userAddr,uint8 productId,uint256 amount,address receiver,uint256 currentOrderId,address referrer,address indriectReferrer,uint256 driectReferrerIntegrationInc,uint256 inDriectReferrerIntegrationInc,uint256 timestamp);
         event CheckOrder(address userAddr,uint256 orderId,uint256 jwAmount,uint256 timestamp);
         event BuyJW(address userAddr,uint256 pijsAmount,uint256 jwReceived,uint256 timestamp);
+        event PurchaseSameQuantityJWWithUSDT(address userAddr,uint256 usdtAmount,uint256 jwReceived,uint256 timestamp);
 
         /*//////////////////////////////////////////////////////////////
                             FUNCTIONS
@@ -225,6 +228,8 @@ contract InteractionAirDrop is  Initializable,
                 orderId:currentOrderId,
                 userAddr : msg.sender,
                 pijsAmount : msg.value,
+                burnJWAmount:receivedAmount,
+                developerAmount:developerAmount,
                 productId:productId,
                 jwAmount: products[productId].jwAmountPerCopy,
                 createTime:block.timestamp,
@@ -263,6 +268,7 @@ contract InteractionAirDrop is  Initializable,
 
             // usdt -> jw
             IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            IERC20(usdtAddress).approve(swapRouterAddress,usdtReceived);
             address[] memory path2 = new address[](2);
             path2[0] = usdtAddress;
             path2[1] = jwToken;
@@ -290,10 +296,10 @@ contract InteractionAirDrop is  Initializable,
             uint256 jwAmount = orders[_orderId].jwAmount;
             uint256 needPijs = getJW2PIJS(jwAmount);
             require(msg.value >= needPijs,"pijs is not enough sended");
-            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            IUniswapV2Router02 swapOrangeRouter = IUniswapV2Router02(swapOrangeRouterAddress);
             // 检查交易对是否存在
-            address pair = IUniswapV2Factory(swapRouter.factory()).getPair(
-                swapRouter.WETH(), 
+            address pair = IUniswapV2Factory(swapOrangeRouter.factory()).getPair( 
+                swapOrangeRouter.WETH(), 
                 jwToken
             );
             require(pair != address(0), "No liquidity pool");
@@ -301,19 +307,10 @@ contract InteractionAirDrop is  Initializable,
             // 检查流动性
             (uint112 reserve0, uint112 reserve1, ) = IUniswapV2Pair(pair).getReserves();
             require(reserve0 > 0 && reserve1 > 0, "Insufficient liquidity");
-            // WETH -> JW
-            uint256 beforeJWAmount = IERC20(jwToken).balanceOf(address(this));
-            address[] memory path2 = new address[](2);
-            path2[0] = swapRouter.WETH();
-            path2[1] = jwToken;
-            swapRouter.swapExactETHForTokensSupportingFeeOnTransferTokens{value: msg.value}(
-                0,
-                path2,
-                address(this),
-                block.timestamp + 300
-            );
-            uint256 afterJWAmount = IERC20(jwToken).balanceOf(address(this));
-            uint256 jwReceived = afterJWAmount - beforeJWAmount;
+            // WETH -> JW    WETH -> usdt   usdt -> jw
+            uint256 jwReceived = pijsBuyJw(msg.value);
+            require(jwReceived >= orders[_orderId].jwAmount,"need buy same quantity");
+        
             SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, jwReceived);
 
             userInfos[msg.sender].buyJWAmount[productId] = userInfos[msg.sender].buyJWAmount[productId] + jwReceived;
@@ -325,6 +322,50 @@ contract InteractionAirDrop is  Initializable,
             emit BuyJW(msg.sender,msg.value,jwReceived,block.timestamp);
 
         }
+
+        // 购买同等数量的JW
+        function purchaseSameQuantityJWWithUSDT(uint256 productId,uint256 _orderId,uint256 usdtAmount) public  nonReentrant {
+            
+            require(orders[_orderId].userAddr != address(0),"order is not exist");
+            require(orders[_orderId].userAddr == msg.sender,"order is not exist");
+            require(usdtAmount > 0,"zero usdt sended");
+            // need buy amount
+            uint256 jwAmount = orders[_orderId].jwAmount;
+            uint256 needUSDT = getJW2USDT(jwAmount);
+            require(usdtAmount >= needUSDT,"pijs is not enough sended");
+            SafeERC20.safeTransfer(IERC20(usdtAddress), msg.sender, usdtAmount);
+            
+
+            // usdt -> jw
+            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            IERC20(usdtAddress).approve(swapRouterAddress,usdtAmount);
+            address[] memory path2 = new address[](2);
+            path2[0] = usdtAddress;
+            path2[1] = jwToken;
+            uint256 beforeJWAmount = IERC20(jwToken).balanceOf(address(this));
+            swapRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+                usdtAmount,
+                0,
+                path2,
+                address(this),
+                block.timestamp + 300
+            );
+            uint256 afterJWAmount = IERC20(jwToken).balanceOf(address(this));
+            uint256 jwReceived = afterJWAmount - beforeJWAmount;
+
+            require(jwReceived >= orders[_orderId].jwAmount,"need buy same quantity");
+        
+            SafeERC20.safeTransfer(IERC20(jwToken), msg.sender, jwReceived);
+
+            userInfos[msg.sender].buyJWAmount[productId] = userInfos[msg.sender].buyJWAmount[productId] + jwReceived;
+            userInfos[msg.sender].buyTimestamp[productId] = block.timestamp;
+
+            orders[_orderId].purchaseSameQuantity = jwReceived;
+            orders[_orderId].purchaseSameQuantityTime = block.timestamp;
+
+            emit PurchaseSameQuantityJWWithUSDT(msg.sender,usdtAmount,jwReceived,block.timestamp);
+        }
+
 
         function getPIJS2JW(uint256 amount) public view returns(uint256) {
             IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
@@ -352,6 +393,20 @@ contract InteractionAirDrop is  Initializable,
             require(pijsAmount > 0, "pijs->jw quote failed");
             
             return pijsAmount;
+        }
+
+        function getJW2USDT(uint256 jwAmount)  public view returns(uint256) {
+            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+            // pijs-> usdt
+            address[] memory path2 = new address[](2);
+            path2[0] = jwToken;
+            path2[1] = usdtAddress;
+
+            uint[] memory amounts2 = swapRouter.getAmountsOut(jwAmount, path2);
+            uint256 usdtAmount = amounts2[1];
+            require(usdtAmount > 0, "pijs->jw quote failed");
+            
+            return usdtAmount;
         }
 
 
@@ -418,6 +473,8 @@ contract InteractionAirDrop is  Initializable,
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
+                            burnJWAmount:orders[orderIds[i]].burnJWAmount,
+                            developerAmount:orders[orderIds[i]].developerAmount,
                             productId: orders[orderIds[i]].productId,
                             jwAmount: orders[orderIds[i]].jwAmount,
                             createTime: orders[orderIds[i]].createTime,
@@ -452,6 +509,8 @@ contract InteractionAirDrop is  Initializable,
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
+                            burnJWAmount:orders[orderIds[i]].burnJWAmount,
+                            developerAmount:orders[orderIds[i]].developerAmount,
                             productId: orders[orderIds[i]].productId,
                             jwAmount: orders[orderIds[i]].jwAmount,
                             createTime: orders[orderIds[i]].createTime,
@@ -489,6 +548,8 @@ contract InteractionAirDrop is  Initializable,
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
+                            burnJWAmount:orders[orderIds[i]].burnJWAmount,
+                            developerAmount:orders[orderIds[i]].developerAmount,
                             productId: orders[orderIds[i]].productId,
                             jwAmount: orders[orderIds[i]].jwAmount,
                             createTime: orders[orderIds[i]].createTime,
@@ -515,6 +576,8 @@ contract InteractionAirDrop is  Initializable,
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
                             pijsAmount : orders[orderIds[i]].pijsAmount,
+                            burnJWAmount:orders[orderIds[i]].burnJWAmount,
+                            developerAmount:orders[orderIds[i]].developerAmount,
                             productId: orders[orderIds[i]].productId,
                             jwAmount: orders[orderIds[i]].jwAmount,
                             createTime: orders[orderIds[i]].createTime,
