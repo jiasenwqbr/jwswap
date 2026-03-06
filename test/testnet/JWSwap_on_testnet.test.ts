@@ -27,14 +27,14 @@ describe("JWSwap",async () => {
     const platinumNFTAddress = "0x602832375e571b87172546DcD2D7E41006b4e852";
     const epicNFTAddress = "0xD6669860c0a1C8A123c2760aE697D1AE83b6B861";
     const legendNFTAddress = "0xe86D824A1a43Dc241A7b94B6f42a1d13cAd5a282";
-    const flashSalseAddress = "0x320aA310BB4145F81b24d0BE8Ad1431242ccC670";
+    const flashSalseAddress = "0x414eC87C4c27fE1c382333b6838D571AbBd5C32c";
     const wpijsAddress = "0x3749077a8D8a4fCFF10daAb9Bc130Ce4E609Ce54";
     const pijsFactoryAddress = "0x97490047CA48F96a451Fdc24C95b5E2d432EE588";
     const piJRouterAddress = "0x3D436e3503B40a2c73D0EA70ab407405aDaf13d5";
     const usdtAddress = "0xc4610478b18b116f88A2F22A8685467f970e7ffc";
     const nftSellManageAddress = "0x8B769E9BE8271e07a0ccb9b53E57d659D0963fe4";
     const recommandAddress = "0x27Bc64142dEd44c1d5b4FDA3E1A818b0d5C8Edb1";
-    const interactionAirDropAddress = "0xFd5577f62435Cf6c721461B7fE6cF73eBEc754cD";
+    const interactionAirDropAddress = "0xF1bA312dD4fC43a1dc6a64bdE7a3Fe6121903e8e";
     const jWTradeMinnerAddress = "0x401fB5e3a679D6b0a6F8281cB59aD4E24d00cF74";
 
     const piOrangeFactoryAddress = "0xe3DCD243995ec02d0F4Fbf71A264A9453C15c7e1";
@@ -113,6 +113,10 @@ describe("JWSwap",async () => {
         console.log("account4 jw balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
         console.log("account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
         console.log("account4 usdt balance:",ethers.utils.formatEther(await usdt.balanceOf(account4.address)));
+
+        
+
+        
     });
     it("removeLiquidityJW2PIJS",async () => {
         const deadline = Math.floor(Date.now() / 1000) + 60 * 10; // 10分钟
@@ -471,30 +475,32 @@ describe("JWSwap",async () => {
     });
     it("transferJW",async () => {
         // const user = "0x953022d715A3CbEaaF805412C7938F9830EEb122";
-        const user = "0x3705D46DbBFb5CbFDD4D7C26E25EF7EF38697e9b";
+        const user = "0x693Dd8b5AA932F3b80aF7B797C6877086eb08a35";
         console.log(ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(owner.address)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(account4.address)));
-         console.log(ethers.utils.formatEther(await jw.balanceOf(user)));
+        console.log(ethers.utils.formatEther(await jw.balanceOf(user)));
+        console.log("interactionAirDropAddress:",ethers.utils.formatEther(await jw.balanceOf(interactionAirDropAddress)));
         
 
-        // const tx = await jw.connect(owner).transfer(flashSalseAddress,ethers.utils.parseEther("1000"));
+        // const tx = await jw.connect(owner).transfer(interactionAirDropAddress,ethers.utils.parseEther("1000"));
         // await tx.wait();
 
-        const tx = await jw.connect(owner).transfer(user,ethers.utils.parseEther("100000"));
-        await tx.wait();
+        // const tx = await jw.connect(owner).transfer(user,ethers.utils.parseEther("10000"));
+        // await tx.wait();
 
         // const tx2 = await jw.connect(owner).transfer(account4.address,ethers.utils.parseEther("100"));
         // await tx2.wait();
 
-        const tx1 = await usdt.connect(owner).transfer(user,ethers.utils.parseEther("10000"));
-        await tx1.wait();
+        // const tx1 = await usdt.connect(owner).transfer(user,ethers.utils.parseEther("10000"));
+        // await tx1.wait();
 
         console.log(ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(owner.address)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(account4.address)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(user)));
 
+        console.log("interactionAirDropAddress:",ethers.utils.formatEther(await jw.balanceOf(interactionAirDropAddress)));
 
 
     });
@@ -549,6 +555,12 @@ describe("JWSwap",async () => {
 
         const unReceivedResult = await flashSalse.checkingUnReceivedOrder(account4.address,1);
         console.log("checkingUnReceivedOrder:",unReceivedResult);
+
+        const product = await flashSalse.getProduct(1);
+        console.log("product:",product);
+
+        const productInfo = await flashSalse.getProductAndUserLimit(1,account4.address);
+        console.log("productInfo:",productInfo);
     });
 
     it("flashBuy-checkJW",async () => {
@@ -574,16 +586,16 @@ describe("JWSwap",async () => {
     });
 
     it("InteractionAirDrop-setParams",async () => {
-        const tx = await interactionAirDrop.connect(owner).setProduct(
-            1,
-            ethers.utils.parseEther("1"),
-            5,
-            50000,
-            24,
-            true,
-            1770788894
-        );
-        await tx.wait();
+        // const tx = await interactionAirDrop.connect(owner).setProduct(
+        //     1,
+        //     ethers.utils.parseEther("1"),
+        //     5,
+        //     50000,
+        //     1,
+        //     true,
+        //     1770788894
+        // );
+        // await tx.wait();
 
         const product = await interactionAirDrop.getProduct(1);
         console.log("product 1:",product);
@@ -616,20 +628,22 @@ describe("JWSwap",async () => {
     });
 
     it("InteractionAirDrop-queryOrder",async () => {
-        const allorders = await  interactionAirDrop.checkingAllOrders(account4.address,1);
+        const allorders = await  interactionAirDrop.checkingAllOrders("0x693Dd8b5AA932F3b80aF7B797C6877086eb08a35",1);
         console.log("checkingAllOrders:",allorders);
 
-        const notYetExpired = await  interactionAirDrop.checkingNotYetExpired(account4.address,1);
-        console.log("notYetExpired:",notYetExpired);
+        const checkingWaitingExpireorder = await  interactionAirDrop.checkingWaitingExpire("0x693Dd8b5AA932F3b80aF7B797C6877086eb08a35",1);
+        console.log("checkingWaitingExpireorder:",checkingWaitingExpireorder);
 
-        const receivedOrder = await  interactionAirDrop.checkingReceivedOrder(account4.address,1);
-        console.log("receivedOrder:",receivedOrder);
+        // const receivedOrder = await  interactionAirDrop.checkPendingCollectionOrder("0x600A06CF3A0152cbd4b1b090432b3220653bD972",1);
+        // console.log("receivedOrder:",receivedOrder);
 
-        const pendingCollectionOrder = await  interactionAirDrop.checkPendingCollectionOrder(account4.address,1);
+        const pendingCollectionOrder = await  interactionAirDrop.checkPendingCollectionOrder("0x693Dd8b5AA932F3b80aF7B797C6877086eb08a35",1);
         console.log("pendingCollectionOrder:",pendingCollectionOrder);
 
-        console.log("getUserIntegration:",await interactionAirDrop.getUserIntegration("0x600A06CF3A0152cbd4b1b090432b3220653bD972"));
-        console.log("recommand:",await recommand.getUserInfo(account4.address));
+        // console.log("getUserIntegration:",await interactionAirDrop.getUserIntegration("0x600A06CF3A0152cbd4b1b090432b3220653bD972"));
+        // console.log("recommand:",await recommand.getUserInfo(account4.address));
+
+
 
 
     });
@@ -704,7 +718,13 @@ describe("JWSwap",async () => {
          console.log("the platinumNFT owner",await platinumNFT.ownerOf(1));
          console.log("the epicNFT owner",await epicNFT.ownerOf(1));
          console.log("the legendNFT owner",await legendNFT.ownerOf(1));
+
+
     });
+     it("NFTSellManage-getProduct",async () => {
+
+     });
+
 
     it("JWTradeMinner-buyJW",async () => {
         console.log("before buyNFT account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
@@ -875,53 +895,22 @@ describe("JWSwap",async () => {
 
     it("jwswaptest",async () => {
         // pijs 购买 jw  先购买usdt，再购买jw--- 正常swap
-        console.log("owner jw balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
-        console.log("account4 jw balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
-        console.log("owner pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
-        console.log("account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
-        const deadline = Math.floor(Date.now() / 1000) + 60 * 10; // 10分钟
-        // 购买usdt
-
-        const path = [wpijs.address,jwAddress];
-        const tx = await piJRouter.connect(account4).swapExactETHForTokensSupportingFeeOnTransferTokens(
-            0,
-            path,
-            account4.address,
-            deadline,
-            { 
-            value: ethers.utils.parseEther("0.5"),
-            gasLimit: 350000 
-            }
-        );
-        const receipent = await tx.wait();
-        console.log("transactionHash:",receipent.transactionHash);
-
-
-        
-
-        console.log("owner jw balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
-        console.log("account4 jw balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
-        console.log("owner pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
-        console.log("account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
-
-        // 卖
         // console.log("owner jw balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
         // console.log("account4 jw balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
         // console.log("owner pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
         // console.log("account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
         // const deadline = Math.floor(Date.now() / 1000) + 60 * 10; // 10分钟
-        // const path = [jwAddress,wpijs.address];
+        // // 购买usdt
 
-        // const tx00 = await jw.connect(account4).approve(piJRouter.address,ethers.utils.parseEther("10"));
-        // await tx00.wait();
-        // const tx = await piJRouter.connect(account4).swapExactTokensForETHSupportingFeeOnTransferTokens(
-        //     ethers.utils.parseEther("10"),
+        // const path = [wpijs.address,jwAddress];
+        // const tx = await piJRouter.connect(account4).swapExactETHForTokensSupportingFeeOnTransferTokens(
         //     0,
         //     path,
         //     account4.address,
         //     deadline,
         //     { 
-        //         gasLimit: 350000 
+        //     value: ethers.utils.parseEther("0.5"),
+        //     gasLimit: 350000 
         //     }
         // );
         // const receipent = await tx.wait();
@@ -934,6 +923,37 @@ describe("JWSwap",async () => {
         // console.log("account4 jw balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
         // console.log("owner pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
         // console.log("account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+
+        // 卖
+        console.log("owner jw balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
+        console.log("account4 jw balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("owner pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
+        const deadline = Math.floor(Date.now() / 1000) + 60 * 10; // 10分钟
+        const path = [jwAddress,wpijs.address];
+
+        const tx00 = await jw.connect(account4).approve(piJRouter.address,ethers.utils.parseEther("10"));
+        await tx00.wait();
+        const tx = await piJRouter.connect(account4).swapExactTokensForETHSupportingFeeOnTransferTokens(
+            ethers.utils.parseEther("10"),
+            0,
+            path,
+            account4.address,
+            deadline,
+            { 
+                gasLimit: 350000 
+            }
+        );
+        const receipent = await tx.wait();
+        console.log("transactionHash:",receipent.transactionHash);
+
+
+        
+
+        console.log("owner jw balance:",ethers.utils.formatEther(await jw.balanceOf(owner.address)));
+        console.log("account4 jw balance:",ethers.utils.formatEther(await jw.balanceOf(account4.address)));
+        console.log("owner pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(owner.address)));
+        console.log("account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
 
 
 
@@ -1052,6 +1072,19 @@ describe("JWSwap",async () => {
         console.log("account4 usdt balance:",ethers.utils.formatEther(await usdt.balanceOf(account4.address)));
 
     });
+
+    it("getAmountOut",async () => {
+        const jwAmount = ethers.utils.parseEther("10");
+        const path = [jwAddress,usdtAddress];
+        const amountOuts = await piJRouter.connect(account4).getAmountsOut(
+            jwAmount,
+            path
+        );
+        console.log("amountOuts:",amountOuts);
+        console.log("amountOuts:",ethers.utils.formatEther(amountOuts[1]));
+
+        
+     });
        
 
 
@@ -1117,6 +1150,8 @@ npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet 
 npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet --grep "jwswaptest"
 
 npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet --grep "jwtest2usdt"
+npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet --grep "getAmountOut"
+
 
 
 

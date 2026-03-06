@@ -173,7 +173,8 @@ contract NFTSellManage is  Initializable,
         (address referrer,,,) = IRecommendation(recommandContractAddress).getUserInfo(msg.sender);
         require(referrer != address(0),"user is not recommanded");
         // transfer 
-        SafeERC20.safeTransferFrom(IERC20(jwToken), msg.sender ,receiver, buyJwAmount);
+        SafeERC20.safeTransferFrom(IERC20(jwToken), msg.sender ,address(this), buyJwAmount);
+        SafeERC20.safeTransfer(IERC20(jwToken),receiver, buyJwAmount);
         (bool ok, ) = receiver.call{value: buyPIJSAmount}("");
         require(ok, "msg sender received pijs transfer failed");
         // mint nft

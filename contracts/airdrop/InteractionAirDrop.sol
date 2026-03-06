@@ -164,7 +164,7 @@ contract InteractionAirDrop is  Initializable,
         event JoinAirDrop(address userAddr,uint8 productId,uint256 amount,address receiver,uint256 currentOrderId,address referrer,address indriectReferrer,uint256 driectReferrerIntegrationInc,uint256 inDriectReferrerIntegrationInc,uint256 timestamp);
         event CheckOrder(address userAddr,uint256 orderId,uint256 jwAmount,uint256 timestamp);
         event BuyJW(address userAddr,uint256 pijsAmount,uint256 jwReceived,uint256 timestamp);
-        event PurchaseSameQuantityJWWithUSDT(address userAddr,uint256 usdtAmount,uint256 jwReceived,uint256 timestamp);
+        event PurchaseSameQuantityJWWithUSDT(address userAddr,uint256 usdtAmount,uint256 jwReceived,uint256 orderId,uint256 productId,uint256 timestamp);
 
         /*//////////////////////////////////////////////////////////////
                             FUNCTIONS
@@ -333,9 +333,8 @@ contract InteractionAirDrop is  Initializable,
             uint256 jwAmount = orders[_orderId].jwAmount;
             uint256 needUSDT = getJW2USDT(jwAmount);
             require(usdtAmount >= needUSDT,"pijs is not enough sended");
-            SafeERC20.safeTransfer(IERC20(usdtAddress), msg.sender, usdtAmount);
+            SafeERC20.safeTransferFrom(IERC20(usdtAddress), msg.sender, address(this),usdtAmount);
             
-
             // usdt -> jw
             IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
             IERC20(usdtAddress).approve(swapRouterAddress,usdtAmount);
@@ -363,7 +362,7 @@ contract InteractionAirDrop is  Initializable,
             orders[_orderId].purchaseSameQuantity = jwReceived;
             orders[_orderId].purchaseSameQuantityTime = block.timestamp;
 
-            emit PurchaseSameQuantityJWWithUSDT(msg.sender,usdtAmount,jwReceived,block.timestamp);
+            emit PurchaseSameQuantityJWWithUSDT(msg.sender,usdtAmount,jwReceived,_orderId,productId,block.timestamp);
         }
 
 
@@ -414,7 +413,7 @@ contract InteractionAirDrop is  Initializable,
 
 
         // 领取jw
-        function checkJW(uint256 _orderId,uint8 productId) public {
+        function checkJW(uint256 _orderId,uint8 productId) internal {
             // is your's order
             Order memory order = orders[_orderId];
             require(order.userAddr != address(0),"the order is not exist");
@@ -436,7 +435,12 @@ contract InteractionAirDrop is  Initializable,
             emit CheckOrder(msg.sender,order.orderId,order.jwAmount,block.timestamp);
         }
 
-
+        function checkJWs(uint8 productId) public nonReentrant{
+            (Order[] memory checkOrders,)= checkPendingCollectionOrder(msg.sender, productId);
+            for (uint256 i = 0;i < checkOrders.length;i++){
+                checkJW(checkOrders[i].orderId, productId);
+            }
+        }
         /*//////////////////////////////////////////////////////////////
                             FUNCTIONS   setter  getter query
         //////////////////////////////////////////////////////////////*/
@@ -454,13 +458,15 @@ contract InteractionAirDrop is  Initializable,
             return usdtAmount;
         }
 
-        // 查询待领取的  (待释放)
+        // 查询待领取的  (已释放)
         function checkPendingCollectionOrder(address user,uint8 productId) public view returns(Order[] memory ,uint256){
             uint256[] memory orderIds = userOrders[user][productId];
             uint256 amount;
             uint256 length;
             for (uint256 i = 0;i < orderIds.length;i++){
-                if (orders[orderIds[i]].purchaseSameQuantityTime != 0  && orders[orderIds[i]].purchaseSameQuantityTime <= block.timestamp - products[productId].realsePerioid * SECONDS_PER_HOUR){
+                if (orders[orderIds[i]].purchaseSameQuantityTime != 0  
+                && orders[orderIds[i]].purchaseSameQuantityTime <= block.timestamp - products[productId].realsePerioid * SECONDS_PER_HOUR
+                && orders[orderIds[i]].isReceived == false){
                     length++;
                 }
             }
@@ -468,7 +474,9 @@ contract InteractionAirDrop is  Initializable,
             uint256 index;
             if (length >0){
                 for (uint256 i = 0;i < orderIds.length;i++){
-                    if (orders[orderIds[i]].purchaseSameQuantityTime != 0 &&  orders[orderIds[i]].purchaseSameQuantityTime <= block.timestamp - products[productId].realsePerioid * SECONDS_PER_HOUR){
+                    if (orders[orderIds[i]].purchaseSameQuantityTime != 0 
+                    &&  orders[orderIds[i]].purchaseSameQuantityTime <= block.timestamp - products[productId].realsePerioid * SECONDS_PER_HOUR
+                    && orders[orderIds[i]].isReceived == false ){
                         rorders[index]= Order({
                             orderId : orders[orderIds[i]].orderId,
                             userAddr : orders[orderIds[i]].userAddr,
@@ -527,7 +535,7 @@ contract InteractionAirDrop is  Initializable,
              return (rorders,amount);
         }
 
-
+      
 
         // 查询未到期（释放中）
         function checkingNotYetExpired(address user,uint8 productId) public view returns(Order[] memory,uint256 ){
@@ -565,6 +573,54 @@ contract InteractionAirDrop is  Initializable,
             }
            return (rorders,amount);
         }
+
+        function checkingWaitingExpire(address user,uint8 productId) public view returns(Order[] memory,uint256 ){
+            uint256[] memory orderIds = userOrders[user][productId];
+            uint256 length;
+            uint256 amount;
+            for (uint256 i = 0;i < orderIds.length;i++){
+                if (
+                    orders[orderIds[i]].purchaseSameQuantityTime == 0  
+                    && orders[orderIds[i]].purchaseSameQuantity == 0
+                    && orders[orderIds[i]].isReceived == false
+                ){
+                    length++;
+                }
+            }
+            Order[] memory rorders = new Order[](length);
+            uint256 index;
+            if (length >0){
+                for (uint256 i = 0;i < orderIds.length;i++){
+                    if (
+                        orders[orderIds[i]].purchaseSameQuantityTime == 0  
+                        && orders[orderIds[i]].purchaseSameQuantity == 0
+                        && orders[orderIds[i]].isReceived == false
+                    ){
+                        rorders[index]= Order({
+                            orderId : orders[orderIds[i]].orderId,
+                            userAddr : orders[orderIds[i]].userAddr,
+                            pijsAmount : orders[orderIds[i]].pijsAmount,
+                            burnJWAmount:orders[orderIds[i]].burnJWAmount,
+                            developerAmount:orders[orderIds[i]].developerAmount,
+                            productId: orders[orderIds[i]].productId,
+                            jwAmount: orders[orderIds[i]].jwAmount,
+                            createTime: orders[orderIds[i]].createTime,
+                            isReceived:orders[orderIds[i]].isReceived,
+                            receivedTime:orders[orderIds[i]].receivedTime,
+                            purchaseSameQuantity:orders[orderIds[i]].purchaseSameQuantity,
+                            purchaseSameQuantityTime:orders[orderIds[i]].purchaseSameQuantityTime
+                        });
+                        amount = amount + orders[orderIds[i]].jwAmount;
+                        index = index + 1;
+                    }
+                }
+            }
+           return (rorders,amount);
+        }
+
+
+
+
 
         // 查询用户全部
         function checkingAllOrders (address user,uint8 productId) public view returns(Order[] memory){

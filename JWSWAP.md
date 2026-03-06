@@ -500,6 +500,22 @@ event  BuyNFT(address user,uint256 buyJwAmount,uint256 buyPIJSAmount,address nft
 - currentOrderId 当前订单id
 - createTime 购买时间
 
+#### 获取nft价格
+
+```
+ function getProduct(address productAddress) public view  returns(NFTProduct memory)
+```
+
+NFTProduct
+
+- nftAddr nft地址
+
+- usdtPrice 价格
+
+- limit 购买限制
+
+  
+
 
 
 #### PIJS2USDT pijs兑换美元数量
@@ -811,6 +827,52 @@ event CheckJW(address user,uint256 orderId,uint256 jwAmount,uint256 timestamp);
 - jwAmount 领取的jw数量
 - timestamp 领取时间
 
+##### 获取产品信息
+
+```
+  function getProduct(uint8 productId) public view  returns(Product memory)
+```
+
+入参：
+
+- productId 产品id  第一期传 1
+
+出参：
+
+Product
+
+- productId 产品id
+- usdtValue 支付的usdt
+- buyLimit 单地址限量
+- limit 本产品限量
+- jwAmountPerCopy 每份多少JW
+- currentSalseCopies 当前卖出份数
+- reconmmandRewardPercent 推荐者奖励比例
+- enabled 是否启用
+- canCheck 是否可以领取
+- startTime 抢购开始时间
+
+##### 获取产品信息和用户已购买份数
+
+```
+ function getProductAndUserLimit(uint8 productId,address user) public view  returns(Product memory,uint256)
+```
+
+Product
+
+- productId 产品id
+- usdtValue 支付的usdt
+- buyLimit 单地址限量
+- limit 本产品限量
+- jwAmountPerCopy 每份多少JW
+- currentSalseCopies 当前卖出份数
+- reconmmandRewardPercent 推荐者奖励比例
+- enabled 是否启用
+- canCheck 是否可以领取
+- startTime 抢购开始时间
+
+uint256 用户已购买份数
+
 
 
 #### InteractionAirDrop 交互空投 
@@ -931,6 +993,8 @@ Order[]
 - productId 期
 - jwAmount 可领取的jw
 - createTime 创建时间
+- purchaseSameQuantity 购买同等数量的JW
+- purchaseSameQuantityTime  购买同等数量的JW 的时间
 - isReceived 是否领
 - receivedTime 领取时间
 
@@ -1722,58 +1786,6 @@ function swap(
 **发出事件**
 
 - `Swap(msg.sender, amount0In, amount1In, amount0Out, amount1Out, to)`
-
-
-
-
-
-当前总成本   a
-
-当前总数量   b
-
-
-
-卖出 a1
-
-卖出数量  b1
-
-
-
-盈利： 
-
-- 当  b1/a1  - b/a > 0
-
-​	盈利：b1 * (b1/a1  - b/a)
-
-- 当  b1/a1  - b/a < 0
-
-​	盈利  0
-
-卖出的b1可能大于 b
-
-
-
-其实就是比如：我买了2辆车40万，我卖了1辆30万，我的盈利就是：1* （40/2 - 30/1） =10
-
-假如我买了2辆车40万，别人送给我1辆，我卖了3辆90万，其盈利就是：(3-1) * （90/3 - 40/2）=20 ,盈利：30+20 = 50万
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

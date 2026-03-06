@@ -44,7 +44,7 @@ contract Recommendation is AccessControlUpgradeable, OwnableUpgradeable, Reentra
         maxChainLength = _maxChainLength;
     }
     // 注册时
-    function register(address referrerAddress) external {
+    function register(address referrerAddress) external nonReentrant {
         address user = msg.sender;
         
         require(user != referrerAddress, "Cannot refer yourself");
@@ -74,11 +74,12 @@ contract Recommendation is AccessControlUpgradeable, OwnableUpgradeable, Reentra
 
         uint256 i = 0;
         while(current != address(0)){
-            require(referralChains[msg.sender].length <= maxChainLength, "The depth of the referral chain has been exceeded");
+            // require(referralChains[user].length <= maxChainLength, "The depth of the referral chain has been exceeded");
             chain[i] = current;
             current = users[current].referrer;
             i++;
         }
+        require(chain.length <= maxChainLength, "The depth of the referral chain has been exceeded");
         
         referralChains[user] = chain;
         

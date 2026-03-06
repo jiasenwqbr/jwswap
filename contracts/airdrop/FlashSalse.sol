@@ -53,7 +53,8 @@ contract FlashSalse is  Initializable,
                 currentSalseCopies:0,
                 reconmmandRewardPercent:100,
                 enabled : true,
-                canCheck: false
+                canCheck: false,
+                startTime:block.timestamp
             });
             products[1] = p1;
 
@@ -71,6 +72,7 @@ contract FlashSalse is  Initializable,
             uint256 reconmmandRewardPercent;
             bool enabled;
             bool canCheck;
+            uint256 startTime;
             
         }
         struct Order{
@@ -117,7 +119,7 @@ contract FlashSalse is  Initializable,
             uint256 usdtValue = products[productId].usdtValue;
             require(amount >= usdtValue * copies,"can not reached usdtValue");
             require(tokenAddress == usdtAddress,"must pay usdt");
-            SafeERC20.safeTransfer(IERC20(usdtAddress), address(this), amount);
+            SafeERC20.safeTransferFrom(IERC20(usdtAddress),msg.sender, address(this), amount);
              // limit
             uint256 userHasBuy = getUserBuyCopies(msg.sender,productId);
             require(userHasBuy < products[productId].buyLimit,"exceeded the buy limit");
@@ -160,7 +162,7 @@ contract FlashSalse is  Initializable,
             emit FlashBuy(msg.sender,amount,referrer,reconmmanderRewardAmount,currentOrderId,productId,copies,block.timestamp);
         }
 
-        function checkJW(uint256 _orderId,uint8 productId) public nonReentrant {
+        function checkJW(uint256 _orderId,uint8 productId) internal {
             require(products[productId].canCheck == true,"the function is not enabled");
              // is your's order
             Order memory order = orders[_orderId];
@@ -176,6 +178,14 @@ contract FlashSalse is  Initializable,
             emit CheckJW(msg.sender,order.orderId,order.jwAmount,block.timestamp);
         }
 
+        function checkJWs(uint8 productId) external nonReentrant {
+            require(products[productId].canCheck == true,"the function is not enabled");
+            (Order[] memory orderss,,) = checkingUnReceivedOrder(msg.sender,productId);
+            require(orderss.length > 0,"not any order can check");
+            for (uint256 i = 0;i< orderss.length;i++){
+                checkJW(orderss[i].orderId,productId);
+            }
+        }
         /*//////////////////////////////////////////////////////////////
                             FUNCTIONS   setter  getter query
         //////////////////////////////////////////////////////////////*/
@@ -204,7 +214,9 @@ contract FlashSalse is  Initializable,
             uint256 _jwAmountPerCopy,
             uint256 _reconmmandRewardPercent,
             bool _enabled,
-            bool _canCheck) external onlyRole(MANAGE_ROLE) {
+            bool _canCheck,
+            uint256 startTime
+            ) external onlyRole(MANAGE_ROLE) {
                 
                 products[_productId].productId = _productId;
                 products[_productId].usdtValue = _usdtValue;
@@ -214,6 +226,7 @@ contract FlashSalse is  Initializable,
                 products[_productId].reconmmandRewardPercent = _reconmmandRewardPercent;
                 products[_productId].enabled = _enabled;
                 products[_productId].canCheck = _canCheck;
+                products[_productId].startTime = startTime;
         }
         function getPIJS2USDT(uint256 amount) public view returns(uint256) {
             IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapOrangeRouterAddress);
