@@ -4,6 +4,7 @@ pragma solidity ^0.8.9;
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -93,6 +94,8 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     mapping(address => UserSwapNormal) userSwapNormals;
     address usdtAddress;
 
+    mapping(address => FeeReceiver[]) nftHolderFees;
+    address[] nftAddresses;
 
     constructor(
         string memory tokenName,
@@ -717,12 +720,13 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         if (pairs[from]) {
             // buy - 从 swap 中购买
             uint256 totalFeeAmount = 0;
-            if (buyFeeReceiversNormal.length > 0) {
+            FeeReceiver[] memory buyFeeReceiversNormalTemp = getNFTHolderFeeReceiversNormal(0,to);
+            if (buyFeeReceiversNormalTemp.length > 0) {
                 // 使用多个手续费接收者
-                for (uint256 i = 0; i < buyFeeReceiversNormal.length; i++) {
-                    uint256 feeAmount = (amount * buyFeeReceiversNormal[i].rate) / 10000;
+                for (uint256 i = 0; i < buyFeeReceiversNormalTemp.length; i++) {
+                    uint256 feeAmount = (amount * buyFeeReceiversNormalTemp[i].rate) / 10000;
                         if (feeAmount > 0) {
-                            _standardTransfer(from, buyFeeReceiversNormal[i].receiver, feeAmount);
+                            _standardTransfer(from, buyFeeReceiversNormalTemp[i].receiver, feeAmount);
                             totalFeeAmount += feeAmount;
                         }
                 }
@@ -738,12 +742,13 @@ contract JW is IERC20, IERC20Metadata, Ownable {
         } else {
             // sell - 卖出到 swap
             uint256 totalFeeAmount = 0;
-            if (sellFeeReceiversNormal.length > 0) {
+            FeeReceiver[] memory sellFeeReceiversNormalTemp = getNFTHolderFeeReceiversNormal(1,from);
+            if (sellFeeReceiversNormalTemp.length > 0) {
                 // 使用多个手续费接收者
-                for (uint256 i = 0; i < sellFeeReceiversNormal.length; i++) {
-                    uint256 feeAmount = (amount * sellFeeReceiversNormal[i].rate) / 10000;
+                for (uint256 i = 0; i < sellFeeReceiversNormalTemp.length; i++) {
+                    uint256 feeAmount = (amount * sellFeeReceiversNormalTemp[i].rate) / 10000;
                     if (feeAmount > 0) {
-                        _standardTransfer(from, sellFeeReceiversNormal[i].receiver, feeAmount);
+                        _standardTransfer(from, sellFeeReceiversNormalTemp[i].receiver, feeAmount);
                         totalFeeAmount += feeAmount;
                     } 
                 }
@@ -1008,31 +1013,31 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     }
 
     function getJW2PIJS(uint256 jwAmount) public view returns(uint256) {
-            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
-            // jw-> pijs
-            address[] memory path2 = new address[](2);
-            path2[0] = address(this);
-            path2[1] = swapRouter.WETH();
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        // jw-> pijs
+        address[] memory path2 = new address[](2);
+        path2[0] = address(this);
+        path2[1] = swapRouter.WETH();
 
-            uint[] memory amounts2 = swapRouter.getAmountsOut(jwAmount, path2);
-            uint256 pijsAmount = amounts2[1];
-            require(pijsAmount > 0, "jw -> pijs quote failed");
-            
-            return pijsAmount;
+        uint[] memory amounts2 = swapRouter.getAmountsOut(jwAmount, path2);
+        uint256 pijsAmount = amounts2[1];
+        require(pijsAmount > 0, "jw -> pijs quote failed");
+        
+        return pijsAmount;
     }
 
     function getJW2USDT(uint256 jwAmount) public view returns(uint256) {
-            IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
-            // jw-> usdt
-            address[] memory path2 = new address[](2);
-            path2[0] = address(this);
-            path2[1] = usdtAddress;
+        IUniswapV2Router02 swapRouter = IUniswapV2Router02(swapRouterAddress);
+        // jw-> usdt
+        address[] memory path2 = new address[](2);
+        path2[0] = address(this);
+        path2[1] = usdtAddress;
 
-            uint[] memory amounts2 = swapRouter.getAmountsOut(jwAmount, path2);
-            uint256 pijsAmount = amounts2[1];
-            require(pijsAmount > 0, "jw -> usdt quote failed");
-            
-            return pijsAmount;
+        uint[] memory amounts2 = swapRouter.getAmountsOut(jwAmount, path2);
+        uint256 pijsAmount = amounts2[1];
+        require(pijsAmount > 0, "jw -> usdt quote failed");
+        
+        return pijsAmount;
     }
 
     function getPIJS2JW(uint256 pijsAmount) public view returns(uint256) {
@@ -1068,6 +1073,58 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     function getUserSwapNormals(address user) public view returns(UserSwapNormal memory){
         return userSwapNormals[user];
     }
+
+    function setNftHolderFees(address nftAddress,address[] memory _receivers,uint256[] memory _rates) external onlyOwner {
+        require(_receivers.length == _rates.length, "JW: Arrays length mismatch");
+        require(_receivers.length > 0, "JW: Empty arrays");
+        FeeReceiver[] memory _feeReceivers = new FeeReceiver[](_receivers.length);
+        for (uint256 i = 0; i < _receivers.length; i++) {
+            _feeReceivers[i] = FeeReceiver({
+                receiver:_receivers[i],
+                rate:_rates[i]
+            });
+        }
+        nftHolderFees[nftAddress] = _feeReceivers;
+    }
+    function getNftHolderFees(address nftAddress) public view returns(FeeReceiver[] memory) {
+        return  nftHolderFees[nftAddress];
+    } 
+    
+    function setNftAddresses(address[] memory _nftAddresses) external onlyOwner {
+        require(_nftAddresses.length > 0,"_nftAddresses.length must > 0");
+        // 清空现有设置
+        delete nftAddresses;
+        for (uint256 i = 0; i < _nftAddresses.length; i++) {
+            nftAddresses.push(_nftAddresses[i]);
+        }
+    }
+    function getNftAddresses() public view returns(address[] memory){
+        return nftAddresses;
+    }
+
+    function getNFTHolderFeeReceiversNormal(uint8 swapType,address userAddress) internal view returns(FeeReceiver[] memory) {
+        FeeReceiver[] memory temp;
+        for (uint256 i = 0;i < nftAddresses.length;i++){
+            if (IERC721(nftAddresses[i]).balanceOf(userAddress) > 0){
+                temp = nftHolderFees[nftAddresses[i]];
+                break;
+            }
+        }
+        if (temp.length > 0){
+            return temp;
+        } else {
+            if (swapType == 0){
+                return buyFeeReceiversNormal;
+            } else {
+                return sellFeeReceiversNormal;
+            }
+        }
+    }
+
+
+
+
+
 
 
 

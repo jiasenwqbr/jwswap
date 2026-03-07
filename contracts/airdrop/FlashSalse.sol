@@ -354,6 +354,10 @@ contract FlashSalse is  Initializable,
         function getRouterAddress() public view returns(address,address) {
             return (swapRouterAddress,swapOrangeRouterAddress);
         }
+        function setJwToken(address _jw) external onlyRole(MANAGE_ROLE) {
+            require(_jw != address(0),"0 address");
+            jwToken = _jw;
+        }
 
 
 
