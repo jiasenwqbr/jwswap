@@ -14,7 +14,7 @@ contract PlatinumNFT is ERC721Enumerable, AccessControl {
     Counters.Counter private idCounter;
 
     bool public transferSwitch;
-
+    
     constructor() ERC721("PlatinumNFT", "PlatinumNFT") {
         idCounter.initial(1);
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);

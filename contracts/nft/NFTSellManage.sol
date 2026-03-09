@@ -36,6 +36,7 @@ contract NFTSellManage is  Initializable,
             address[3] memory nftaddresses,
             uint256[3] memory usdtPrice,
             uint8[3] memory limits,
+            uint256[3] memory totalSupplys,
             uint256 _wearRate
         ) public initializer {
             __AccessControlEnumerable_init();
@@ -57,21 +58,24 @@ contract NFTSellManage is  Initializable,
                 {
                     nftAddr : nftaddresses[0],
                     usdtPrice : usdtPrice[0],
-                    limit : limits[0]
+                    limit : limits[0],
+                    totalSupply:totalSupplys[0]
                 }
             ); 
             NFTProduct memory epicNft = NFTProduct(
                 {
                     nftAddr : nftaddresses[1],
                     usdtPrice : usdtPrice[1],
-                    limit : limits[1]
+                    limit : limits[1],
+                     totalSupply:totalSupplys[1]
                 }
             ); 
             NFTProduct memory legendNft = NFTProduct(
                 {
                     nftAddr : nftaddresses[2],
                     usdtPrice : usdtPrice[2],
-                    limit : limits[2]
+                    limit : limits[2],
+                    totalSupply:totalSupplys[2]
                 }
             ); 
 
@@ -102,6 +106,7 @@ contract NFTSellManage is  Initializable,
        address nftAddr;
        uint256 usdtPrice;
        uint8 limit;
+       uint256 totalSupply;
     }
     mapping(address => NFTProduct) products;
 
@@ -179,6 +184,7 @@ contract NFTSellManage is  Initializable,
         require(ok, "msg sender received pijs transfer failed");
         // mint nft
         uint256 nftId = INFT(nftAddress).mint(msg.sender);
+        require(nftId <= products[nftAddress].totalSupply,"NFT is exceed the total supply");
         // update
         require(orders[orderId].product == address(0),"order is exist");
         Order memory order = Order({
@@ -215,27 +221,31 @@ contract NFTSellManage is  Initializable,
     }
     function setProduct(address[3] memory nftaddresses,
         uint256[3] memory usdtPrice,
-        uint8[3] memory limits) external onlyRole(MANAGE_ROLE) {
+        uint8[3] memory limits,
+        uint256[3] memory totalSupplys) external onlyRole(MANAGE_ROLE) {
         // init product
         NFTProduct memory platinunNft = NFTProduct(
         {
             nftAddr : nftaddresses[0],
             usdtPrice : usdtPrice[0],
-            limit : limits[0]
+            limit : limits[0],
+            totalSupply:totalSupplys[0]
         }
         ); 
         NFTProduct memory epicNft = NFTProduct(
         {
             nftAddr : nftaddresses[1],
             usdtPrice : usdtPrice[1],
-            limit : limits[1]
+            limit : limits[1],
+            totalSupply:totalSupplys[1]
         }
         ); 
         NFTProduct memory legendNft = NFTProduct(
         {
             nftAddr : nftaddresses[2],
             usdtPrice : usdtPrice[2],
-            limit : limits[2]
+            limit : limits[2],
+            totalSupply:totalSupplys[2]
         }
         ); 
 
