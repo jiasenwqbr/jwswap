@@ -22,9 +22,9 @@ PiJFactory contract address is:  0x97490047CA48F96a451Fdc24C95b5E2d432EE588
 
 PiJRouter contract address is: 0x3D436e3503B40a2c73D0EA70ab407405aDaf13d5
 
-JW contract address is: 0xf4Ac8fa7B1e88bB56e771A6C07A2d02FAfd03204
+JW contract address is: 0x29d14b0b09f219D9583C5A6BB9772DA6B10ad593
 
-jw/usdt pair address: 0x26E03ADc2127a2D0bB346A401426ACB5AAE43D79
+jw/usdt pair address: 0x964f779DAc38235E600DBDDf6d0c99415B46936B
 
 ---------- 推荐合约
 
@@ -50,13 +50,27 @@ FlashSalse address is: 0x414eC87C4c27fE1c382333b6838D571AbBd5C32c
 
 InteractionAirDrop address is: 0xF1bA312dD4fC43a1dc6a64bdE7a3Fe6121903e8e
 
----------- JW挖矿合约
+---------- JW挖矿合约（作废）
 
 JWTradeMinner address is: 0x3040fa8370c61E26a7a244793a9EA15eC5C57bec
 
+---------- 奖励
 
+释放合约 DynamicStaticRewardRealse address is: 0x4c3D22c3b50cC51e01095b717e986d0977719B0F
 
+动态收益领取合约 DynamicRewardDistribute address is: 0x56B5761fce434EB8136c79a11284fBC307d3369f
 
+盈利税2 领取合约 ProfitTax2RewardClaim address is: 0x5fF7291bec7F7fC51B0693796b3E3bBbB7d1c78a
+
+盈利税 40% ProfitTax2Transit address is: 0xbE13c91908290CFd3a3764a7eAB979f7641CBD35
+
+交易手续费60% SwapFee60Transit address is: 0x49A99DC35B0653579Cb65D1E3Db3F2262f993d01
+
+静态收益5000万  StaticRewardDistribute address is: 0xf671CA039b490f5D0E69cB4114A062F985e1a650
+
+NFT收益领取合约  NFTRewardDistribute address is: 0xe1DEe98B0404CD3604D0ddF875a6394112396405
+
+盈利税 40%(nft) address is: 0x346546515B564AbE0d389E76642979aB0F44592c
 
 
 
@@ -605,7 +619,7 @@ function queryReward(address user,uint256 year) public view returns(RewardOrder[
 
 
 
-###  JWTradeMinner JW挖矿、奖励 
+###  JWTradeMinner JW挖矿、奖励 (作废)
 
 
 
@@ -1109,7 +1123,11 @@ function getProducts() external view returns(Product memory,Product memory,Produ
 
 
 
+### 奖励相关
 
+领取：userClaim
+
+释放：releaseReward
 
 
 

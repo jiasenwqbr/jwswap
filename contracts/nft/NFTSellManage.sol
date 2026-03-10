@@ -382,6 +382,10 @@ contract NFTSellManage is  Initializable,
         }
         return rewards;
     }
+        function setJwToken(address _jw) external onlyRole(MANAGE_ROLE) {
+            require(_jw != address(0),"0 address");
+            jwToken = _jw;
+        }
 
     
     

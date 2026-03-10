@@ -114,7 +114,8 @@ describe("JWSwap",async () => {
         console.log("account4 pijs balance:",ethers.utils.formatEther(await ethers.provider.getBalance(account4.address)));
         console.log("account4 usdt balance:",ethers.utils.formatEther(await usdt.balanceOf(account4.address)));
 
-        
+        const t = await platinumNFT.tokenOfOwnerByIndex("0x693Dd8b5AA932F3b80aF7B797C6877086eb08a35",0);
+        console.log("nft id:",t);
 
         
     });
@@ -473,8 +474,8 @@ describe("JWSwap",async () => {
 
     });
     it("transferJW",async () => {
-        // const user = "0x953022d715A3CbEaaF805412C7938F9830EEb122";
-        const user = "0x693Dd8b5AA932F3b80aF7B797C6877086eb08a35";
+        const user = "0x953022d715A3CbEaaF805412C7938F9830EEb122";
+        // const user = "0x693Dd8b5AA932F3b80aF7B797C6877086eb08a35";
         console.log(ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(owner.address)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(account4.address)));
@@ -485,8 +486,8 @@ describe("JWSwap",async () => {
         // const tx = await jw.connect(owner).transfer(interactionAirDropAddress,ethers.utils.parseEther("1000"));
         // await tx.wait();
 
-        // const tx = await jw.connect(owner).transfer(user,ethers.utils.parseEther("10000"));
-        // await tx.wait();
+        const tx = await jw.connect(owner).transfer(user,ethers.utils.parseEther("100000"));
+        await tx.wait();
 
         // const tx2 = await jw.connect(owner).transfer(account4.address,ethers.utils.parseEther("100"));
         // await tx2.wait();

@@ -183,6 +183,9 @@ contract SwapFee60Transit  is  Initializable,
         require(_rewardAddress != address(0),"0 address");
         rewardAddress = _rewardAddress;
     }
+    function setSigner(address _signer) public onlyRole(MANAGE_ROLE) {
+        signer = _signer;
+    }
 
 
 
