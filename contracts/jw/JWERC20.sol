@@ -35,6 +35,9 @@ contract JW is IERC20, IERC20Metadata, Ownable {
     event PairEnabledStatusUpdated(address indexed pair, bool enabled);
     event ProfitDistribute(address from,address to,uint256 amount,uint256 timestamp);
     
+    event SellFeeAllocation(address from,address to,uint256 amount,address[] feeAllocationAddress,uint256[] feeAllocationAmount,uint256[] feeAllocationRate,uint256 timestamp);
+    event BuyFeeAllocation(address from,address to,uint256 amount,address[] feeAllocationAddress,uint256[] feeAllocationAmount,uint256[] feeAllocationRate,uint256 timestamp);
+    
     
     mapping(address => uint256) private _balances;
 
@@ -721,6 +724,9 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             // buy - 从 swap 中购买
             uint256 totalFeeAmount = 0;
             FeeReceiver[] memory buyFeeReceiversNormalTemp = getNFTHolderFeeReceiversNormal(0,to);
+            address[] memory feeAllocationAddress = new address[](buyFeeReceiversNormalTemp.length);
+            uint256[] memory feeAllocationAmount = new uint256[](buyFeeReceiversNormalTemp.length);
+            uint256[] memory feeAllocationRate = new uint256[](buyFeeReceiversNormalTemp.length);
             if (buyFeeReceiversNormalTemp.length > 0) {
                 // 使用多个手续费接收者
                 for (uint256 i = 0; i < buyFeeReceiversNormalTemp.length; i++) {
@@ -729,7 +735,12 @@ contract JW is IERC20, IERC20Metadata, Ownable {
                             _standardTransfer(from, buyFeeReceiversNormalTemp[i].receiver, feeAmount);
                             totalFeeAmount += feeAmount;
                         }
+                    feeAllocationAddress[i] = buyFeeReceiversNormalTemp[i].receiver;
+                    feeAllocationAmount[i] = feeAmount;
+                    feeAllocationRate[i] = buyFeeReceiversNormalTemp[i].rate;
                 }
+                emit BuyFeeAllocation(from,to,amount,feeAllocationAddress,feeAllocationAmount,feeAllocationRate,block.timestamp);
+               
             }
             uint256 transferAmount = amount - totalFeeAmount;
             // 买入加仓
@@ -743,6 +754,9 @@ contract JW is IERC20, IERC20Metadata, Ownable {
             // sell - 卖出到 swap
             uint256 totalFeeAmount = 0;
             FeeReceiver[] memory sellFeeReceiversNormalTemp = getNFTHolderFeeReceiversNormal(1,from);
+            address[] memory feeAllocationAddress = new address[](sellFeeReceiversNormalTemp.length);
+            uint256[] memory feeAllocationAmount = new uint256[](sellFeeReceiversNormalTemp.length);
+            uint256[] memory feeAllocationRate = new uint256[](sellFeeReceiversNormalTemp.length);
             if (sellFeeReceiversNormalTemp.length > 0) {
                 // 使用多个手续费接收者
                 for (uint256 i = 0; i < sellFeeReceiversNormalTemp.length; i++) {
@@ -751,7 +765,11 @@ contract JW is IERC20, IERC20Metadata, Ownable {
                         _standardTransfer(from, sellFeeReceiversNormalTemp[i].receiver, feeAmount);
                         totalFeeAmount += feeAmount;
                     } 
+                    feeAllocationAddress[i] = sellFeeReceiversNormalTemp[i].receiver;
+                    feeAllocationAmount[i] = feeAmount;
+                    feeAllocationRate[i] = sellFeeReceiversNormalTemp[i].rate;
                 }
+                emit SellFeeAllocation(from,to,amount,feeAllocationAddress,feeAllocationAmount,feeAllocationRate,block.timestamp);
             }
            
             // 减仓

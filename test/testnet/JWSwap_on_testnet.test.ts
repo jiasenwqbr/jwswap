@@ -23,7 +23,7 @@ describe("JWSwap",async () => {
     let piJRouter:PiJRouter;
     let piOrangeJFactory:PiJFactory;
     let piOrangeJRouter:PiJRouter;
-    const jwAddress = "0x29d14b0b09f219D9583C5A6BB9772DA6B10ad593";
+    const jwAddress = "0xd1F46DB3E2E332D1aF64BFbda785eB422f4187F3";
     const platinumNFTAddress = "0x602832375e571b87172546DcD2D7E41006b4e852";
     const epicNFTAddress = "0xD6669860c0a1C8A123c2760aE697D1AE83b6B861";
     const legendNFTAddress = "0xe86D824A1a43Dc241A7b94B6f42a1d13cAd5a282";
@@ -474,8 +474,9 @@ describe("JWSwap",async () => {
 
     });
     it("transferJW",async () => {
-        const user = "0x953022d715A3CbEaaF805412C7938F9830EEb122";
+        // const user = "0x953022d715A3CbEaaF805412C7938F9830EEb122";
         // const user = "0x693Dd8b5AA932F3b80aF7B797C6877086eb08a35";
+        const user = "0x3705d46dbbfb5cbfdd4d7c26e25ef7ef38697e9b";
         console.log(ethers.utils.formatEther(await jw.balanceOf(flashSalseAddress)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(owner.address)));
         console.log(ethers.utils.formatEther(await jw.balanceOf(account4.address)));
