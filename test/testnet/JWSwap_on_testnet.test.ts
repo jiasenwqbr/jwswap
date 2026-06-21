@@ -484,11 +484,11 @@ describe("JWSwap",async () => {
         console.log("interactionAirDropAddress:",ethers.utils.formatEther(await jw.balanceOf(interactionAirDropAddress)));
         
 
-        // const tx = await jw.connect(owner).transfer(interactionAirDropAddress,ethers.utils.parseEther("1000"));
-        // await tx.wait();
-
-        const tx = await jw.connect(owner).transfer(user,ethers.utils.parseEther("100000"));
+        const tx = await jw.connect(owner).transfer(interactionAirDropAddress,ethers.utils.parseEther("1000"));
         await tx.wait();
+
+        // const tx = await jw.connect(owner).transfer(user,ethers.utils.parseEther("100000"));
+        // await tx.wait();
 
         // const tx2 = await jw.connect(owner).transfer(account4.address,ethers.utils.parseEther("100"));
         // await tx2.wait();
@@ -1094,7 +1094,11 @@ describe("JWSwap",async () => {
         console.log("epicNFT account4 balance:",await epicNFT.balanceOf(account4.address));
         console.log("legendNFT account4 balance:",await legendNFT.balanceOf(account4.address));
 
-       
+    });
+
+    it("getmyInfo",async () => {
+       console.log("getUserInfo:",await interactionAirDrop.getUserInfo("0xaDE3e15511dbA9781e6787342e9D4132DD0B80EC") );
+       console.log("getUserIntegration:",await interactionAirDrop.getUserIntegration("0xaDE3e15511dbA9781e6787342e9D4132DD0B80EC") );
 
     });
        
@@ -1164,6 +1168,9 @@ npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet 
 npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet --grep "jwtest2usdt"
 npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet --grep "getAmountOut"
 npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet --grep "NFT-balance"
+\
+npx hardhat test ./test/testnet/JWSwap_on_testnet.test.ts --network pijstestnet --grep "getmyInfo"
+
 
 
 
